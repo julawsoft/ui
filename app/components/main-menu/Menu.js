@@ -31,8 +31,8 @@ class Menu extends BaseComponent {
                     <li class="active">
                         <a href="#" (click)="gotoView('ClientForm')">Cliente</a>
                     </li>
-                    <li>
-                        <a href="#" (click)="gotoView('Osvaldo')">Colaborador</a>
+                    <li class="active">
+                        <a href="#" (click)="gotoView('CollaboratorForm')">Colaborador</a>
                     </li>
                 </ul>
             </li>

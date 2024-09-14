@@ -1,6 +1,7 @@
 const routesMap = {
     viewRoutes: {
         ClientForm: 'components/client',
+        CollaboratorForm: 'components/collaborator',
         Home: 'components/home',
     }
 }
