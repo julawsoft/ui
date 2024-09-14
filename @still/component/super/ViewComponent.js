@@ -23,21 +23,21 @@ class ViewComponent extends BaseComponent {
         if(this.template instanceof Array)
             this.template = this.template.join('');
 
-        const placeholder = document.getElementById(placeHolder);
-        placeholder.innerHTML = '';
-        placeholder.insertAdjacentHTML('afterbegin',this.template);
+        document
+            .getElementById(placeHolder)
+            .innerHTML = this.template;
     }
 
     renderOnViewFor(placeHolder){
         this.beforeInit();
-
+        //this.prepareRender();
+        console.log(`${this.constructor.name}`);
         if(this.template instanceof Array)
             this.template = this.template.join('');
 
-        const placeholder = document.getElementById(placeHolder);
-        placeholder.innerHTML = '';
-        placeholder.insertAdjacentHTML('afterbegin',this.template);
-
+        document
+            .getElementById(placeHolder)
+            .innerHTML = this.template;
     }
 
     getTemplate(){
