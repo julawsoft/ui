@@ -39,9 +39,14 @@ class CCardDisplay extends ViewComponent {
     htmlRefId = 'dashBoardCards';
     /** @type { StEvent } */
     cardDataSource = cardDataSource;
+    _template;
+
+    template(){
+        return this._template;
+    }
 
     updateComponent(){
-        this.template = this.cardDataSource.value.map(
+        this._template = this.cardDataSource.value.map(
             rec =>  DashboardCard.new(rec.state)
                 .props(rec.props)
                 .getTemplate()
@@ -49,7 +54,7 @@ class CCardDisplay extends ViewComponent {
     }
 
     beforeInit(){
-        this.template = this.cardDataSource.value.map(
+        this._template = this.cardDataSource.value.map(
             rec =>  DashboardCard.new(rec.state)
                 .props(rec.props)
                 .getTemplate()

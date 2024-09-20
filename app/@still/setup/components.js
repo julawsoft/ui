@@ -83,8 +83,8 @@ class Components {
     componentName;
 
     getTopLevelCmpId(){
-        const { TOP_LEVEL_CMP, ANY_COMPONT_LOADED } = $stillconst;
-        return `${TOP_LEVEL_CMP}`;
+        const { TOP_LEVEL_CMP } = $stillconst;
+        return TOP_LEVEL_CMP;
     }
 
     renderOnViewFor(placeHolder){
@@ -135,12 +135,13 @@ class Components {
             const init = $still.context.currentView;
             init.setUUID(this.getTopLevelCmpId());
             const loadCmpClass = $stillconst.ANY_COMPONT_LOADED;
-            this.template = init.template.replace('class="',`class="${init.getUUID()} ${loadCmpClass} `);
+            this.template = init.template().replace('class="',`class="${init.getUUID()} ${loadCmpClass} `);
             this.renderOnViewFor('appPlaceholder');
         });
     }
 
     setComponentAndName(cmp, cmpName){
+        $still.context.componentRegistror.componentList[cmpName] = { instance: cmp }
         this.component = cmp;
         this.componentName = cmpName;
         return this;
@@ -156,8 +157,48 @@ class Components {
                 value: cmp['$still_'+field],
                 onChange: (callback = function(){}) => {
                     cmp[`$still${field}Subscribers`].push(callback);
-                }
+                },
+                //map1: (cb = () => {}) => {
+                //    console.log(`Mapp called here`);
+                //    let prop = cmp['$still_'+field];
+                //    if(prop instanceof Array){
+                //        /** @type {Array} */
+                //        prop = prop;
+                //        let finalResult = ``;
+                //        for(const p of prop)
+                //            finalResult += ''
+                //        
+                //    }
+                //}
             };
+        });
+
+    }
+
+    /** 
+     * @param {ViewComponent} cmp 
+     */    
+    defineGetter = (cmp, field) => {
+
+        cmp.__defineSetter__(field, (newValue) => {
+                
+            cmp.__defineGetter__(field, () => newValue);
+            cmp['$still_'+field] = newValue;
+            this.defineSetter(cmp, field);
+            cmp.stOnUpdate();
+
+            if(cmp[`$still${field}Subscribers`].length > 0){
+                setTimeout(() => cmp[`$still${field}Subscribers`].forEach(
+                    subscriber => subscriber(cmp['$still_'+field])
+                ));
+            }
+
+            if(cmp.$stillClassLvlSubscribers.length > 0){
+                setTimeout(() => {
+                    cmp.notifySubscribers(cmp.getStateValues());
+                });
+            }
+
         });
 
     }
@@ -193,29 +234,31 @@ class Components {
             Object.assign(cmp, { ['$still_'+field]: cmp[field] || '' });
             Object.assign(cmp, { [`$still${field}Subscribers`]: [] });
             this.defineSetter(cmp, field);
+            this.defineGetter(cmp, field);
 
-            cmp.__defineSetter__(field, (newValue) => {
-                
-                cmp.__defineGetter__(field, () => newValue);
-                cmp['$still_'+field] = newValue;
-                this.defineSetter(cmp, field);
-                cmp.stOnUpdate();
-
-                if(cmp[`$still${field}Subscribers`].length > 0){
-                    setTimeout(() => cmp[`$still${field}Subscribers`].forEach(
-                        subscriber => subscriber(cmp['$still_'+field])
-                    ));
-                }
-
-                if(cmp.$stillClassLvlSubscribers.length > 0){
-                    setTimeout(() => {
-                        cmp.notifySubscribers(cmp.getStateValues());
-                    });
-                }
-
-            });
         });
-        return this;
+        return this.component;
+    }
+
+    /**  @returns {ViewComponent} */
+    getNewInstance(cmpName, params){
+
+        /**  @type {ViewComponent} */
+        let instance;
+        if(params instanceof Object)
+            instance = this.getNewParsedComponent(eval(`new ${cmpName}({...${JSON.stringify(params)}})`));
+
+        if(params instanceof Array)
+            instance = this.getNewParsedComponent(eval(`new ${cmpName}([...${JSON.stringify(params)}])`));
+                
+        instance.cmpInternalId = `dynamic-${instance.getUUID()}${cmpName}`;
+        /** TODO: Replace the bellow with the export under componentRegistror */
+        $still.context.componentRegistror.componentList[instance.cmpInternalId] = { instance };
+                
+        if(instance) return instance;
+                
+        return eval(`new ${cmpName}('${params}')`);
+
     }
 
     /** @param {ViewComponent} cmp */
@@ -224,24 +267,7 @@ class Components {
         const cmp = this.component;
         const cmpName = this.componentName;
         Object.assign(cmp, {
-            new: (params) => {
-
-                /**  @type {ViewComponent} */
-                let instance;
-                if(params instanceof Object)
-                    instance = this.getNewParsedComponent(eval(`new ${cmpName}({...${JSON.stringify(params)}})`));
-
-                if(params instanceof Array)
-                    instance = this.getNewParsedComponent(eval(`new ${cmpName}([...${JSON.stringify(params)}])`));
-                
-                instance.cmpInternalId = `dynamic-${instance.getUUID()}${cmpName}`;
-                /** TODO: Replace the bellow with the export under componentRegistror */
-                $still.context.componentRegistror.componentList[instance.cmpInternalId] = { instance };
-                
-                if(instance) return instance;
-                
-                return eval(`new ${cmpName}('${params}')`);
-            }
+            new: (params) => this.getNewInstance(cmpName, params)
         });
         return this;
     }
@@ -253,13 +279,14 @@ class Components {
         window[componentName] = cmp;
         const parsing = this
         .setComponentAndName(window[componentName], cmp.getName())
-        .defineNewInstanceMethod();
+        .defineNewInstanceMethod()
+        .parseGetsAndSets();
 
-        setTimeout(() => {
+        /* setTimeout(() => {
             parsing.parseGetsAndSets();
-        });
+        }); */
         
-        return window[componentName];
+        return parsing;
 
     }
     

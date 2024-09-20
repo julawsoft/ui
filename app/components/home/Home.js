@@ -1,27 +1,30 @@
 class Home extends BaseComponent {
 
-    template = `
-        <div class="container-fluid">
-            <!-- Dashboard Widgets -->
-            <div id="dashBoardCards" class="row"></div>
+    template(){
 
-            <div class="row">
-                <div id="barCharPlaceholder" style="display: contents;"></div>
-                <div id="lineCharPlaceholder" style="display: contents;"></div>
+        return `
+            <div class="container-fluid">
+                <!-- Dashboard Widgets -->
+                <div id="dashBoardCards" class="row"></div>
+    
+                <div class="row">
+                    <div id="barCharPlaceholder" style="display: contents;"></div>
+                    <div id="lineCharPlaceholder" style="display: contents;"></div>
+                </div>
+    
+                <div class="row clearfix">
+                    <div id="animateCharts" style="display: contents;"></div>
+                </div>
+                
+                <div class="row clearfix">
+                    <div id="projectGrid" style="display: contents;"></div>
+                    <div id="dashboardCalendar" style="display: contents;"></div>
+                </div>
+                
             </div>
+        `;
 
-            <div class="row clearfix">
-                <div id="animateCharts" style="display: contents;"></div>
-            </div>
-            
-            <div class="row clearfix">
-                <div id="projectGrid" style="display: contents;"></div>
-                <div id="dashboardCalendar" style="display: contents;"></div>
-            </div>
-            
-        </div>
-    `;
-
+    }     
     cardDisplayDS;
 
     constructor(){

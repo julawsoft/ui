@@ -16,14 +16,15 @@ class ViewComponent extends BaseComponent {
     beforeInit(){}
 
     renderViewOn(placeHolder){
-
+        
+        let template = this.template();
         this.prepareRender();
-        if(this.template instanceof Array)
-            this.template = this.template.join('');
+        if(template instanceof Array)
+            template = template.join('');
 
         document
             .getElementById(placeHolder)
-            .innerHTML = this.template;
+            .innerHTML = template;
     }
 
     renderOnViewFor(placeHolder){

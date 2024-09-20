@@ -28,7 +28,7 @@ class BaseComponent extends BehaviorComponent {
      */
     settings = null;
     componentName;
-    template;
+    _template;
     cmpProps = [];
     cmpInternalId = null;
     routableCmp = null;
@@ -36,6 +36,8 @@ class BaseComponent extends BehaviorComponent {
     $stillIsThereForm = null;
     $stillpfx = $stillconst.STILL_PREFIX;
 
+
+    template(){}
 
     /**
      * signature method only
@@ -75,7 +77,7 @@ class BaseComponent extends BehaviorComponent {
 
         const fields = Object.getOwnPropertyNames(this);
         const excludingFields = [
-            'settings', 'componentName', 'template', 
+            'settings', 'componentName', 'template','_template', 
             'cmpProps','htmlRefId','new','cmpInternalId',
             'routableCmp', '$stillLoadCounter', 'subscribers',
             '$stillIsThereForm','$stillpfx'
@@ -115,21 +117,22 @@ class BaseComponent extends BehaviorComponent {
     isThereAForm(){
         if(!this.$stillIsThereForm){
             const form = $stillconst.CMP_FORM_PREFIX
-            this.$stillIsThereForm = this.template.indexOf(form) >= 0;
+            this.$stillIsThereForm = this.template().indexOf(form) >= 0;
         }
         return this.$stillIsThereForm;
     }
 
     getBoundState(){
-        
+
         const fields = this.getProperties();
         const currentClass = this;
+        let template = this.template();
 
-        if(this.template instanceof Array)
-            this.template = this.template.join('');
+        if(template instanceof Array)
+            template = template.join('');
 
 
-        let tamplateWithState = this.template;
+        let tamplateWithState = template;
 
         /**
          * Inject/Bind the component state/properties to the
@@ -167,6 +170,26 @@ class BaseComponent extends BehaviorComponent {
         return template;
     }
 
+    getBoundScope(template){
+        /**
+         * Bind (click) event to the UI
+         */
+
+        const searchScriptInit = /still-scope\>[\${0,}][\{{0,}]/g;
+        const searchScriptEnd = /\}{0,}\}{0,}[\s{0,}]\<\/still-scope/g;
+        
+        console.log(`Script Move is: `,template
+        .replaceAll(searchScriptInit,'script>')
+        .replaceAll(searchScriptEnd,'<script')
+        );
+
+        template = template
+                    .replaceAll(searchScriptInit,'script>')
+                    .replaceAll(searchScriptEnd,'<script');
+
+        return template;
+    }
+
     getBoundInputForm(template, field, value){
         /**
          * Bind (value) on the input form
@@ -199,6 +222,7 @@ class BaseComponent extends BehaviorComponent {
     getBoundTemplate(){
 
         console.time('tamplateBindFor'+this.getName());
+        (new Components).getNewParsedComponent(this);
         /**
          * Bind the component state and return it (template)
          * NOTE: Needs to be always the first to be called
@@ -209,6 +233,8 @@ class BaseComponent extends BehaviorComponent {
         template = this.getBoundProps(template);
         /** Bind the click to the template and return */
         template = this.getBoundClick(template);
+
+        template = this.getBoundScope(template);
 
         console.timeEnd('tamplateBindFor'+this.getName());
 
@@ -229,13 +255,14 @@ class BaseComponent extends BehaviorComponent {
         
         const fields = this.getProperties();
         const currentClass = this;
+        let template = this.template();
 
         fields.forEach(field => {
-            this.template = this.template.replace(`@${field}`,currentClass[field].value);
+            template = template.replace(`@${field}`,currentClass[field].value);
         });
         
         Object.entries(this.cmpProps).forEach(([key, value]) => {
-            this.template = this.template.replace(`{{${key}}}`,value);
+            template = template.replace(`{{${key}}}`,value);
         });
 
     }
