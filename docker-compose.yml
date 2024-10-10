@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  lb:
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+    image: lb
+    container_name: lb
+    env_file:
+      - ./.env  
+    volumes:
+      - ./nginx/nginx_prod.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "80:80"
+    networks:
+      - app_sec
+
+networks:
+  app_sec: 
+    driver: bridge
