@@ -14,8 +14,31 @@ services:
     ports:
       - "80:80"
     networks:
-      - app_sec
+      - colab
+
+  #node-exporter-ssl:
+  #  image: ghcr.io/amimof/node-cert-exporter
+  #  ports:
+  #    - "9117:9117"
+  #  volumes:
+  #    - "./ssl:/etc/ssl:ro"  
+  #  command:
+  #    - "--logtostderr=true"
+  #    - "--include-glob"
+  #    - "/etc/ssl/colabao.pem" 
+#
+  #nginx-exporter:
+  #  image: nginx/nginx-prometheus-exporter:0.8.0
+  #  command:
+  #    - -nginx.scrape-uri
+  #    - http://lb:80/nginx_status
+  #  networks:
+  #    - colab
+  #  depends_on:
+  #    - lb
+  #  ports:
+  #    - "9113:9113"
 
 networks:
-  app_sec: 
+  colab: 
     driver: bridge

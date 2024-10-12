@@ -1,0 +1,16 @@
+export interface PropsStateSystem {
+  name: string,
+  version: string,
+  build: string,
+  buildDate: string,
+  isInstall: boolean,
+  isSkip: boolean,
+  nature: string,
+  nif: string,
+  contacts?: string,
+  email?: string,
+  address?: string,
+  logo?: string,
+  licenseType: string,
+  licenseKey?: string,
+}

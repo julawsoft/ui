@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+   colab:
+    build: 
+      context: ./
+      dockerfile: Dockerfile_dev
+    image: colab-front
+    env_file:
+      - ./.env
+    restart: unless-stopped
+    container_name: colab-front-end
+    platform: linux/amd64
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "3000:3000"
