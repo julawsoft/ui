@@ -1,5 +1,5 @@
 # Stage One 
-FROM node:16.13.2 as builder
+FROM node:16.13.2 AS builder
 RUN mkdir -p /home/app/node_modules && chown -R node:node /home/app
 WORKDIR /home/app
 USER node

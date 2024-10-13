@@ -1,8 +1,8 @@
 {
-  "name": "colab-v2",
-  "description": "cetim tecnologias",
+  "name": "app_secv1",
+  "description": "Cetim Tecnologias S.A",
   "private": true,
-  "version": "2.0.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
@@ -81,6 +81,7 @@
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@types/react-gauge-chart": "^0.4.0",
+    "@types/react-icons": "^2.2.7",
     "@types/redux-logger": "^3.0.9",
     "@types/styled-components": "^5.1.26",
     "@vitejs/plugin-react": "^2.0.1",
