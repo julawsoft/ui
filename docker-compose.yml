@@ -3,13 +3,15 @@ version: '3'
 services:
   app_sec_frontend:
     build: 
-      context: .
+      context: ./
+      dockerfile: Dockerfile
     image: app_sec_frontend
     container_name: app_sec_frontend
     env_file:
       - ./.env  
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./ssl:/etc/ssl/certs:ro
     ports:
       - "80:80"
     networks:

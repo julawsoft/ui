@@ -5,21 +5,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-
 lerna-debug.log*
 
 node_modules
-.yarn
 dist
 dist-ssr
 *.local
-yarn.lock
-
-# Snyk caching .dccache
-.dccache
-
-# Snyk caching .dccache
-.dccache
 
 # Editor directories and files
 .vscode/*
@@ -31,13 +22,3 @@ yarn.lock
 *.njsproj
 *.sln
 *.sw?
-.dccache
-.scannerwork
-.env
-.yarn
-ssl
-.env
-install_nvm.sh
-init_nvm.sh
-
-package-lock.json

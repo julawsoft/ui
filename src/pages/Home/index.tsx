@@ -1,17 +1,16 @@
-import { Flex, Text } from '@chakra-ui/react'
+// src/pages/Home.tsx
+import React from 'react';
+import { Typography } from '@mui/material';
 
-import useColabContext from '../../context_api'
-
-export function Home() {
-
-  const { colabProvider } = useColabContext()
-
+const Home: React.FC = () => {
   return (
-    <>
-      <Flex minHeight={'100%'} width={'100%'} flexDirection={'column'} gap={4}>
-        <Text>Home do APP SEC</Text>
-        <Text>{colabProvider.user.name}</Text>
-      </Flex>
-    </>
-  )
-}
+    <div>
+      <Typography variant="h4">Home Page</Typography>
+      <Typography paragraph>
+        Welcome to the Home page!
+      </Typography>
+    </div>
+  );
+};
+
+export default Home;

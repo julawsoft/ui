@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
-import { Home } from '../pages/Home'
-import { ROUTES } from './constants'
+import { ROUTES_PATH } from './routePaths'
+import Home from '../pages/Home'
+
 
 interface IRoute {
   path: string
@@ -10,5 +11,13 @@ interface IRoute {
 }
 
 export const routesPermissions: IRoute[] = [
-  { path: ROUTES.Home, element: <Home />, roles: [] },
+  { 
+    path: ROUTES_PATH.Home, 
+    element: <Home />, 
+    roles: [
+        'Admin',
+        'Editor',
+        'Viewer',
+    ],
+  },
 ]

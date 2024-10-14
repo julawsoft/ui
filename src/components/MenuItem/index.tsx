@@ -1,33 +1,17 @@
-import { Container, Painel, TextItemMenu } from './styled'
+import { Home, Info, Settings, Lock } from "@mui/icons-material";
+import { UserProfile } from "../../routes/userProfile";
 
-interface PropsMenuItem {
-  icon: any
-  text: string
-  isActive: boolean
-  isShow: boolean
-  onClick?: any
-  isDisabled: boolean
+interface IMenuItem {
+    text: string;
+    icon: JSX.Element;
+    profiles: UserProfile[];
 }
 
-export function MenuItem({
-  icon,
-  text,
-  isActive,
-  isShow,
-  onClick,
-  isDisabled,
-}: PropsMenuItem) {
-  return (
-    <Container
-      isDisabled={isDisabled}
-      isActive={isActive}
-      isShow={isShow}
-      onClick={onClick}
-    >
-      <Painel isActive={isActive} isShow={isShow}>
-        {icon}
-        <TextItemMenu isShow={isShow}>{text}</TextItemMenu>
-      </Painel>
-    </Container>
-  )
-}
+const menuItems: IMenuItem[] = [
+    { text: 'Home', icon: <Home />, profiles: ['Admin', 'Editor', 'Viewer'] },
+    { text: 'About', icon: <Info />, profiles: ['Admin', 'Editor'] },
+    { text: 'Settings', icon: <Settings />, profiles: ['Admin'] },
+    { text: 'Restricted', icon: <Lock />, profiles: ['Admin'] },
+];
+
+export default menuItems;
