@@ -8,8 +8,8 @@ pipeline {
     environment {
         scannerHome =  tool 'SONARQUBE_SCANNER'
         SONARQUBE_URL = "${env.SONARQUBE_URL}"
-        SONARQUBE_FRONTEND_PROJECT = "${env.SONARQUBE_FRONTEND_PROJECT}"
-        SONARQUBE_FRONTEND_LOGIN = "${env.SONARQUBE_FRONTEND_LOGIN}"
+        SONARQUBE_FRONTEND_PROJECT = "${env.APPSEC_PROJECT_NAME}"
+        SONARQUBE_FRONTEND_LOGIN = "${env.APPSEC_PROJECT_TOKEN}"
     }
 
     stages {
