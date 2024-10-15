@@ -4,6 +4,7 @@ import Login from '../pages/Login'
 import { ROUTES_PATH } from './routePaths'
 import AppLayout from '../components/AppLayout'
 import { routesPermissions } from './routersPermission'
+import { getUserLogged } from '../utils/cookies'
 
 
 export default function Router() {
@@ -14,6 +15,10 @@ export default function Router() {
         }
         return children
     }
+
+    const userLogged = getUserLogged()
+
+    console.log("routas user logged", userLogged)
 
 
     const [isDrawerOpen, setDrawerOpen] = useState(true);
@@ -34,7 +39,7 @@ export default function Router() {
             <Route
                 path="/"
                 element={
-                    <ProtectedRoute isLogged={true}>
+                    <ProtectedRoute isLogged={userLogged !== undefined}>
                         <AppLayout userProfile={userProfile} isDrawerOpen={isDrawerOpen} onDrawerToggle={handleDrawerToggle} />
                     </ProtectedRoute>
                 }>
