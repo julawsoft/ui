@@ -18,6 +18,7 @@ const PaginatedTable = ({ data }: IPaginatedTable) => {
     const [rowsPerPage, setRowsPerPage] = useState(2);
 
     const handleChangePage = (event: unknown, newPage: number) => {
+        console.log(event)
         setPage(newPage);
     };
 
