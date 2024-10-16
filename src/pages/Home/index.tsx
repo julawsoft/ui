@@ -5,6 +5,8 @@ import useAuthStore from '../../context/authStore';
 import { DocumentsService, IDocuments } from '../../services/Documents';
 import { toast } from 'react-toastify';
 import PaginatedTable from '../../components/PaginatedTable';
+import PermissionGate from '../../utils/PermissionGate';
+import { AppRoles } from '../../routes/AppRoles';
 
 const Home: React.FC = () => {
 
@@ -25,7 +27,6 @@ const Home: React.FC = () => {
     }
   }
 
-
   return (
     <><div >
       <Typography variant="h5">{user?.name}</Typography>
@@ -34,14 +35,16 @@ const Home: React.FC = () => {
       </Typography>
     </div>
       <div>
-        <Button
-          type="button"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          Adicionar
-        </Button>
+        <PermissionGate roles={[AppRoles.HOME.podeCadastrarDocumento]}>
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Adicionar
+          </Button>
+        </PermissionGate>
         <Typography variant="h6">Lista documentos</Typography>
         <hr />
         {

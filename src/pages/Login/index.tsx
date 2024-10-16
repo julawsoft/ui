@@ -35,11 +35,12 @@ const Login: React.FC = () => {
       if (response && response.response.statusCode === 200) {
         const userResponse = response.data
         let groupsMap = userResponse.userInfo.groups.map((group: string) => group.replace('/', ''))
+        let rolesMap = userResponse.roles.map((role: any) => role.name)
 
         setUserLogged({
           name: `User Logado`,
           groups: [...groupsMap],
-          roles: ['password'],
+          roles: [...rolesMap],
           accessToken: userResponse.accessToken,
           refreshToken: userResponse.refreshToken,
           isLogged: true
