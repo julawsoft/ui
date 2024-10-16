@@ -5,37 +5,60 @@ import { LoginService } from '../../services/Login';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES_PATH } from '../../routes/routePaths';
-// import { setUserLogged } from '../../utils/cookies';
+import { setUserLogged } from '../../utils/cookies';
+import useAuthStore from '../../context/authStore';
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState<string>('admin@appsec.ms');
-  const [password, setPassword] = useState<string>('123456');
+  
+  const setUser  = useAuthStore((state) => state.setUser)
+
+  const [email, setEmail] = useState<string>('user@cetim.ms');
+  const [password, setPassword] = useState<string>('654321');
 
   const navigate = useNavigate()
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log({ email, password });
 
     try {
 
       const response = await LoginService.login({email, password})
 
-      console.log(" >>><<< login app ", response)
+      if(response && response.response.statusCode === 200) {
 
-      if(response && response.statusCode === 200) {
-        console.log(">>>> ", response)
+        const userResponse = response.data
 
-        return navigate(ROUTES_PATH.Home)
+        let groupsMap = userResponse.userInfo.groups.map((group: string) => group.replace('/', ''))
 
-        // setUserLogged({
-        //   name: "User de Teste",
-        //   groups: ['email', 'password'],
-        //   role: ['password']
-        // })
+        console.log(groupsMap)
+       
+        setUserLogged({
+          name: `User Logado`,
+          groups: [...groupsMap],
+          roles: ['password'],
+          accessToken: userResponse.accessToken,
+          refreshToken: userResponse.refreshToken,
+          isLogged: true
+        })
 
-      }else{
-        alert("Erro to login")
+        setUser(
+          {
+            name: `User Logado`,
+            groups: [...groupsMap],
+            roles: ['password'],
+            accessToken: userResponse.accessToken,
+            refreshToken: userResponse.refreshToken,
+            isLogged: true,
+            id: '',
+            email: ''
+          }
+        )
+
+
+        navigate(ROUTES_PATH.Home)
+  
+      } else {
+        toast.error(response.response.message)
       }      
     
     }catch(err: any){

@@ -1,13 +1,22 @@
 import { useState } from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import Login from '../pages/Login'
 import { ROUTES_PATH } from './routePaths'
 import AppLayout from '../components/AppLayout'
 import { routesPermissions } from './routersPermission'
-import { getUserLogged } from '../utils/cookies'
+import { getUserLogged, IUserLogged, setUserLogged } from '../utils/cookies'
 
 
 export default function Router() {
+
+    setUserLogged({
+        name: '',
+        groups: [],
+        roles: [],
+        accessToken: '',
+        refreshToken: '',
+        isLogged: false
+    })
 
     const ProtectedRoute = ({ isLogged, children }: any) => {
         if (!isLogged) {
@@ -16,22 +25,16 @@ export default function Router() {
         return children
     }
 
-    const userLogged = getUserLogged()
-
-    console.log("routas user logged", userLogged)
-
+    const userLogged:IUserLogged = getUserLogged()
 
     const [isDrawerOpen, setDrawerOpen] = useState(true);
-    const userProfile: 'Admin' | 'Editor' | 'Viewer' = 'Admin'; // Defina o perfil do usuário aqui
-
-    const userPermissions = {
-        name: "",
-        profile: 'Editor',
-        isLogged: true,
-    }
 
     const handleDrawerToggle = () => {
         setDrawerOpen(prev => !prev);
+    };
+
+    const hasPermission = (itemRoles: string[]) => {
+        return itemRoles.some(role => userLogged.groups.includes(role));
     };
 
     return (
@@ -40,13 +43,13 @@ export default function Router() {
                 path="/"
                 element={
                     <ProtectedRoute isLogged={userLogged !== undefined}>
-                        <AppLayout userProfile={userProfile} isDrawerOpen={isDrawerOpen} onDrawerToggle={handleDrawerToggle} />
+                        <AppLayout userProfile={userLogged.groups} isDrawerOpen={isDrawerOpen} onDrawerToggle={handleDrawerToggle} />
                     </ProtectedRoute>
                 }>
 
                 {routesPermissions.map((route) => {
                     if (
-                        route.roles?.includes(userPermissions.profile) ||
+                        hasPermission(userLogged.groups) ||
                         !route.roles ||
                         route.roles.length === 0
                     )
@@ -57,7 +60,7 @@ export default function Router() {
                         )
 
                     return (
-                        <Route key={route.path} path={route.path} element={<>PERMITION </>}>
+                        <Route key={route.path} path={route.path} element={<>User Without Permission </>}>
                             {route.subRoute}
                         </Route>
                     )

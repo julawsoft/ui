@@ -11,11 +11,10 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { Home, Info, Settings, Lock } from "@mui/icons-material";
-
-import { UserProfile } from '../../routes/userProfile';
+import { UserRole } from '../../routes/userRole';
 
 interface SidebarProps {
-  userProfile: UserProfile;
+  userProfile: string[];
   isOpen: boolean;
   onClose: () => void;
   handleClick: () => void;
@@ -25,20 +24,24 @@ interface SidebarProps {
 interface IMenuItem {
     text: string;
     icon: JSX.Element;
-    profiles: UserProfile[];
+    profiles: string[];
 }
 
 const menuItems: IMenuItem[] = [
-    { text: 'Home', icon: <Home />, profiles: ['Admin', 'Editor', 'Viewer'] },
-    { text: 'About', icon: <Info />, profiles: ['Admin', 'Editor'] },
-    { text: 'Settings', icon: <Settings />, profiles: ['Admin'] },
-    { text: 'Restricted', icon: <Lock />, profiles: ['Admin'] },
+    { text: 'Home', icon: <Home />, profiles: ['admin', 'editor', 'viewer'] },
+    { text: 'About', icon: <Info />, profiles: ['admin', 'editor'] },
+    { text: 'Settings', icon: <Settings />, profiles: ['admin'] },
+    { text: 'Restricted', icon: <Lock />, profiles: ['admin'] },
 ];
 
 
 const Sidebar: React.FC<SidebarProps> = ({ userProfile, isOpen, onClose, handleClick }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const hasPermission = (itemRoles: string[]) => {
+    return itemRoles.some(role => userProfile.includes(role));
+  };
 
   return (
     <Drawer
@@ -56,7 +59,7 @@ const Sidebar: React.FC<SidebarProps> = ({ userProfile, isOpen, onClose, handleC
       <Toolbar />
       <List>
         {menuItems
-          .filter(item => item.profiles.includes(userProfile))
+          .filter(item => hasPermission(item.profiles))
           .map((item, index) => (
             <ListItem sx={{ cursor: 'pointer' }} key={index} onClick={handleClick} >
               <ListItemIcon>{item.icon}</ListItemIcon>

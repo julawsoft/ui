@@ -1,5 +1,3 @@
-import { toast } from 'react-toastify';
-
 const timeoutPromise = <T>(
     promise: Promise<T>,
     timeout: number,
