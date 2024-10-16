@@ -1,22 +1,16 @@
 import { useState } from 'react'
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import Login from '../pages/Login'
 import { ROUTES_PATH } from './routePaths'
 import AppLayout from '../components/AppLayout'
 import { routesPermissions } from './routersPermission'
-import { getUserLogged, IUserLogged, setUserLogged } from '../utils/cookies'
+import { getUserLogged, IUserLogged } from '../utils/cookies'
+import useAuthStore from '../context/authStore'
 
 
 export default function Router() {
 
-    setUserLogged({
-        name: '',
-        groups: [],
-        roles: [],
-        accessToken: '',
-        refreshToken: '',
-        isLogged: false
-    })
+    const setUser = useAuthStore((state) => state.setUser)
 
     const ProtectedRoute = ({ isLogged, children }: any) => {
         if (!isLogged) {
@@ -26,6 +20,14 @@ export default function Router() {
     }
 
     const userLogged:IUserLogged = getUserLogged()
+
+    setUser(
+        {
+            ...userLogged,
+            id: '',
+            email: ''
+        }
+      )
 
     const [isDrawerOpen, setDrawerOpen] = useState(true);
 

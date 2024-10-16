@@ -2,12 +2,19 @@ import React, { useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Box, Avatar, Badge, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { LoginService } from '../../services/Login';
+import { setUserLogged } from '../../utils/cookies';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES_PATH } from '../../routes/routePaths';
+import { toast } from 'react-toastify';
 
 interface TopBarProps {
   onDrawerToggle: () => void;
 }
 
 const TopBar: React.FC<TopBarProps> = ({ onDrawerToggle }) => {
+
+  const navigate = useNavigate();
   // Estados para controlar os menus de notificações e perfil de usuário
   const [anchorElNotifications, setAnchorElNotifications] = useState<null | HTMLElement>(null);
   const [anchorElProfile, setAnchorElProfile] = useState<null | HTMLElement>(null);
@@ -29,6 +36,33 @@ const TopBar: React.FC<TopBarProps> = ({ onDrawerToggle }) => {
   const handleProfileClose = () => {
     setAnchorElProfile(null);
   };
+
+
+  const handleProfileSair = async () => {
+    try {
+
+      const response = await LoginService.logout()
+
+      if (response && response.response.statusCode === 200) {
+        setUserLogged({
+          name: '',
+          groups: [''],
+          roles: [''],
+          accessToken: '',
+          refreshToken: '',
+          isLogged: false
+        })
+
+        navigate(ROUTES_PATH.Login)
+
+      } else {
+        toast.error(response.response.message)
+      }
+
+    } catch (err: any) {
+      toast.error(err.message)
+    }
+  }
 
   return (
     <AppBar
@@ -104,7 +138,7 @@ const TopBar: React.FC<TopBarProps> = ({ onDrawerToggle }) => {
           >
             <MenuItem onClick={handleProfileClose}>Profile</MenuItem>
             <MenuItem onClick={handleProfileClose}>My Account</MenuItem>
-            <MenuItem onClick={handleProfileClose}>Logout</MenuItem>
+            <MenuItem onClick={handleProfileSair}>Sair</MenuItem>
           </Menu>
         </Box>
       </Toolbar>

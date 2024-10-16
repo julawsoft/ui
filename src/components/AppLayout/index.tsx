@@ -1,9 +1,8 @@
-// src/components/AppLayout.tsx
 import React from 'react';
 import { Box, CssBaseline, useTheme, useMediaQuery, Toolbar } from '@mui/material';
 import TopBar from '../Topbar/intex';
 import Sidebar from '../Sidebar';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import useAuthStore from '../../context/authStore';
 
 interface AppLayoutProps {
@@ -13,19 +12,20 @@ interface AppLayoutProps {
 }
 
 const AppLayout: React.FC<AppLayoutProps> = ({ userProfile, isDrawerOpen, onDrawerToggle }) => {
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const user = useAuthStore((state) => state.user)
+  const navigate = useNavigate()
 
-  const handleClick = () => {
-    console.log('Menu item clicked');
+
+  const handleClick = (menu: string) => {
+    console.log('Menu item clicked', menu);
+    return navigate(menu);
   };
 
   if (user == null)
     location.href = '/login'
-
-
-  console.log('Menu item', user)
 
   return (
     <>

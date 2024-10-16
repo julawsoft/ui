@@ -12,5 +12,9 @@ export class LoginService {
     static async login(data: ILogin): Promise<any> {
         return await new RequestApi().post(`login`, { data })
     }
+
+    static async logout(): Promise<any> {
+        return await new RequestApi().post(`logout`, { data:' ' })
+    }
     
 }

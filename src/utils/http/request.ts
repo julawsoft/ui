@@ -1,3 +1,5 @@
+import { getUserLogged } from "../cookies";
+
 const timeoutPromise = <T>(
     promise: Promise<T>,
     timeout: number,
@@ -35,11 +37,13 @@ interface IGenericViewResponse<T> {
 type HttpMethods = 'PUT' | 'POST' | 'DELETE' | 'GET';
 
 const getToken = async (): Promise<string> => {
-    return 'access_token';
+    const {accessToken} = getUserLogged()
+    return accessToken;
 };
 
 const getRefreshToken = async (): Promise<string> => {
-    return 'refresh_token';
+    const {refreshToken} = getUserLogged()
+    return refreshToken;
 };
 
 const TIMEOUT = 15;

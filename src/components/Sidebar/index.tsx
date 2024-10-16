@@ -11,13 +11,13 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { Home, Info, Settings, Lock } from "@mui/icons-material";
-import { UserRole } from '../../routes/userRole';
+import { ROUTES_PATH } from '../../routes/routePaths';
 
 interface SidebarProps {
   userProfile: string[];
   isOpen: boolean;
   onClose: () => void;
-  handleClick: () => void;
+  handleClick: (item: string) => void;
 }
 
 
@@ -25,17 +25,19 @@ interface IMenuItem {
     text: string;
     icon: JSX.Element;
     profiles: string[];
+    path: string;
 }
 
 const menuItems: IMenuItem[] = [
-    { text: 'Home', icon: <Home />, profiles: ['admin', 'editor', 'viewer'] },
-    { text: 'About', icon: <Info />, profiles: ['admin', 'editor'] },
-    { text: 'Settings', icon: <Settings />, profiles: ['admin'] },
-    { text: 'Restricted', icon: <Lock />, profiles: ['admin'] },
+    { text: 'Home', icon: <Home />, profiles: ['admin', 'editor', 'viewer'], path: ROUTES_PATH.Home },
+    { text: 'About', icon: <Info />, profiles: ['admin', 'editor'], path: ROUTES_PATH.About },
+    { text: 'Settings', icon: <Settings />, profiles: ['admin'], path: ROUTES_PATH.Settings},
+    { text: 'Restricted', icon: <Lock />, profiles: ['admin'], path: ROUTES_PATH.Restricted },
 ];
 
 
 const Sidebar: React.FC<SidebarProps> = ({ userProfile, isOpen, onClose, handleClick }) => {
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -61,7 +63,7 @@ const Sidebar: React.FC<SidebarProps> = ({ userProfile, isOpen, onClose, handleC
         {menuItems
           .filter(item => hasPermission(item.profiles))
           .map((item, index) => (
-            <ListItem sx={{ cursor: 'pointer' }} key={index} onClick={handleClick} >
+            <ListItem sx={{ cursor: 'pointer' }} key={index} onClick={() => handleClick(item.path)} >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItem>
