@@ -56,7 +56,7 @@ export class RequestApi {
         signal?: AbortSignal,
         headers?: Record<string, string>,
     ): Promise<IGenericViewResponse<T> | null> {
-        try {
+    
             const token = !withRefreshToken ? await getToken() : await getRefreshToken();
 
             const response = await fetch(url, {
@@ -75,18 +75,15 @@ export class RequestApi {
                 signal,
             });
 
+            console.log(" repsonse do request.ts >>> ",response)
+
             const responseData: IGenericViewResponse<T> = await response.json();
 
             if (!response.ok) {
-                toast.error(responseData.response.message);
-                return null;
+                throw new Error(responseData.response.message)
             }
 
             return responseData;
-        } catch (error) {
-            toast.error(String(error));
-            return null;
-        }
     }
 
     static async fetchWithTimeout<T>(
@@ -99,8 +96,6 @@ export class RequestApi {
     ): Promise<IGenericViewResponse<T> | null> {
         const controller = new AbortController();
         const { signal } = controller;
-
-        console.log("here... import.meta.env.VITE_BASE_URI ", import.meta.env.VITE_BASE_URI)
 
         let url = import.meta.env.VITE_BASE_URI
 

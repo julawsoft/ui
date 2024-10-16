@@ -2,11 +2,16 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField, Typography, Container, CssBaseline } from '@mui/material';
 import { LoginService } from '../../services/Login';
-import { setUserLogged } from '../../utils/cookies';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES_PATH } from '../../routes/routePaths';
+// import { setUserLogged } from '../../utils/cookies';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>('admin@appsec.ms');
-  const [password, setPassword] = useState<string>('654321');
+  const [password, setPassword] = useState<string>('123456');
+
+  const navigate = useNavigate()
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -16,10 +21,13 @@ const Login: React.FC = () => {
 
       const response = await LoginService.login({email, password})
 
-      console.log(response)
+      console.log(" >>><<< login app ", response)
 
       if(response && response.statusCode === 200) {
         console.log(">>>> ", response)
+
+        return navigate(ROUTES_PATH.Home)
+
         // setUserLogged({
         //   name: "User de Teste",
         //   groups: ['email', 'password'],
@@ -30,8 +38,9 @@ const Login: React.FC = () => {
         alert("Erro to login")
       }      
     
-    }catch(e){
-      console.log("Erro do login >>><<< ",e)
+    }catch(err: any){
+      console.log(String(err))
+      toast.error(err.message)
     }
 
   };

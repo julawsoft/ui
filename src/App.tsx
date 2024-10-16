@@ -1,18 +1,20 @@
 import { Suspense } from 'react';
-import { 
+import {
   BrowserRouter
 } from 'react-router-dom';
 import Loader from './pages/Loader';
 import Router from './routes/Router';
+import { ToastNotification } from './components/ToastNotification';
 
 function App() {
 
   return (
     <BrowserRouter>
-    <Suspense fallback={<Loader />}>
-      <Router />
-    </Suspense>
-  </BrowserRouter>
+      <ToastNotification />
+      <Suspense fallback={<Loader />}>
+        <Router />
+      </Suspense>
+    </BrowserRouter>
   );
 }
 

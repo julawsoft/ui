@@ -26,7 +26,7 @@ export default function Router() {
 
     const userPermissions = {
         name: "",
-        profile: 'Admin',
+        profile: 'Editor',
         isLogged: true,
     }
 
