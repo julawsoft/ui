@@ -2,17 +2,37 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField, Typography, Container, CssBaseline } from '@mui/material';
 import { LoginService } from '../../services/Login';
+import { setUserLogged } from '../../utils/cookies';
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [email, setEmail] = useState<string>('admin@appsec.ms');
+  const [password, setPassword] = useState<string>('654321');
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     console.log({ email, password });
-    const response = await LoginService.login({email, password})
 
-    console.log(response)
+    try {
+
+      const response = await LoginService.login({email, password})
+
+      console.log(response)
+
+      if(response && response.statusCode === 200) {
+        console.log(">>>> ", response)
+        // setUserLogged({
+        //   name: "User de Teste",
+        //   groups: ['email', 'password'],
+        //   role: ['password']
+        // })
+
+      }else{
+        alert("Erro to login")
+      }      
+    
+    }catch(e){
+      console.log("Erro do login >>><<< ",e)
+    }
 
   };
 
@@ -35,6 +55,7 @@ const Login: React.FC = () => {
             variant="outlined"
             margin="normal"
             required
+            type='email'
             fullWidth
             id="email"
             label="E-mail"

@@ -9,9 +9,8 @@ export class LoginService {
 
     constructor(){}
 
-    static async login(data: ILogin) {
-        const response = await new RequestApi().post(`login`, { data })
-        return response
+    static async login(data: ILogin): Promise<any> {
+        return await new RequestApi().post(`login`, { data })
     }
     
 }
