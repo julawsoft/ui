@@ -6,9 +6,11 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES_PATH } from '../../routes/routePaths';
 import { setUserLogged } from '../../utils/cookies';
+import useAuthStore from '../../context/authStore';
 
 const Login: React.FC = () => {
 
+  const setUser = useAuthStore((state) => state.setUser)
   const [email, setEmail] = useState<string>('user@cetim.ms');
   const [password, setPassword] = useState<string>('654321');
 
@@ -44,6 +46,17 @@ const Login: React.FC = () => {
           accessToken: userResponse.accessToken,
           refreshToken: userResponse.refreshToken,
           isLogged: true
+        })
+
+        setUser({
+          name: `User Logado`,
+          groups: [...groupsMap],
+          roles: [...rolesMap],
+          accessToken: userResponse.accessToken,
+          refreshToken: userResponse.refreshToken,
+          isLogged: true,
+          id: '',
+          email: email
         })
 
         navigate(ROUTES_PATH.Home)

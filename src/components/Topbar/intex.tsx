@@ -62,7 +62,7 @@ const TopBar: React.FC<TopBarProps> = ({ onDrawerToggle }) => {
           email: ''
         })
 
-        location.href = '/'
+        location.href = '/login'
 
       } else {
         toast.error(response.response.message)

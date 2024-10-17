@@ -17,8 +17,19 @@ USER root
 
 RUN rm -rf ./*
 
-RUN chmod 777 -R /var/log/nginx/*.log
+RUN touch /var/log/nginx/app_sec.log
+RUN chown nginx:nginx /var/log/nginx/app_sec.log
+RUN chmod 604 /var/log/nginx/app_sec.log
+
+RUN touch /var/run/nginx.pid
+RUN mkdir -p /var/run/nginx
+RUN chown nginx:nginx /var/run/nginx.pid
+
+RUN chown nginx:nginx /var/run/nginx
+
+USER nginx
 
 COPY --from=builder /home/app/dist .
+
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]

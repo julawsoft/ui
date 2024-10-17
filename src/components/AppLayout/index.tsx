@@ -24,8 +24,10 @@ const AppLayout: React.FC<AppLayoutProps> = ({ userProfile, isDrawerOpen, onDraw
     return navigate(menu);
   };
 
-  if (user == null)
-    location.href = '/login'
+  console.log("here... ", user)
+
+  if (user?.accessToken === null || user?.accessToken === "")
+     return location.href = '/login'
 
   return (
     <>
