@@ -4,18 +4,16 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { LoginService } from '../../services/Login';
 import { setUserLogged } from '../../utils/cookies';
-import { useNavigate } from 'react-router-dom';
-import { ROUTES_PATH } from '../../routes/routePaths';
 import { toast } from 'react-toastify';
+import useAuthStore from '../../context/authStore';
 
 interface TopBarProps {
   onDrawerToggle: () => void;
 }
 
 const TopBar: React.FC<TopBarProps> = ({ onDrawerToggle }) => {
-
-  const navigate = useNavigate();
-  // Estados para controlar os menus de notificações e perfil de usuário
+  
+  const setUser = useAuthStore((state) => state.setUser)
   const [anchorElNotifications, setAnchorElNotifications] = useState<null | HTMLElement>(null);
   const [anchorElProfile, setAnchorElProfile] = useState<null | HTMLElement>(null);
 
@@ -53,7 +51,18 @@ const TopBar: React.FC<TopBarProps> = ({ onDrawerToggle }) => {
           isLogged: false
         })
 
-        navigate(ROUTES_PATH.Login)
+        setUser({
+          name: '',
+          groups: [''],
+          roles: [''],
+          accessToken: '',
+          refreshToken: '',
+          isLogged: false,
+          id: '',
+          email: ''
+        })
+
+        location.href = '/'
 
       } else {
         toast.error(response.response.message)

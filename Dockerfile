@@ -9,11 +9,16 @@ COPY --chown=node:node . .
 RUN npm run build
 
 # Stage Two
-FROM nginx:mainline-alpine3.20-slim AS RUNTIME
+FROM owasp/modsecurity-crs:nginx AS runtime
+
 WORKDIR /usr/share/nginx/html
+
+USER root
+
 RUN rm -rf ./*
-RUN addgroup -S nonroot \
-    && adduser -S nonroot -G nonroot
+
+RUN chmod 777 -R /var/log/nginx/*.log
+
 COPY --from=builder /home/app/dist .
-USER nonroot
+
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
