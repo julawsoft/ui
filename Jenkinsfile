@@ -18,11 +18,6 @@ pipeline {
                 sh 'npm install -f'
             }
         }
-        stage ('Build APPSEC FRONTEND'){
-            steps {
-                sh 'npm run build'
-            }
-        }
         stage('SonarQube Analysis') {
             steps {
                     withSonarQubeEnv('SONARQUBE_SERVER') {
@@ -34,22 +29,12 @@ pipeline {
                     }
             }
         }
-        //stage('Quality Gate') {
-        //    steps {
-        //        timeout(time: 20, unit: 'MINUTES') {
-        //            waitForQualityGate abortPipeline: true
-        //        }
-        //    }
-        //}
-    }
-
-    post {
-        success {
-            echo 'Build and SonarQube analysis completed successfully!'
-        }
-        failure {
-            echo 'Build or SonarQube analysis failed!'
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
         }
     }
-
 }
