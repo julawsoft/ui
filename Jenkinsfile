@@ -20,7 +20,7 @@ pipeline {
         }
         stage ('Build APPSEC FRONTEND'){
             steps {
-                sh 'npm build'
+                sh 'npm run build'
             }
         }
         stage('SonarQube Analysis') {
