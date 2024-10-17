@@ -59,7 +59,9 @@ const Login: React.FC = () => {
           email: email
         })
 
-        navigate(ROUTES_PATH.Home)
+        setTimeout(() => {
+          navigate(ROUTES_PATH.Home)
+        }, 1000)
 
       } else {
         toast.error(response.response.message)

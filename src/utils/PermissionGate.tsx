@@ -11,6 +11,8 @@ function PermissionGate({ children, roles }: IPermissionGate) {
 
   console.log(`PermissionGate`, user)
 
+  if(!user) return null   
+
   const permissionGate = () => {
     if (roles.some((role) => user?.roles.includes(role))) {
       return children

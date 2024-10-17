@@ -12,13 +12,8 @@ export default function Router() {
 
     const setUser = useAuthStore((state) => state.setUser)
 
-    const ProtectedRoute = ({ isLogged, children }: any) => {
-        if (!isLogged) {
-            return <Navigate to={ROUTES_PATH.Login} replace />
-        }
-        return children
-    }
     const userLogged: IUserLogged = getUserLogged()
+
     setUser(
         {
             ...userLogged,
@@ -26,6 +21,14 @@ export default function Router() {
             email: ''
         }
     )
+
+    const ProtectedRoute = ({ isLogged, children }: any) => {
+        if (!isLogged) {
+            return <Navigate to={ROUTES_PATH.Login} replace />
+        }
+        return children
+    }
+
     const [isDrawerOpen, setDrawerOpen] = useState(true);
 
     const handleDrawerToggle = () => {
