@@ -17,6 +17,7 @@ services:
       #- ./nginx/modsec/rules/rules:/etc/nginx/modsec/rules
       #- ./nginx/modsec/rules:/etc/modsecurity/crs
       - ./ssl:/etc/ssl/certs:ro
+      #- ./logs:/var/log/nginx:rw    
     ports:
       - "80:80"
       - "443:443"

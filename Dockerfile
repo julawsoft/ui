@@ -18,8 +18,9 @@ USER root
 RUN rm -rf ./*
 
 RUN touch /var/log/nginx/app_sec.log
-RUN chown nginx:nginx /var/log/nginx/app_sec.log
-RUN chmod 604 /var/log/nginx/app_sec.log
+RUN chown -R nginx:nginx /var/log/nginx/*.log
+RUN chmod 755  /var/log/nginx/*.log
+
 
 RUN touch /var/run/nginx.pid
 RUN mkdir -p /var/run/nginx
