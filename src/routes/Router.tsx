@@ -18,17 +18,14 @@ export default function Router() {
         }
         return children
     }
-
-    const userLogged:IUserLogged = getUserLogged()
-
+    const userLogged: IUserLogged = getUserLogged()
     setUser(
         {
             ...userLogged,
             id: '',
             email: ''
         }
-      )
-
+    )
     const [isDrawerOpen, setDrawerOpen] = useState(true);
 
     const handleDrawerToggle = () => {
@@ -36,7 +33,10 @@ export default function Router() {
     };
 
     const hasPermission = (itemRoles: string[]) => {
-        return itemRoles.some(role => userLogged.groups.includes(role));
+        if (itemRoles)
+            return itemRoles.some(role => userLogged.groups.includes(role));
+        else
+            return false;
     };
 
     return (

@@ -18,17 +18,13 @@ const AppLayout: React.FC<AppLayoutProps> = ({ userProfile, isDrawerOpen, onDraw
   const user = useAuthStore((state) => state.user)
   const navigate = useNavigate()
 
-
   const handleClick = (menu: string) => {
-    console.log('Menu item clicked', menu);
     return navigate(menu);
   };
 
-  console.log("here... ", user)
-
-  if (user?.accessToken === null || user?.accessToken === "")
-     return location.href = '/login'
-
+  if (user?.accessToken === "" || user?.accessToken === undefined)
+    location.href = '/login'
+  
   return (
     <>
       {user && user.isLogged ?
