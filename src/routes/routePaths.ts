@@ -5,5 +5,6 @@ export const ROUTES_PATH = {
     About: '/about',
     Settings: '/settings',
     Restricted: '/Restricted',
+    CreateDocument: '/CreateDocument',
 }
   

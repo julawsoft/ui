@@ -6,12 +6,11 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import useAuthStore from '../../context/authStore';
 
 interface AppLayoutProps {
-  userProfile: string[];
   isDrawerOpen: boolean;
   onDrawerToggle: () => void;
 }
 
-const AppLayout: React.FC<AppLayoutProps> = ({ userProfile, isDrawerOpen, onDrawerToggle }) => {
+const AppLayout: React.FC<AppLayoutProps> = ({ isDrawerOpen, onDrawerToggle }) => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -32,7 +31,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ userProfile, isDrawerOpen, onDraw
           <Box sx={{ display: 'flex' }}>
             <CssBaseline />
             <TopBar onDrawerToggle={onDrawerToggle} />
-            <Sidebar userProfile={userProfile} isOpen={isDrawerOpen} onClose={onDrawerToggle} handleClick={handleClick} />
+            <Sidebar isOpen={isDrawerOpen} onClose={onDrawerToggle} handleClick={handleClick} />
             <Box
               component="main"
               sx={{

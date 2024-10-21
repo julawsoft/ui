@@ -6,14 +6,12 @@ import AppLayout from '../components/AppLayout'
 import { routesPermissions } from './routersPermission'
 import { getUserLogged, IUserLogged } from '../utils/cookies'
 import useAuthStore from '../context/authStore'
-
+import NotFound from '../pages/NotFound'
 
 export default function Router() {
 
     const setUser = useAuthStore((state) => state.setUser)
-
     const userLogged: IUserLogged = getUserLogged()
-
     setUser(
         {
             ...userLogged,
@@ -30,7 +28,6 @@ export default function Router() {
     }
 
     const [isDrawerOpen, setDrawerOpen] = useState(true);
-
     const handleDrawerToggle = () => {
         setDrawerOpen(prev => !prev);
     };
@@ -48,7 +45,7 @@ export default function Router() {
                 path="/"
                 element={
                     <ProtectedRoute isLogged={userLogged !== undefined}>
-                        <AppLayout userProfile={userLogged.groups} isDrawerOpen={isDrawerOpen} onDrawerToggle={handleDrawerToggle} />
+                        <AppLayout isDrawerOpen={isDrawerOpen} onDrawerToggle={handleDrawerToggle} />
                     </ProtectedRoute>
                 }>
 
@@ -73,6 +70,7 @@ export default function Router() {
 
             </Route>
             <Route path={ROUTES_PATH.Login} element={<Login />} />
+            <Route path="/*" element={<NotFound />} />
         </Routes>
     )
 }

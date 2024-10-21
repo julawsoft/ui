@@ -12,9 +12,9 @@ import {
 } from '@mui/material';
 import { Home, Info, Settings, Lock } from "@mui/icons-material";
 import { ROUTES_PATH } from '../../routes/routePaths';
+import useAuthStore from '../../context/authStore';
 
 interface SidebarProps {
-  userProfile: string[];
   isOpen: boolean;
   onClose: () => void;
   handleClick: (item: string) => void;
@@ -36,13 +36,14 @@ const menuItems: IMenuItem[] = [
 ];
 
 
-const Sidebar: React.FC<SidebarProps> = ({ userProfile, isOpen, onClose, handleClick }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, handleClick }) => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const user = useAuthStore((state) => state.user)
 
   const hasPermission = (itemRoles: string[]) => {
-    return itemRoles.some(role => userProfile.includes(role));
+    return itemRoles.some(role => user?.groups.includes(role));
   };
 
   return (

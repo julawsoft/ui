@@ -94,7 +94,7 @@ const TopBar: React.FC<TopBarProps> = ({ onDrawerToggle }) => {
 
         {/* Título do Aplicativo */}
         <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-          My App
+          APP SEC
         </Typography>
 
         {/* Notificações e Perfil de Usuário */}

@@ -1,4 +1,5 @@
 import { getUserLogged } from "../cookies";
+import { logOutAppSec } from "./helpers";
 
 const timeoutPromise = <T>(
     promise: Promise<T>,
@@ -77,15 +78,20 @@ export class RequestApi {
                 signal,
             });
 
-            console.log(" repsonse do request.ts >>> ",response)
+            console.log(" repsonse do request.ts >>> ", response)
 
             const responseData: IGenericViewResponse<T> = await response.json();
 
             if (!response.ok) {
+                if(responseData.response.message.toString().includes("Token expirado")){
+                    console.log("Token expirado")
+                    await logOutAppSec(responseData.response.message)
+                    console.log("Token expirado depois ... ")
+                    return null
+                }
                 throw new Error(responseData.response.message)
             }
-
-            return responseData;
+        return responseData;
     }
 
     static async fetchWithTimeout<T>(

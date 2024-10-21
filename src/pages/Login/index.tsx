@@ -1,12 +1,14 @@
 // Login.tsx
 import React, { useEffect, useState } from 'react';
-import { Box, Button, TextField, Typography, Container, CssBaseline } from '@mui/material';
+import { Box, Button, TextField, Typography, Container, CssBaseline, CardMedia } from '@mui/material';
 import { LoginService } from '../../services/Login';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES_PATH } from '../../routes/routePaths';
 import { setUserLogged } from '../../utils/cookies';
 import useAuthStore from '../../context/authStore';
+
+import logo from '../../assets/images/logo.png';
 
 const Login: React.FC = () => {
 
@@ -35,12 +37,13 @@ const Login: React.FC = () => {
       const response = await LoginService.login({ email, password })
 
       if (response && response.response.statusCode === 200) {
+
         const userResponse = response.data
-        let groupsMap = userResponse.userInfo.groups.map((group: string) => group.replace('/', ''))
-        let rolesMap = userResponse.roles.map((role: any) => role.name)
+        let groupsMap =  userResponse.userInfo.groups ? userResponse.userInfo.groups.map((group: string) => group.replace('/', '')) : []
+        let rolesMap = userResponse.roles ? userResponse.roles.map((role: any) => role.name) : []
 
         setUserLogged({
-          name: `User Logado`,
+          name: userResponse.userInfo.name,
           groups: [...groupsMap],
           roles: [...rolesMap],
           accessToken: userResponse.accessToken,
@@ -49,14 +52,14 @@ const Login: React.FC = () => {
         })
 
         setUser({
-          name: `User Logado`,
+          name: userResponse.userInfo.name,
           groups: [...groupsMap],
           roles: [...rolesMap],
           accessToken: userResponse.accessToken,
           refreshToken: userResponse.refreshToken,
           isLogged: true,
           id: '',
-          email: email
+          email: userResponse.userInfo.email
         })
 
         setTimeout(() => {
@@ -84,7 +87,15 @@ const Login: React.FC = () => {
           alignItems: 'center',
         }}
       >
-        <Typography component="h1" variant="h5">
+      
+        <CardMedia
+          component="img"
+          height="140"
+          image={logo}
+          alt="Logo AppSec"
+        />
+
+        <Typography component="h1" variant="h5" mt={10}>
           Login
         </Typography>
         <Box component="form" onSubmit={handleLogin} sx={{ mt: 1 }}>
