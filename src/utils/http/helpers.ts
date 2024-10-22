@@ -1,9 +1,6 @@
 import { toast } from "react-toastify";
 import { LoginService } from "../../services/Login";
 import { setUserLogged } from "../cookies";
-import useAuthStore from "../../context/authStore";
-
-
 
 export function makeResponseHTTPRequest(error: string) {
     switch (error) {
