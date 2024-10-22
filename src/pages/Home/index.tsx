@@ -1,6 +1,6 @@
 // src/pages/Home.tsx
 import React, { useEffect, useState } from 'react';
-import { Button, LinearProgress, Typography } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, LinearProgress, Typography } from '@mui/material';
 import useAuthStore from '../../context/authStore';
 import { DocumentsService, IDocuments } from '../../services/Documents';
 import { toast } from 'react-toastify';
@@ -9,10 +9,13 @@ import PermissionGate from '../../utils/PermissionGate';
 import { AppRoles } from '../../routes/AppRoles';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES_PATH } from '../../routes/routePaths';
+import { previewAttachments } from '../../utils/preview_attach';
 
 const Home: React.FC = () => {
 
   const user = useAuthStore((state) => state.user)
+  const [open, setOpen] = useState(false);
+  const [pathAttachPreview, setPathAttachPreview] = useState('');
   const [documents, setDocuments] = useState<IDocuments[]>()
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const navigate = useNavigate()
@@ -37,6 +40,23 @@ const Home: React.FC = () => {
   const handleCreateDocument = () => {
     return navigate(ROUTES_PATH.CreateDocument);
   };
+
+  const handleEdit = (id: number | undefined) => {
+    console.log('handleEdit' , id)
+  }
+  const handleDelete = (id: number | undefined) => {
+    console.log('handleDelete', id)
+  }
+  const handleView = (attach: string) => {
+
+    let url = previewAttachments(attach)
+    setPathAttachPreview(url)
+    setOpen(true)
+    console.log('handleView', attach)
+
+  }
+
+  const handleClose = () =>  setOpen(false);
 
   return (
     <><div >
@@ -64,13 +84,40 @@ const Home: React.FC = () => {
               <hr />
               {
                 documents ?
-                  <PaginatedTable key={1} data={documents} />
+                  <PaginatedTable
+                  handleEdit={handleEdit}
+                  handleDelete={handleDelete}
+                  handleView={handleView}
+                  key={1} 
+                  data={documents} />
                   : null
               }
             </>
         }
+      
+      </div>
+      <Dialog open={open} onClose={handleClose}  
+       maxWidth="lg" // Define a largura máxima como 'large'
+      fullWidth
 
-      </div></>
+      PaperProps={{
+        sx: { height: "80%" }, // Largura de 80% e altura máxima de 90%
+      }}
+       
+        >
+        <DialogTitle>Preview do Documento Anexado</DialogTitle>
+        <DialogContent>
+          {
+            pathAttachPreview && <iframe src={pathAttachPreview} width="100%" height={'100%'} ></iframe>
+          }
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Fechar
+          </Button>
+        </DialogActions>
+      </Dialog>
+      </>
   );
 };
 

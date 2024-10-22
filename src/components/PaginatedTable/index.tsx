@@ -10,12 +10,15 @@ import { AppRoles } from '../../routes/AppRoles';
 
 interface IPaginatedTable {
     data: IDocuments[];
+    handleEdit: (id: number | undefined) => void 
+    handleDelete: (id: number | undefined) => void 
+    handleView: (id: string) => void 
 }
 
-const PaginatedTable = ({ data }: IPaginatedTable) => {
+const PaginatedTable = ({ data, handleEdit, handleDelete, handleView  }: IPaginatedTable) => {
 
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(2);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const handleChangePage = (event: unknown, newPage: number) => {
         console.log(event)
@@ -26,9 +29,6 @@ const PaginatedTable = ({ data }: IPaginatedTable) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
-
-    const handleEdit = (id: number) => console.log("handleEdit", id);
-    const handleDelete = (id: number) => console.log("handleDelete", id);
 
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -55,7 +55,7 @@ const PaginatedTable = ({ data }: IPaginatedTable) => {
                                             <Button
                                                 variant="outlined"
                                                 color="primary"
-                                                onClick={() => handleEdit(row.id)}
+                                                onClick={() => handleView(row.attach)}
                                                 sx={{ marginRight: 1 }}
                                             >
                                                 Ver

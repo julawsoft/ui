@@ -56,11 +56,11 @@ const CreateDocument: React.FC = () => {
         "attach": formData?.file
       })
 
-      if(response && response.statusCode === 201){
-        toast.success(response.response.message)
+      if(response && response.response.statusCode === 201){
         setTimeout(() => {
           navigate(ROUTES_PATH.Home)
-        },1000)
+        }, 1000)
+        toast.success(response.response.message)
       }else{
         toast.warn(response.response.message)
       }

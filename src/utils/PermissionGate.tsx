@@ -9,8 +9,6 @@ interface IPermissionGate {
 function PermissionGate({ children, roles }: IPermissionGate) {
   const user = useAuthStore((state) => state.user)
 
-  console.log(`PermissionGate`, user)
-
   if(!user) return null   
 
   const permissionGate = () => {
