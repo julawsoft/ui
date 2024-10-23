@@ -252,20 +252,31 @@ class BaseComponent extends BehaviorComponent {
         /**
          * Bind (for loop)
          */
-        const re = /(\(forEach\))\=\"(\w*){0,}\"/gi;
+        const extremRe = /[\n \r \< \$ \( \) \. \- \s A-Za-z \= \"]{0,}/.source;
+        const matchForEach = /(\(forEach\))\=\"(\w*){0,}\"/.source;
+        const forEach = '(forEach)="';
+
+        const re = new RegExp(extremRe + matchForEach + extremRe, 'gi');
         let cmd = this.getClassPath();
 
         template = template.replace(re, (mt) => {
-
             let ds = '';
-            if (mt.indexOf('(forEach)="') >= 0) {
-                ds = mt.split('"')[1];
+            const loopPos = mt.indexOf(forEach);
+            if (loopPos >= 0) {
+                ds = mt.substr(loopPos).split('"')[1].trim();
             }
 
-            return `class="listenChangeOn-${this.getProperInstanceName()}-${ds}"`;
+            let subscriptionCls = '';
+            if (mt.indexOf(`class="`) >= 0)
+                mt = mt.replace(`class="`, `class="listenChangeOn-${this.getProperInstanceName()}-${ds} `);
+            else
+                subscriptionCls = `class="listenChangeOn-${this.getProperInstanceName()}-${ds}" `;
 
-        })
-            .replaceAll('each="item"', 'style="display:none;"');
+            mt = mt.replace(`(forEach)="${ds}"`, subscriptionCls);
+
+            return mt;
+
+        }).replaceAll('each="item"', 'style="display:none;"');
 
         return template;
     }
@@ -310,16 +321,25 @@ class BaseComponent extends BehaviorComponent {
                 })
             }
         });
-    } constru
+    }
 
     getBoundOnChange(template) {
-        const re = /(class=\"[A-Za-z1-9\-{0,}\s{0,}]{0,}\"){0,}\s?\(change\)\=\"(\w*)\([\_\$A-Za-z0-9]{0,}\)\"\s?(class=\"[A-Za-z1-9\-{0,}\s{0,}]{0,}\"){0,}/gi
-        const reMethod = /\(change\)\=\"(\w*)\([\_\$A-Za-z0-9]{0,}\)\"/gi
+
+        const extremRe = /[\n \r \( \) A-Za-z0-9 \- \s \" \=]{0,}/.source;
+        const mathIfChangeEvt = /\(change\)\=\"(\w*)\([\_\$A-Za-z0-9]{0,}\)\"/;
+        const matchChange = '(change)="';
+
+        const re = new RegExp(extremRe + mathIfChangeEvt.source + /\s?/.source + extremRe, 'gi');
+
         template = template.replace(re, (mtch) => {
 
+            const changePos = mtch.indexOf(matchChange) + matchChange.length;
+            const changeEvt = mtch.substr(changePos).split(')')[0] + ')';
+
             if (mtch.length > 0) {
+
                 const _className = ` onChange_${Math.random().toString().substring(2)}`;
-                this.onChangeEventsList.push({ evt: mtch.trim(), _className: _className.trim() });
+                this.onChangeEventsList.push({ evt: `(change)="${changeEvt}"`, _className: _className.trim() });
                 if (mtch.indexOf('class="') >= 0) {
                     mtch = mtch
                         .replace(`class="`, `class="${_className} `);
@@ -327,7 +347,8 @@ class BaseComponent extends BehaviorComponent {
                     mtch += `class="${_className.trim()} " `;
                 }
             }
-            return mtch.replace(reMethod, '');
+            mtch = mtch.replace(mathIfChangeEvt, '');
+            return mtch;
         });
         return template;
 
@@ -342,9 +363,19 @@ class BaseComponent extends BehaviorComponent {
 
             const emptyField = '';
             const clsPath = this.getClassPath();
-            const valueBindRE = /(class=\"[A-Za-z1-9\-{0,}\s{0,}]{0,}\"){0,}\s?\(value\)\=\"\w*\"\s?(class=\"[A-Za-z1-9\-{0,}\s{0,}]{0,}\"){0,}/gi;
+
+            const extremRe = /[\n \r \< \$ \( \) \- \s A-Za-z \= \"]{0,}/.source;
+            const matchValueBind = /\(value\)\=\"\w*\"\s?/.source;
+            const matchForEachRE = '(forEach)=\"';
+            const valueBindRE = new RegExp(extremRe + matchValueBind + extremRe, "gi");
 
             template = template.replace(valueBindRE, (mt) => {
+
+                const isThereComboBox = mt.indexOf('select') >= 0;
+                const matchForEach = mt.indexOf(matchForEachRE);
+                let forEachValue = '';
+                if (matchForEach >= 0)
+                    forEachValue = mt.substr(matchForEach, mt.indexOf('"'));
 
                 if (mt.length > 0) {
 
@@ -356,15 +387,17 @@ class BaseComponent extends BehaviorComponent {
                         val = this[field];
 
                     let subscriptionCls = '';
+                    let comboSuffix = isThereComboBox ? '-combobox' : '';
                     if (mt.indexOf(`class="`) >= 0)
-                        mt = mt.replace(`class="`, `class="listenChangeOn-${this.getProperInstanceName()}-${field} `);
+                        mt = mt.replace(`class="`, `class="listenChangeOn-${this.getProperInstanceName()}-${field}${comboSuffix} `);
                     else
-                        subscriptionCls = `class="listenChangeOn-${this.getProperInstanceName()}-${field}" `;
+                        subscriptionCls = `class="listenChangeOn-${this.getProperInstanceName()}-${field}${comboSuffix}" `;
 
-                    mt = mt.replace(
-                        `(value)="${field}"`,
-                        `value="${val}" ${subscriptionCls} onkeyup="${clsPath}.onValueInput('${field}',this.value)"`
-                    );
+                    let replacer = `${subscriptionCls} `;
+                    if (!(isThereComboBox))
+                        replacer = `${forEachValue} value="${val}" ${subscriptionCls} onkeyup="${clsPath}.onValueInput('${field}',this.value)"`;
+
+                    mt = mt.replace(`(value)="${field}"`, replacer);
                 }
                 return mt;
             });
@@ -500,13 +533,13 @@ class BaseComponent extends BehaviorComponent {
 
     getUUID() {
         if (!this.cmpInternalId)
-            this.cmpInternalId = '_cmp' + crypto.randomUUID();
+            this.cmpInternalId = '_cmp' + Math.random().toString().split('.')[1];
         return this.cmpInternalId;
     }
 
     getCmpId() {
         if (!this.componentId)
-            this.cmpInternalId = crypto.randomUUID();
+            this.cmpInternalId = Math.random().toString().split('.')[1];
         return this.cmpInternalId;
     }
 
@@ -645,7 +678,7 @@ class BaseComponent extends BehaviorComponent {
                 props[prop] = val;
             });
 
-            const [cmpId, cmp] = [`st_${crypto.randomUUID()}`, eval(`new ${cmpName}()`)];
+            const [cmpId, cmp] = [`st_${Math.random().toString().split('.')[1]}`, eval(`new ${cmpName}()`)];
             cmp.dynCmpGeneratedId = cmpId;
             cmp.cmpInternalId = `dynamic-${cmp.getUUID()}${cmpName}`;
             cmp.stillElement = true;

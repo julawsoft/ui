@@ -25,7 +25,7 @@ class ClientsGrid extends ViewComponent {
             component="TabulatorComponent"
             proxy="dataTable"
             tableHeader="parent.dataTableLabels"
-            (onEditColumn)="editRow(fieldName, data)"
+            (onEditColumn)="getClientDetails(fieldName, data)"
             (onDeleteRow)="deleteRow(fieldName, data)"
             (onCellClick)="cellClick(row, col, data)"
             >
@@ -119,13 +119,13 @@ class ClientsGrid extends ViewComponent {
          */
         const data = [
             {
-                id: crypto.randomUUID(),
+                id: Math.random().toString().split('.')[1],
                 calendarId: 'entrevista',
                 title: 'Descrição do meu novo evento',
                 start, end
             }, // EventObject
             {
-                id: crypto.randomUUID(),
+                id: Math.random().toString().split('.')[1],
                 calendarId: 'visita',
                 title: 'Estive numa visita ao escritorio do cliente para discutir',
                 start: start1,
@@ -217,9 +217,9 @@ class ClientsGrid extends ViewComponent {
             updated_at,
         }
 
-        /* Router.goto('ClientForm', {
+        Router.goto('ClientForm', {
             data
-        }); */
+        });
 
     }
 
