@@ -38,6 +38,21 @@ class ProcessoDetalhes extends ViewComponent {
     listEquipas;
     listClientes;
 
+
+    htmlRefId = 'honorarioDataTable';
+    dataSource;
+    /** @type { TabulatorComponent } */
+    dataTable = Proxy;
+    dataTableLabels = Prop(JSON.stringify([
+        { title: "Nome do Item", field: "denominacao", sorter: "string" },
+        { title: "Montante", field: "montante", hozAlign:"right", sorter: "number" },
+        
+    ]));
+
+
+    /** @type { HonorarioComponent } */
+    honorarioProxy = Proxy;
+
     template = `<section class="content">
     <div class="block-header">
       <div class="row">
@@ -130,6 +145,9 @@ class ProcessoDetalhes extends ViewComponent {
               </li>
               <li role="presentation">
                 <a href="#anexos" data-toggle="tab">Anexos</a>
+              </li>
+              <li role="presentation">
+                <a href="#honorario" data-toggle="tab">Honorario</a>
               </li>
             </ul>
             <!-- Tab panes -->
@@ -477,6 +495,21 @@ class ProcessoDetalhes extends ViewComponent {
               </tbody>
             </table>
           </div>
+  
+  
+        </div>
+
+        <div role="tabpanel" class="tab-pane fade" id="honorario">
+
+        <st-element
+            component="HonorarioComponent"
+            proxy="honorarioProxy"
+            (onEventUpdateModoPagamento)="updateModoPagamento()"
+            cancelLabel="Cancelar"
+            saveLabel="Gerar Honorario"
+            (onEventUpdateColaboradores)="updateColaboradores()"
+            >
+        </st-element>
   
   
         </div>
