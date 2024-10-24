@@ -118,7 +118,8 @@ class TabulatorComponent extends ViewComponent {
             }
 
             if (clickedCol == 'tabulatorDelColumn') {
-                return this.onDeleteRow(clickedCol, rowData);
+                const clickedRow = cell.getRow()._row.position;
+                return this.onDeleteRow(clickedRow, clickedCol, rowData);
             }
 
             const clickedRow = cell.getRow()._row.position;
@@ -134,6 +135,17 @@ class TabulatorComponent extends ViewComponent {
 
     clearTable() {
         alert(`Clearing table data`);
+    }
+
+    addNewRow(row) {
+        console.log(this.table.getData());
+        this.table.addRow(row);
+    }
+
+    insertNewRow(row) {
+        const data = this.table.getData();
+        data.push(row);
+        this.table.setData(data);
     }
 
     parseDeleteRowColumn(fieldList) {
@@ -198,7 +210,7 @@ class TabulatorComponent extends ViewComponent {
      * @type {{componentEvent: true}} 
      * @returns { boolean } 
      * */
-    onDeleteRow(fieldName, data) { }
+    onDeleteRow(row, fieldName, data) { }
 
     /**
      * Method signature for parent to call as event
