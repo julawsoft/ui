@@ -6,8 +6,21 @@ class TabulatorComponent extends ViewComponent {
                 <div (click)="myEvent()">Menu 1</div>
             </section>
             <div>
-                <div class="this-is-me" id="@dynCmpGeneratedId"></div>
+                <div id="@dynCmpGeneratedId"></div>
             </div>
+
+            <style>
+                .tabulator-paginator{
+                    display: flex;
+                    align-items: center;
+                    justify-content: right;
+                }
+
+                .tabulator-page-size{
+                    width: 65px;
+                }
+            </style>
+
         </div>
     `;
 
@@ -19,6 +32,9 @@ class TabulatorComponent extends ViewComponent {
     deleteColMetadata = Prop;
     /** @type { Array<{ pos, icon }> } */
     editColMetadata = Prop;
+    paginate = Prop(false);
+    pageSizeSelector = Prop(null);
+    pageSize = Prop(null);
 
     async load() {
 
@@ -28,21 +44,70 @@ class TabulatorComponent extends ViewComponent {
 
         let dataSource = [{}];
         this.table = new Tabulator(`#${this.dynCmpGeneratedId}`, {
-            height: "311px",
             layout: "fitColumns",
             reactiveData: true, //turn on data reactivity
             data: dataSource, //load data into table,
             movableColumns: true,
             columns: fields,
+            ...this.#getPaginationSetting()
         });
 
-        const table = this.table;
+        setTimeout(() => {
+            if (this.paginate) this.table.setLocale('pt-pt');
+        })
+        this.#handleClickEvent();
+        this.#handleDataSourceChange();
 
-        this.dataSource.onChange((value) => {
-            //dataSource.push(...value); //Insert new line in the table
-            table.setData(value);
-        });
+    }
 
+    #getPaginationSetting() {
+        if (this.paginate) {
+            const paginationSizeSelector = this.pageSizeSelector
+                ? this.pageSizeSelector
+                : [10, 20];
+            const paginationSize = this.pageSize
+                ? this.pageSize
+                : paginationSizeSelector[0];
+            return {
+                pagination: 'local',
+                paginationCounter: 'rows',
+                paginationSizeSelector,
+                paginationSize,
+                locale: true,
+                ...this.#paginationLabels(),
+            }
+        }
+        return {};
+    }
+
+    #paginationLabels() {
+        return {
+            langs: {
+                "pt-pt": {
+                    "pagination": {
+                        first: "Primeira", //text for the first page button
+                        first_title: "Primeira Página", //tooltip text for the first page button
+                        last: "Última",
+                        last_title: "Última Página",
+                        prev: "Anterior",
+                        prev_title: "Página Anterior",
+                        next: "Próxima",
+                        next_title: "Próxima  Página",
+                        all: "Tudo",
+                        page_size: "Total registos",
+                        counter: {
+                            "showing": "Vendo",
+                            "of": "de",
+                            "rows": "registos",
+                            "pages": "páginas",
+                        }
+                    },
+                }
+            }
+        }
+    }
+
+    #handleClickEvent() {
         this.table.on('cellClick', (e, cell) => {
 
             const clickedCol = cell.getField();
@@ -60,6 +125,11 @@ class TabulatorComponent extends ViewComponent {
             this.onCellClick(clickedRow, clickedCol, rowData);
 
         });
+    }
+
+    #handleDataSourceChange() {
+        const table = this.table;
+        this.dataSource.onChange((value) => table.setData(value));
     }
 
     clearTable() {
