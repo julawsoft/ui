@@ -24,6 +24,8 @@ class ClientsGrid extends ViewComponent {
         <st-element
             component="TabulatorComponent"
             proxy="dataTable"
+            paginate="true"
+            pageSize="5"
             tableHeader="parent.dataTableLabels"
             (onEditColumn)="getClientDetails(fieldName, data)"
             (onDeleteRow)="deleteRow(fieldName, data)"
