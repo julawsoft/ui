@@ -214,6 +214,7 @@ class ClientForm extends ViewComponent {
     constructor() {
         super();
 
+        this.routingData = Router.data('ClientForm');
         this.setup({
             includs: [
                 /* ClientsGrid */
@@ -232,9 +233,9 @@ class ClientForm extends ViewComponent {
 
     onRender() {
         this.showLoading();
-        loadWizard({ enableAllSteps: this.routingData ? true : false });
+        loadWizard({ enableAllSteps: Router.data('ClientForm') ? true : false });
         /** Initializing Tinemce text editor */
-        tinymce.init({
+        /* tinymce.init({
             selector: 'textarea#tinymce1',
             theme: "modern",
             height: 300,
@@ -245,7 +246,7 @@ class ClientForm extends ViewComponent {
                 'emoticons template paste textcolor colorpicker textpattern imagetools'
             ],
 
-        });
+        }); */
     }
 
 
