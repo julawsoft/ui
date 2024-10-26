@@ -57,10 +57,11 @@ class Template {
             Template.instance[clsName]['authn'] = null;
         }
         Template.instance[clsName]['authn'] = value;
+        return this;
     }
 
     isAuthN() {
-        return Template.instance[this.constructor.name]['authn'];
+        return 'authn' in Template.instance[this.constructor.name];
     }
 
     unloadApp() {
@@ -69,4 +70,7 @@ class Template {
         window.location.reload();
     }
 
+    getAuthN() {
+        return Template.instance[this.constructor.name]['authn'];
+    }
 }
