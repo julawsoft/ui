@@ -541,7 +541,7 @@ class ProcessoDetalhes extends ViewComponent {
                                         <i class="material-icons">person</i> Equipas
                                     </span>
                                     <select (change)="updateEquipasProcesso($event)" (forEach)="listEquipas">
-                                        <option each="item" value="">Selecione uma opção</option>
+                                        <option each="item" value="">Selecione um Advogado</option>
                                         <option each="item" value="{item.id}">{item.descricao}</option>
                                     </select>
                                 </div>
@@ -828,7 +828,6 @@ class ProcessoDetalhes extends ViewComponent {
 
   stAfterInit(val) {
 
-
     const routeData = Router.data("ProcessoDetalhes");
 
     this.getDetalhesProcesso(routeData) 
@@ -836,20 +835,15 @@ class ProcessoDetalhes extends ViewComponent {
     document.getElementById('inputUploadAnexo').addEventListener('change', function (event) {
       const file = event.target.files[0];
 
-
       if (file) {
         const reader = new FileReader();
 
         reader.onload = function (e) {
           const base64String = e.target.result;
-          console.log("base64 addEventListener >>>> ", base64String)
           this.inputAnexoFile = base64String;
 
           document.getElementById('inputUploadAnexoHidden').src = base64String;
 
-          setTimeout(() => {
-            console.log("base64 addEventListener >>>> set timeout ", this.inputAnexoFile.toString().substring(0, 20))
-          }, 3000)
           // const imagePreview = document.getElementById('imagePreview');
           // imagePreview.src = base64String;  // Exibe a imagem
         };
@@ -860,7 +854,6 @@ class ProcessoDetalhes extends ViewComponent {
   }
 
   populateAttributes(data) {
-
 
     this.id = data.id ? data.id : "";
     this.estado = data.estado ? data.estado : "";
@@ -875,10 +868,10 @@ class ProcessoDetalhes extends ViewComponent {
     this.clienteId = data.cliente_id ? data.cliente_id : "";
     this.gestorId = data.gestor_id ? data.gestor_id : "";
     this.contraParte = data.contra_parte ? data.contra_parte : "";
-    this.dataRegisto = data.data_registo ? data.data_registo : "";
-    this.dataSuspensao = data.data_suspensao ? data.data_suspensao : "";
+    this.dataRegisto = data.data_registo ? new Date(data.data_registo).toLocaleDateString("PT") : "";
+    this.dataSuspensao = data.data_suspensao ? new Date(data.data_suspensao).toLocaleDateString("PT")  : "";
     this.dataEncerramento = data.data_encerramento
-      ? data.data_encerramento
+      ? new Date(data.data_encerramento).toLocaleDateString("PT")
       : "";
 
     this.metodologia = data.metodologia ? data.metodologia : "";
@@ -922,21 +915,22 @@ class ProcessoDetalhes extends ViewComponent {
     this.setValueById('input_cliente', this.cliente.value)
     this.setValueById('input_gestor', this.gestor.value)
 
-    console.log("->>>>>>>>>>>>>>---", data.anexos);
-
     /** populate table Proxy Components */
-    this.dataTableListProcessosEquipas.dataSource = data.equipas;
-    this.dataTableListProcessosTarefas.dataSource = data.tarefas;
-    this.dataTableListProcessosPrecedentes.dataSource = data.precedentes;
+    if(data.equipas)
+      this.dataTableListProcessosEquipas.dataSource = data.equipas;
 
+    if(data.tarefas)
+      this.dataTableListProcessosTarefas.dataSource = data.tarefas;
 
+    if(data.precedentes)
+      this.dataTableListProcessosPrecedentes.dataSource = data.precedentes;
 
-    this.dataTableListProcessosAnexos.dataSource = data.anexos;
+    if(data.anexos)
+      this.dataTableListProcessosAnexos.dataSource = data.anexos;
 
   }
 
   editResourcesProcesso(inputId) {
-    console.log("editResourcesProcesso >>> ", inputId)
     this.toggleEditarInputArea(inputId)
   }
 
@@ -955,8 +949,6 @@ class ProcessoDetalhes extends ViewComponent {
 
   saveResourcesProcesso(id) {
     let elm = document.getElementById(id)
-
-    console.log("o elemento", elm)
 
     if (elm.hasAttribute("readonly"))
       return false
@@ -1048,14 +1040,9 @@ class ProcessoDetalhes extends ViewComponent {
 
   updateEquipasProcesso(evt) {
     this.equipaInput = evt.target.value;
-    console.log(" <<<<<<<<<< this.equipasProcesso  ", this.equipaInput)
   }
 
   updatePrecedentes(evt) {
-    console.log(
-      "updatePrecedentes >>>>>>>><<<< :::: :::: >>>>>>>>><<<<<< ",
-      evt.target.value
-    );
     this.precedenteInput = evt.target.value;
   }
 
@@ -1074,7 +1061,7 @@ class ProcessoDetalhes extends ViewComponent {
               descricao: `${colaborador.description} - ${colaborador.nome_completo}`,
             });
 
-            if (colaborador.funcao.includes("adv")) {
+            if (colaborador.funcao.toString().toUpperCase().includes("ADV")) {
               equipasData.push({
                 id: colaborador.id,
                 descricao: `${colaborador.description} - ${colaborador.nome_completo}`,
@@ -1104,7 +1091,6 @@ class ProcessoDetalhes extends ViewComponent {
           }
 
           this.listPrecedentes = processoData;
-          console.log("getListPrecedentes >>> ", this.listPrecedentes);
         }
       }
     );
@@ -1115,7 +1101,7 @@ class ProcessoDetalhes extends ViewComponent {
   async addEquipaProcesso(idForm) {
 
     const equipa = this.equipaInput.value;
-
+    
     const payload = {
       "processoId": this.id.value,
       "colaboradoresId": [equipa]
@@ -1191,14 +1177,22 @@ class ProcessoDetalhes extends ViewComponent {
 
   addAnexoProcesso(idForm) {
 
+    const userLogged = JSON.parse(localStorage.getItem("_user"));
+
+    console.log(userLogged)
+    let userId = userLogged.id 
+
     const payload = {
       "processoId": this.id.value,
-      "colaboradorId": 3,
+      "colaboradorId": userId,
       "anexos": [{
         "descricao": this.inputAnexoDescricao.value,
         "anexo": document.getElementById('inputUploadAnexoHidden').src
       }]
     }
+
+
+    console.log("payload anexo", payload)
 
     $still.HTTPClient.post(
       "http://localhost:3000/api/v1/anexos_processo",
