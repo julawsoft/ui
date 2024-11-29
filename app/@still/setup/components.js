@@ -635,11 +635,10 @@ class Components {
 
         container.style.display = 'contents';
 
-        setTimeout(async () => {
+        setTimeout(() => {
             newInstance.parseOnChange();
-            await newInstance.onRender();
-            await newInstance.stAfterInit();
-        }, 200);
+        }, 500);
+        await newInstance.onRender();
 
     }
 

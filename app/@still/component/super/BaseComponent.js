@@ -351,7 +351,7 @@ class BaseComponent extends BehaviorComponent {
 
     getBoundOnChange(template) {
 
-        const extremRe = /[\n \r \( \) A-Za-z0-9 \- \s \" \=]{0,}/.source;
+        const extremRe = /[\n \r \( \) A-Za-z0-9 \- \_ \. \s \" \=]{0,}/.source;
         const mathIfChangeEvt = /\(change\)\=\"(\w*)\([\_\$A-Za-z0-9]{0,}\)\"/;
         const matchChange = '(change)="';
 
@@ -389,8 +389,9 @@ class BaseComponent extends BehaviorComponent {
             const extremRe = /[\n \r \< \$ \( \) \- \s A-Za-z0-9 \{ \} \[ \] \, \ç\à\á\ã\â\è\é\ê\ẽ\í\ì\î\ĩ\ó\ò\ô\õ\ú\ù\û\ũ \= \"]{0,}/.source;
             const matchValueBind = /\(value\)\=\"\w*\"\s?/.source;
             const matchForEachRE = '(forEach)=\"';
+            const endInputRE = /\>{1}/.source;
 
-            const valueBindRE = new RegExp(extremRe + matchValueBind + extremRe, "gi");
+            const valueBindRE = new RegExp(extremRe + matchValueBind + extremRe + endInputRE, "gi");
 
             template = template.replace(valueBindRE, (mt, matchPos) => {
 
