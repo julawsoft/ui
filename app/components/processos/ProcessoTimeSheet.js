@@ -1,3 +1,5 @@
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+
 class ProcessoTimeSheet extends ViewComponent {
 
   id;
@@ -293,7 +295,7 @@ class ProcessoTimeSheet extends ViewComponent {
 
   }
 
-  updateHorasColaborador(isPlus, time){
+  updateHorasColaborador(isPlus, time) {
 
     let currentTime = eval(document.getElementById('horasInputId').innerHTML)
     let calculateTime = isPlus ? currentTime + time : currentTime - time
@@ -319,17 +321,17 @@ class ProcessoTimeSheet extends ViewComponent {
     let isPlus = false
     let horasPlus = 0
 
-    if(horasCalculadas == horasCalculadasEvt) {
+    if (horasCalculadas == horasCalculadasEvt) {
       isChanged = false
     }
 
-   if(horasCalculadas > horasCalculadasEvt) {
-     isChanged = true
-     isPlus = true
-     horasPlus = horasCalculadas - horasCalculadasEvt
+    if (horasCalculadas > horasCalculadasEvt) {
+      isChanged = true
+      isPlus = true
+      horasPlus = horasCalculadas - horasCalculadasEvt
     }
-     
-    if(horasCalculadas < horasCalculadasEvt) {
+
+    if (horasCalculadas < horasCalculadasEvt) {
       isChanged = true
       isPlus = false
       horasPlus = horasCalculadasEvt - horasCalculadas
@@ -363,7 +365,7 @@ class ProcessoTimeSheet extends ViewComponent {
       console.log("Alterações feita com sucesso");
       //this.calendarProxy.clearGrid()
       //this.init()
-      if(isChanged)
+      if (isChanged)
         this.updateHorasColaborador(isPlus, horasPlus)
       return true
     }

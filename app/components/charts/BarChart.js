@@ -1,4 +1,6 @@
-class CBarChart extends ViewComponent {
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+
+class BarChart extends ViewComponent {
 
     htmlRefId = 'barCharPlaceholder';
     novoField = '';
@@ -58,7 +60,7 @@ class CBarChart extends ViewComponent {
     </div>
     `;
 
-    parsingForBar(){
+    parsingForBar() {
         alert('First content');
         this.novoField = 'Novo valor';
     }
@@ -66,4 +68,4 @@ class CBarChart extends ViewComponent {
 }
 
 /** @type {CBarChart} */
-const BarChart = $still.component.expose(new CBarChart());
+//const BarChart = $still.component.expose(new CBarChart());

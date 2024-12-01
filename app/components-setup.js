@@ -1,4 +1,7 @@
-class ComponentSetup extends Components {
+import { Components } from "./@still/setup/components.js";
+//import { Home } from "./components/home/Home.js";
+
+export class ComponentSetup extends Components {
 
     entryComponentPath = routesMap.viewRoutes.regular.Home;
     entryComponentName = 'Home';
@@ -6,6 +9,8 @@ class ComponentSetup extends Components {
 
     constructor() {
         super();
+        //const componentInstance = new Home();
+        ComponentSetup.instance
     }
 
     init() {

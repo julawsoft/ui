@@ -1,4 +1,6 @@
-class CLineChart extends ViewComponent {
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+
+class LineChart extends ViewComponent {
 
     htmlRefId = 'lineCharPlaceholder';
     template = `
@@ -58,7 +60,7 @@ class CLineChart extends ViewComponent {
     `;
 
     anyField = '';
-    lineChartEvt(){
+    lineChartEvt() {
         //alert('*** Method from LIne chart');
         console.log(`Calleed this method`);
         CardDisplay.cardDataSource = ['New', 'Anotehr'];
@@ -67,4 +69,4 @@ class CLineChart extends ViewComponent {
 }
 
 /** @type {CLineChart} */
-const LineChart = $still.component.expose(new CLineChart());
+//const LineChart = $still.component.expose(new CLineChart());

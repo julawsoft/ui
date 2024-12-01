@@ -1,7 +1,9 @@
-class UserProfile extends ViewComponent {
-  userName;
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
 
-  template = `
+class UserProfile extends ViewComponent {
+    userName;
+
+    template = `
     <section class="content">    
     <div class="container-fluid">
     <br/>
@@ -111,33 +113,33 @@ class UserProfile extends ViewComponent {
     </section>
     `;
 
-  constructor() {
-    super();
-    this.setup({
-      includs: [
-        /* ClientsGrid */
-      ],
-      scripts: ["assets/js/form.min.js"],
-    });
-  }
+    constructor() {
+        super();
+        this.setup({
+            includs: [
+                /* ClientsGrid */
+            ],
+            scripts: ["assets/js/form.min.js"],
+        });
+    }
 
-  onRender() {
-    loadWizard();
-    const userLogged = JSON.parse(localStorage.getItem("_user"));
+    onRender() {
+        loadWizard();
+        const userLogged = JSON.parse(localStorage.getItem("_user"));
 
-    if(userLogged) {
+        if (userLogged) {
 
-    this.userName = userLogged.nome_completo;
+            this.userName = userLogged.nome_completo;
 
-    document.getElementById("userNameInput").innerHTML =
-      userLogged.nome_completo;
-    document.getElementById("userFuncaoInput").innerHTML =
-      userLogged.tipo.description;
+            document.getElementById("userNameInput").innerHTML =
+                userLogged.nome_completo;
+            document.getElementById("userFuncaoInput").innerHTML =
+                userLogged.tipo.description;
 
-    if(userLogged.identificacoes) {
-        let templateIdentificacao = ``
-        userLogged.identificacoes.forEach((item) => {
-            templateIdentificacao += `
+            if (userLogged.identificacoes) {
+                let templateIdentificacao = ``
+                userLogged.identificacoes.forEach((item) => {
+                    templateIdentificacao += `
                      <div class="col-md-4 col-6 b-r">
                         <strong>Descrição</strong>
                         <br>
@@ -156,25 +158,25 @@ class UserProfile extends ViewComponent {
                             : 'N/A'}</p>
                     </div>                 
                 `
-        })
-        document.getElementById('userIdentificacao').innerHTML = templateIdentificacao
-    } 
-    
-    
-    if(userLogged.contactos) {
-        userLogged.contactos.map((item) => {
-            if(item.type === "telefone")
-                document.getElementById("userTelefoneInput").innerHTML = item.value
+                })
+                document.getElementById('userIdentificacao').innerHTML = templateIdentificacao
+            }
 
-            if(item.type === "e-mail")
-                document.getElementById("userEmailInput").innerHTML = item.value
 
-        })
+            if (userLogged.contactos) {
+                userLogged.contactos.map((item) => {
+                    if (item.type === "telefone")
+                        document.getElementById("userTelefoneInput").innerHTML = item.value
+
+                    if (item.type === "e-mail")
+                        document.getElementById("userEmailInput").innerHTML = item.value
+
+                })
+            }
+
+        }
+
     }
 
-    }
-
-  }
-
-  stAfterInit() {}
+    stAfterInit() { }
 }

@@ -1,3 +1,5 @@
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+
 class Menu extends ViewComponent {
   htmlRefId = "leftsidebar";
 
@@ -5,8 +7,11 @@ class Menu extends ViewComponent {
   userRole = "Admin";
 
   roles;
-  devProfile = Prop(false);
-  canCreateProcess = Prop(false);
+  /** @Prop */
+  devProfile = true;
+
+  /** @Prop */
+  canCreateProcess = true;
 
   template = `
   <aside id="leftsidebar" class="sidebar">
@@ -28,7 +33,7 @@ class Menu extends ViewComponent {
             <a class="item-menu active" href="#"><i class="fas fa-folder"></i> Processos</a>
             <ul class="submenu">
                 <li
-                  (renderIf)="self.canCreateProcess"
+                  
                   ><a href="#" (click)="gotoView('ProcessoForm')"> Criar </a></li>
                 <li><a href="#" (click)="gotoView('ProcessosGrid')"> Listar </a></li>
                 <li><a href="#" (click)="gotoView('ColaboradorDashboard')">Meus Processos </a></li>
@@ -53,6 +58,10 @@ class Menu extends ViewComponent {
             <ul class="submenu">
                   <li><a href="#" (click)="gotoView('POC')"> Generico </a></li>
             </ul>
+      </li>
+
+      <li class="menu-item-julaw">
+          <a href="#" class="item-menu"  (click)="gotoView('Despesas')"><i class="fas fa-file-invoice"></i> Despesas</a>
       </li>
     </ul>
   </aside>

@@ -1,3 +1,5 @@
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+
 class ColaboradoresGrid extends ViewComponent {
   htmlRefId = "idDataTable";
   dataSource;

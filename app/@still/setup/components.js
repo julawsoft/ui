@@ -1,9 +1,12 @@
+import { ComponentSetup } from "../../components-setup.js";
+
 const $stillLoadScript = (path, className, base = null) => {
 
     const prevScript = document.getElementById(`${path}/${className}.js`);
     if (prevScript) return false;
 
     const script = document.createElement('script');
+    script.type = 'module';
     script.src = `${base ? base : ''}${path}/${className}.js`;
     script.id = `${path}/${className}.js`;
     //document.head.insertAdjacentElement('beforeend', script);
@@ -17,7 +20,10 @@ const loadComponentFromPath = (path, className, callback = () => { }) => {
 
         if (
             className in $still.component.list
-            || className in $still.context.componentRegistror.componentList
+            || (
+                className in $still.context.componentRegistror.componentList
+                && !Components.stAppInitStatus
+            )
         ) {
             const isRoutable = className in $still.context.componentRegistror.componentList;
             resolve({ imported: true, isRoutable });
@@ -29,9 +35,9 @@ const loadComponentFromPath = (path, className, callback = () => { }) => {
             resolve([]);
         } catch (error) {
 
-            if (!path) resolve([]);
+            /* if (!path) resolve([]);
             else {
-                const script = $stillLoadScript(path, className);
+                const script = $stillLoadScript(path, className, './');
                 document.head.insertAdjacentElement('beforeend', script);
 
                 script.addEventListener('load', () => {
@@ -42,7 +48,7 @@ const loadComponentFromPath = (path, className, callback = () => { }) => {
                         });
                     }
                 });
-            }
+            } */
 
         }
 
@@ -79,7 +85,7 @@ class LoadedComponent {
     cmp;
 }
 
-class Components {
+export class Components {
 
     /**
      * @returns {{template, }}

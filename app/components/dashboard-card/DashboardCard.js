@@ -1,4 +1,6 @@
-class CDashboardCard extends BaseComponent {
+import { BaseComponent } from "../../@still/component/super/BaseComponent.js";
+
+class DashboardCard extends BaseComponent {
 
     mainLabel;
     statusValue;
@@ -54,4 +56,4 @@ class CDashboardCard extends BaseComponent {
 }
 
 /** @type { CDashboardCard } */
-const DashboardCard = $still.component.expose(new CDashboardCard());
+//const DashboardCard = $still.component.expose(new CDashboardCard());

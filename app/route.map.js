@@ -6,10 +6,11 @@ const routesMap = {
         regular: {
             Login: 'components/auth',
             Home: 'components/home',
-            ClientForm: 'components/client',
-            ClientsGrid: 'components/client',
+            Despesas: 'components/despesas'
         },
         lazyInitial: {
+            ClientForm: 'components/client',
+            ClientsGrid: 'components/client',
             ColaboradorForm: 'components/colaboradores',
             ColaboradoresGrid: 'components/colaboradores',
             ColaboradorDashboard: 'components/colaboradores',

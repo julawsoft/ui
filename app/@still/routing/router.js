@@ -72,7 +72,6 @@ class Router {
             }
         }
 
-
         const routeInstance = $stillGetRouteMap()
         const route = routeInstance.route[cmp];
 

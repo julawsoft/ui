@@ -1,4 +1,6 @@
-class TabulatorComponent extends ViewComponent {
+import { ViewComponent } from "../../component/super/ViewComponent.js";
+
+export class TabulatorComponent extends ViewComponent {
 
     template = `
         <div>

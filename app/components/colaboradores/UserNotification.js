@@ -1,3 +1,5 @@
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+
 class UserNotification extends ViewComponent {
   template = `
     <section class="content">    

@@ -1,3 +1,6 @@
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+import { TabulatorComponent } from "../../@still/vendors/tabulator/TabulatorComponent.js";
+
 class ProcessoDetalhes extends ViewComponent {
 
   id;

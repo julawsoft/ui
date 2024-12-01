@@ -1,4 +1,6 @@
-class CCalendar extends ViewComponent {
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+
+class Calendar extends ViewComponent {
 
     htmlRefId = 'dashboardCalendar';
     template = `
@@ -50,4 +52,4 @@ class CCalendar extends ViewComponent {
 }
 
 /** @type { CCalendar } */
-const Calendar = $still.component.expose(new CCalendar());
+//const Calendar = $still.component.expose(new CCalendar());

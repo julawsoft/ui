@@ -1,3 +1,5 @@
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+
 class TopNavBar extends ViewComponent {
 
     htmlRefId = "topNavBar";
@@ -5,7 +7,7 @@ class TopNavBar extends ViewComponent {
 
     /**
      * @Inject
-     * @type { ProcessoService } }
+     * @type { ProcessoService }
      */
     processoService;
 

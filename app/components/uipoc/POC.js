@@ -1,3 +1,5 @@
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+
 class POC extends ViewComponent {
 
     //AppTemplate.get().getStorageValue('persmissions').canSeeGrid

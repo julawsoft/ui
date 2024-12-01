@@ -1,3 +1,7 @@
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+import { TabulatorComponent } from "../../@still/vendors/tabulator/TabulatorComponent.js";
+import { TUICalendarComponent } from "../../@still/vendors/toast-ui/calendar/TUICalendarComponent.js";
+
 class ColaboradorDashboard extends ViewComponent {
   htmlRefId = "clientDataTable";
   dataSource;

@@ -1,3 +1,5 @@
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+
 class ColaboradorForm extends ViewComponent {
 
     username;
@@ -19,6 +21,9 @@ class ColaboradorForm extends ViewComponent {
 
     status = "Activo";
 
+    /** @type { STFofm } */
+    colaboradorForm;
+
     template = `
     <section class="content">
     <div class="row clearfix">
@@ -36,7 +41,7 @@ class ColaboradorForm extends ViewComponent {
                     <h2><strong>Cadastro</strong> de colaborador</h2>
                 </div>
                 <div class="body">
-                    <form id="col_wizard_with_validation" onsubmit="javascript: return false;">
+                    <form id="col_wizard_with_validation" (formRef)="colaboradorForm" onsubmit="javascript: return false;">
                         <h3>Dados Pessoais</h3>
                         <fieldset>
 
@@ -71,9 +76,7 @@ class ColaboradorForm extends ViewComponent {
                                         <select id="select-tipo-colaborador" (change)="updateTipoColaborador($event)" (value)="tipo_colaborador_id">
                                             <option value="" disabled selected>Selecione o tipo de colaborador</option>
                                             <option value="1">Administrativo</option>
-                                            <option value="2">Advogado - Júnior</option>
-                                            <option value="3">Advogado - Sénior</option>
-                                            <option value="4">Advogado - Estagiário</option>
+                                            <option value="2">Advogado</option>
                                         </select>
                                     </div>
                                 </div>
@@ -90,6 +93,8 @@ class ColaboradorForm extends ViewComponent {
                                     <option value="adv_junior">Júnior</option>
                                     <option value="adv_senior">Sénior</option>
                                     <option value="adv_estagiario">Estagiário</option>
+                                    <option value="adv_estagiario">Paralegal</option>
+                                    <option value="adv_estagiario">Consultor</option>
                                 </select>
                             </div>
                             </div>

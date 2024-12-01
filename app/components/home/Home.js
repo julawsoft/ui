@@ -1,4 +1,6 @@
-class Home extends BaseComponent {
+
+
+/*export class Home extends BaseComponent {
 
   template = `
     <section class="content">
@@ -30,23 +32,23 @@ class Home extends BaseComponent {
 
   constructor() {
     super();
-    /*
-    if(AppTemplate.get().getStorageValue('logged')){
-        console.log(`Used was logged: `, AppTemplate.get().getStorageValue('logged'));
-    }else{
-        Router.goto('init');
-    }
-    */
+    
+    //if(AppTemplate.get().getStorageValue('logged')){
+    //    console.log(`Used was logged: `, AppTemplate.get().getStorageValue('logged'));
+    //}else{
+    //    Router.goto('init');
+    //}
+    
     //AppTemplate.showLoading();
     this.setup({
-      includs: [
-        LineChart,
-        Calendar,
-        CardDisplay,
-        BarChart,
-        CircularAnimatedChart,
-        ProjectGrid,
-      ],
+      //includs: [
+      //  LineChart,
+      //  Calendar,
+      //  CardDisplay,
+      //  BarChart,
+      //  CircularAnimatedChart,
+      //  ProjectGrid,
+      //],
       scripts: [
         "assets/js/chart.min.js",
         "assets/js/bundles/amcharts4/core.js",
@@ -56,9 +58,9 @@ class Home extends BaseComponent {
       ],
     });
 
-    /* CardDisplay.cardDataSource.onChange((value) => {
-            console.log(`Home component detected changes: `,value);
-        }); */
+    //CardDisplay.cardDataSource.onChange((value) => {
+    //        console.log(`Home component detected changes: `,value);
+    //    });
   }
 
   async stAfterInit() {
@@ -66,4 +68,8 @@ class Home extends BaseComponent {
     AppTemplate.hideLoading();
 
   }
+}*/
+
+class Home {
+
 }

@@ -1,3 +1,5 @@
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+
 const cardDataSource = [
     {
         state: {
@@ -85,4 +87,4 @@ class CCardDisplay extends ViewComponent {
 }
 
 /** @type {CCardDisplay} */
-const CardDisplay = $still.component.expose(new CCardDisplay());
+//const CardDisplay = $still.component.expose(new CCardDisplay());

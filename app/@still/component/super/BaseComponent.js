@@ -1,3 +1,5 @@
+import { BehaviorComponent } from "./BehaviorComponent.js";
+
 class SettingType {
     componentName = undefined;
     path = undefined;
@@ -47,7 +49,7 @@ class ComponentPart {
 
 }
 
-class BaseComponent extends BehaviorComponent {
+export class BaseComponent extends BehaviorComponent {
 
 
     /**
