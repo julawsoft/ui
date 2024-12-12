@@ -1,5 +1,6 @@
-class Menu extends ViewComponent {
-  htmlRefId = "leftsidebar";
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+
+export class Menu extends ViewComponent {
 
   userName;
   userRole = "Admin";

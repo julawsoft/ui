@@ -1,4 +1,7 @@
-class Login extends ViewComponent {
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+import { AppTemplate } from "../../app-template.js";
+
+export class Login extends ViewComponent {
     isPublic = true;
 
     username = null;
@@ -98,7 +101,10 @@ class Login extends ViewComponent {
                         AppTemplate.get().store('userName', response.data.nome_completo);
                         AppTemplate.get().store('persmissions', { canSeeGrid: false });
                         AppTemplate.get().setAuthN(true);
-                        Router.goto('ColaboradorDashboard');
+                        //if(response.data.funcao.includes('dev'))
+                        //    Router.goto('ColaboradorDashboard');
+                        //else
+                        Router.init();
                         // aonde guardar os dados do user logado com seguranca
                     }
 
@@ -110,7 +116,7 @@ class Login extends ViewComponent {
                 });
         } else {
             // AppTemplate.toast({ status: 'error', message: 'usuário e/ou senha, devem ser preenchidos' })
-            
+
             AppTemplate.hideLoading();
         }
     }

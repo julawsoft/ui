@@ -7,6 +7,8 @@ const routesMap = {
             Login: 'components/auth',
             Home: 'components/home',
             ClientsGrid: 'components/client',
+            TopNavBar: 'components/navbar',
+            Menu: 'components/main-menu',
         },
         lazyInitial: {
             ClientForm: 'components/client',

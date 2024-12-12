@@ -1,8 +1,10 @@
-class Home extends BaseComponent {
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+
+export class Home extends ViewComponent {
+
 
   template = `
     <section class="content">
-        
             <div class="container-fluid">
                 <!-- Dashboard Widgets -->
                 <div id="dashBoardCards" class="row"></div>
@@ -39,13 +41,13 @@ class Home extends BaseComponent {
     */
     //AppTemplate.showLoading();
     this.setup({
-      includs: [
-        LineChart,
-        Calendar,
-        CardDisplay,
-        BarChart,
-        CircularAnimatedChart,
-        ProjectGrid,
+      includes: [
+        import('../../components/charts/LineChart.js'),
+        import('../../components/charts/BarChart.js'),
+        import('../../components/dashboard-card/CardDisplay.js'),
+        import('../../components/calendar/Calendar.js'),
+        import('../../components/charts/CircularAnimatedChart.js'),
+        import('../../components/project-list/ProjectGrid.js'),
       ],
       scripts: [
         "assets/js/chart.min.js",
@@ -63,7 +65,7 @@ class Home extends BaseComponent {
 
   async stAfterInit() {
 
-    AppTemplate.hideLoading();
+    //AppTemplate.hideLoading();
 
   }
 }

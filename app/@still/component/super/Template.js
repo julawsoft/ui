@@ -1,4 +1,4 @@
-class Template {
+export class Template {
 
     static instance = {};
     static toastId = null;

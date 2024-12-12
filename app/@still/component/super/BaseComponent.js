@@ -1,10 +1,14 @@
+import { ComponentSetup } from "../../../components-setup.js";
+import { Components } from "../../setup/components.js";
+import { BehaviorComponent } from "./BehaviorComponent.js";
+
 class SettingType {
     componentName = undefined;
     path = undefined;
     imports = [];
     use = [];
     dependsOf = [];
-    includs = [];
+    includes = [];
     scripts = [];
 }
 
@@ -26,17 +30,19 @@ class ComponentPart {
     props;
     /** @type { Map<{ type: string, inject: boolean, proxy: boolean, prop: boolean, propParsing: boolean }> } */
     annotations;
+    cmpDetails;
     /**
      * @type { ViewComponent }
      */
     component;
 
-    constructor({ template, component, proxy, props, annotations }) {
+    constructor({ template, component, proxy, props, annotations, cmpDetails }) {
         this.template = template;
         this.component = component;
         this.proxy = proxy;
         this.props = props;
         this.annotations = annotations;
+        this.cmpDetails = cmpDetails;
     }
 
     render() {
@@ -47,7 +53,7 @@ class ComponentPart {
 
 }
 
-class BaseComponent extends BehaviorComponent {
+export class BaseComponent extends BehaviorComponent {
 
 
     /**
@@ -75,14 +81,6 @@ class BaseComponent extends BehaviorComponent {
     versionId = null;
     #annotations = new Map();
     wasAnnotParsed = false;
-
-
-    /**
-     * signature method only
-     * @param {object|any} 
-     * @returns { ViewComponent | BaseComponent } 
-     */
-    new(params) { }
 
     async load() { }
 
@@ -112,7 +110,7 @@ class BaseComponent extends BehaviorComponent {
     }
 
     getInstanceName() {
-        return this.constructor.name.replace('C', '');
+        return this.constructor.name;
     }
 
     getProperties() {
@@ -577,7 +575,7 @@ class BaseComponent extends BehaviorComponent {
     /**
      * Parse the template, inject the components 'props' and 'state' if defined in the component
      */
-    getBoundTemplate() {
+    async getBoundTemplate() {
 
         console.time('tamplateBindFor' + this.getName());
 
@@ -592,7 +590,7 @@ class BaseComponent extends BehaviorComponent {
         template = this.getBoundRender(template);
 
         /** Parse still tags */
-        template = this.parseStSideComponent(template),
+        template = await this.parseStSideComponent(template),
             /** Bind the props to the template and return */
             template = this.getBoundProps(template);
         /** Bind the click to the template and return */
@@ -607,14 +605,14 @@ class BaseComponent extends BehaviorComponent {
         return template;
     }
 
-    render() {
+    async render() {
         this.incrementLoadCounter();
-        document.write(this.getBoundTemplate());
+        document.write(await this.getBoundTemplate());
     }
 
-    getTemplate(count = true) {
+    async getTemplate(count = true) {
         this.incrementLoadCounter();
-        return this.getBoundTemplate();
+        return await this.getBoundTemplate();
     }
 
     prepareRender() {
@@ -637,14 +635,25 @@ class BaseComponent extends BehaviorComponent {
      * @param {SettingType} settings 
      */
     setup(settings) {
+
         this.componentName = this.constructor.name;
         this.settings = settings;
 
-        new Promise((resolve) => {
+
+        new Promise(async (resolve) => {
 
             setTimeout(() => {
-                if (settings.includs) {
-                    settings.includs.forEach((/** @type {ViewComponent} */cmp) => cmp.render());
+                if (settings.includes) {
+                    settings.includes.forEach(async (module) => {
+                        const mdl = await module;
+                        const clsName = Object.keys(mdl)[0];
+                        const cmp = new Components().getParsedComponent(new mdl[clsName]());
+                        setTimeout(() => {
+                            cmp.render();
+                            cmp['componentName'] = cmp.constructor.name;
+                            //$still.context.componentRegistror.export({ ...settings, instance: cmp });
+                        });
+                    });
                     resolve(null);
                 } else {
                     resolve(null);
@@ -652,12 +661,12 @@ class BaseComponent extends BehaviorComponent {
             });
 
         }).then(() => {
-
-            if (settings.scripts) settings.scripts.forEach(this.importScript);
+            setTimeout(() => {
+                if (settings.scripts) settings.scripts.forEach(this.importScript);
+            }, 100);
 
         });
 
-        $still.context.componentRegistror.export({ ...settings, instance: this });
     }
 
     setPath(path) {
@@ -809,7 +818,7 @@ class BaseComponent extends BehaviorComponent {
         Router.goto(this.getProperInstanceName());
     }
 
-    parseStSideComponent(template, cmpInternalId = null, cmpUUID = null) {
+    async parseStSideComponent(template, cmpInternalId = null, cmpUUID = null) {
 
         const uuid = cmpUUID || this.getUUID();
         if (cmpInternalId) this.cmpInternalId = cmpInternalId;
@@ -855,21 +864,11 @@ class BaseComponent extends BehaviorComponent {
             const [cmpName, proxy] = [propMapper['component'], propMapper['proxy']];
             parentCmp[proxy] = { on: () => { } };
 
+
             const props = {};
             Object.entries(propMapper).forEach(([prop, val]) => {
                 props[prop] = val;
             });
-
-            const [cmpId, cmp] = [`st_${UUIDUtil.numberId()}`, eval(`new ${cmpName}()`)];
-            cmp.onRender();
-            cmp.dynCmpGeneratedId = cmpId;
-            cmp.cmpInternalId = `dynamic-${cmp.getUUID()}${cmpName}`;
-            cmp.stillElement = true;
-            cmp.proxyName = proxy;
-            ComponentRegistror.register(
-                cmp.cmpInternalId,
-                cmp
-            );
 
             if (!(this.cmpInternalId in Components.componentPartsMap)) {
                 Components.componentPartsMap[this.cmpInternalId] = [];
@@ -877,8 +876,13 @@ class BaseComponent extends BehaviorComponent {
 
             Components.componentPartsMap[this.cmpInternalId].push(
                 new ComponentPart({
-                    template: null, component: cmp,
-                    proxy, props,
+                    template: null, component: '',
+                    proxy, props, cmpDetails: {
+                        dynCmpGeneratedId: `st_${UUIDUtil.numberId()}`,
+                        stillElement: true,
+                        proxyName: proxy,
+                        cmpName
+                    },
                     annotations: this.#annotations
                 })
             );
@@ -887,9 +891,11 @@ class BaseComponent extends BehaviorComponent {
 
         });
 
+        Components.emitAction('load');
         return template;
 
     }
+
 
     #handleErrorMessage(classFlag, matchInstance) {
         if (classFlag.at(-1) == ')') {
@@ -1110,6 +1116,34 @@ class BaseComponent extends BehaviorComponent {
             cmp[propertyName].load();
 
         }
+
+    }
+
+    /**
+     * signature method only
+     * @param {object|any} 
+     * @returns { ViewComponent | BaseComponent } 
+     */
+    init(params) {
+
+        /**  @type {ViewComponent} */
+        let instance;
+        if (params instanceof Object)
+            instance = (new Components()).getNewParsedComponent(eval(`new ${cmpName}({...${JSON.stringify(params)}})`));
+
+        if (params instanceof Array)
+            instance = (new Components()).getNewParsedComponent(eval(`new ${cmpName}([...${JSON.stringify(params)}])`));
+
+        instance.cmpInternalId = `dynamic-${instance.getUUID()}${cmpName}`;
+        /** TODO: Replace the bellow with the export under componentRegistror */
+        ComponentRegistror.register(
+            instance.cmpInternalId,
+            instance
+        );
+
+        if (instance) return instance;
+
+        return this;
 
     }
 

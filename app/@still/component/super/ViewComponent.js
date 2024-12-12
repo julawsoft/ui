@@ -1,14 +1,18 @@
+import { BaseComponent } from "./BaseComponent.js";
+
 class HTMLRefId {
 
 }
 
-class ViewComponent extends BaseComponent {
+export class ViewComponent extends BaseComponent {
 
     /**
      * @type {HTMLRefId}
      */
     htmlRefId;
     #stMyParent;
+
+    static includes = [];
 
     constructor() {
         super();
@@ -28,18 +32,24 @@ class ViewComponent extends BaseComponent {
     }
 
     renderOnViewFor(placeHolder) {
-        this.beforeInit();
 
-        document
-            .getElementById(placeHolder)
-            .innerHTML = this.getBoundTemplate();
-        this.incrementLoadCounter();
+        setTimeout(async () => {
+
+            await this.beforeInit();
+
+            document
+                .getElementById(placeHolder)
+                .innerHTML = await this.getBoundTemplate();
+            this.incrementLoadCounter();
+
+        });
+
     }
 
-    getTemplate() {
-        this.beforeInit();
+    async getTemplate() {
+        await this.beforeInit();
         //this.prepareRender();
-        let template = this.getBoundTemplate();
+        let template = await this.getBoundTemplate();
         const cmpUnicClass = this.getUUID();
         const loadCmpClass = $stillconst.ANY_COMPONT_LOADED;
 

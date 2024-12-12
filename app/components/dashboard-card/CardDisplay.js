@@ -1,3 +1,6 @@
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+import { DashboardCard } from "./DashboardCard.js";
+
 const cardDataSource = [
     {
         state: {
@@ -46,26 +49,30 @@ const cardDataSource = [
 ]
 
 
-class CCardDisplay extends ViewComponent {
+export class CardDisplay extends ViewComponent {
 
     htmlRefId = 'dashBoardCards';
     /** @type { StEvent } */
     cardDataSource = cardDataSource;
 
     updateComponent() {
-        this.template = this.cardDataSource.value.map(
+        this.template = ``/* this.cardDataSource.value.map(
             rec => DashboardCard.new(rec.state)
                 .props(rec.props)
                 .getTemplate()
-        );
+        ) */;
     }
 
-    beforeInit() {
-        this.template = this.cardDataSource.value.map(
-            rec => DashboardCard.new(rec.state)
-                .props(rec.props)
-                .getTemplate()
-        );
+    async beforeInit() {
+
+        let cardsResult = ``;
+        for (const cardData of this.cardDataSource.value) {
+            const card = new DashboardCard(cardData.state);
+            card.props(cardData.props);
+            cardsResult += await card.getTemplate();
+        }
+
+        this.template = cardsResult;
     }
 
     stOnUpdate() {
@@ -78,11 +85,7 @@ class CCardDisplay extends ViewComponent {
 
     constructor() {
         super();
-        //this.renderOnViewFor('dashBoardCards');
     }
 
 
 }
-
-/** @type {CCardDisplay} */
-const CardDisplay = $still.component.expose(new CCardDisplay());

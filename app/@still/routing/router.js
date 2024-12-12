@@ -183,7 +183,7 @@ class Router {
 
                         const pageContent = `
                         <output id="${cmpId}-check" style="display:contents;">
-                            ${componentInstance.getTemplate()}
+                            ${await componentInstance.getTemplate()}
                         </output>`;
                         appPlaceholder.insertAdjacentHTML('afterbegin', pageContent);
                         componentInstance.subImported = false;
@@ -204,7 +204,7 @@ class Router {
                 .then(async () => {
                     const pageContent = `
                     <output id="${cmpId}-check" style="display:contents;">
-                        ${componentInstance.getTemplate()}
+                        ${await componentInstance.getTemplate()}
                     </output>`;
                     appPlaceholder.insertAdjacentHTML('afterbegin', pageContent);
                     setTimeout(() => {

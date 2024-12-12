@@ -1,11 +1,13 @@
-class TopNavBar extends ViewComponent {
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+
+export class TopNavBar extends ViewComponent {
 
     htmlRefId = "topNavBar";
     totalNotifications = 0;
 
     /**
      * @Inject
-     * @type { ProcessoService } }
+     * @type { ProcessoService }
      */
     processoService;
 
@@ -144,10 +146,10 @@ class TopNavBar extends ViewComponent {
 
     async stAfterInit() {
 
-        this.processoService.on('load', async () => {
+        /* this.processoService.on('load', async () => {
             const notifications = await this.processoService.getTarefaByColaboradorId();
             this.parseAndDisplayNotifications(notifications);
-        });
+        }); */
     }
 
     parseAndDisplayNotifications(notifications) {
