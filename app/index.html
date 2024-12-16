@@ -24,6 +24,20 @@
     <link href="assets/js/bundles/multiselect/css/multi-select.css" rel="stylesheet">
     <link href="assets/css/julaw-form.css" rel="stylesheet">
 
+    <script>
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('@still/routing/importer.js')
+                .then(registration => {
+                    console.log(`Importer registration happened successfully: `, registration);
+                })
+                .catch(err => {
+                    console.log(`Error on registering Importer: `, err);
+                });
+        }
+
+    </script>
+
     <script type="module" src="app-setup.js"></script>
 
     <script src="@still/component/manager/timer.js"></script>
@@ -66,7 +80,7 @@
     <script defer src="assets/js/bundles/amcharts4/charts.js"></script>
     <script defer src="assets/js/bundles/amcharts4/animated.js"></script>
     <script defer src="assets/js/pages/index.js"></script>
-    <script defer src="@still/routing/router.js"></script>
+    <!-- <script defer type="module" src="@still/routing/router.js"></script> -->
     <!-- <script async src="components/client/ClientsGrid.js"></script>
     <script async src="components/colaboradores/ColaboradoresGrid.js"></script>
     <script async src="components/colaboradores/ColaboradorForm.js"></script>

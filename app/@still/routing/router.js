@@ -1,4 +1,8 @@
-class Router {
+import { AppTemplate } from "../../app-template.js";
+import { ComponentSetup } from "../../components-setup.js";
+import { Components } from "../setup/components.js";
+
+export class Router {
 
     #data = {};
     static instance = null;
@@ -34,7 +38,7 @@ class Router {
      * @param {*} cmp 
      * @param {{data, path}} param1 
      */
-    static goto(cmp, { data = {} } = { data: {} }) {
+    static async goto(cmp, { data = {} } = { data: {} }) {
         Router.initRouting = false;
         Components.setRemovingPartsVersionId($still.context.currentView?.versionId);
         /**
@@ -53,13 +57,10 @@ class Router {
             ComponentSetup.get().loadComponent();
             AppTemplate.get().storageSet('stAppInitStatus', true);
             Router.initRouting = true;
-            //localStorage.setItem('stAppInitStatus', true);
         }
 
-        if (cmp === 'exit') {
-            AppTemplate.get().unloadApp();
-            return;
-        }
+        if (cmp === 'exit')
+            return AppTemplate.get().unloadApp();
 
         Router.getInstance().#data = null;
         if (data != '') {
@@ -72,15 +73,12 @@ class Router {
             }
         }
 
-
-        const routeInstance = $stillGetRouteMap()
-        const route = routeInstance.route[cmp];
-
         const cmpRegistror = $still.context.componentRegistror.componentList;
         const isHomeCmp = ComponentSetup.get().entryComponentName == cmp;
+        const imported = cmp in cmpRegistror || cmp in $still.component.list;
         if (isHomeCmp) {
 
-            if (cmp in cmpRegistror) {
+            if (imported) {
 
                 $still.context.currentView = cmpRegistror[cmp].instance;
                 Router.getAndDisplayPage($still.context.currentView, true, isHomeCmp);
@@ -91,8 +89,10 @@ class Router {
                  * TO DO: Repeating code from both Router class and Components Class, 
                  * should be modularized from
                  */
+                const { ViewComponent } = await import('../../@still/component/super/ViewComponent.js');
+                const module = await Components.importAsNeeded(cmp);
                 const appTemplate = AppTemplate.get().template;
-                $still.context.currentView = eval(`new ${cmp}()`);
+                $still.context.currentView = eval(`new ${module[cmp]}()`);
 
                 let template = (new Components()).getCurrentCmpTemplate($still.context.currentView);
                 template = appTemplate.replace(
@@ -104,51 +104,51 @@ class Router {
 
         } else {
 
-            loadComponentFromPath(route, cmp)
-                .then(({ imported, isRoutable }) => {
-                    if (!imported) {
-                        if (cmp == 'init') return;
+            const route = $stillGetRouteMap().route[cmp];
+            //loadComponentFromPath(route, cmp)
+            //    .then(({ imported, isRoutable }) => {
+            if (!imported) {
+                if (cmp == 'init') return;
 
-                        /**
-                         * the bellow line clears previous component from memory
-                         * @type { ViewComponent }
-                         */
-                        const newInstance = eval(`new ${cmp}()`);
+                const { ViewComponent } = await import('../../@still/component/super/ViewComponent.js');
+                /**
+                 * the bellow line clears previous component from memory
+                 * @type { ViewComponent }
+                 */
+                const module = await Components.importAsNeeded(cmp);
+                const newInstance = eval(`new ${module[cmp]}()`);
 
-                        if (newInstance.isPublic && !AppTemplate.get().isAuthN()) {
-                            (new Components()).renderPublicComponent(newInstance);
-                            return;
-                        }
+                if (newInstance.isPublic && !AppTemplate.get().isAuthN())
+                    return (new Components()).renderPublicComponent(newInstance);
 
-                        if (!document.getElementById($stillconst.APP_PLACEHOLDER)) {
-                            document.write($stillconst.MSG.PRIVATE_CMP);
-                            return;
-                        }
+                if (!document.getElementById($stillconst.APP_PLACEHOLDER))
+                    return document.write($stillconst.MSG.PRIVATE_CMP);
 
-                        newInstance.isRoutable = true;
-                        Router.parseComponent(newInstance);
-                        newInstance.setRoutableCmp(true);
-                        if (isHomeCmp)
-                            newInstance.setUUID($stillconst.TOP_LEVEL_CMP);
+                newInstance.isRoutable = true;
+                Router.parseComponent(newInstance);
+                newInstance.setRoutableCmp(true);
+                if (isHomeCmp) newInstance.setUUID($stillconst.TOP_LEVEL_CMP);
 
-                        $still.context.currentView = newInstance;
+                $still.context.currentView = newInstance;
 
-                    } else {
-                        if (!isRoutable) {
-                            $still.context.currentView = $still.component.list[cmp];
-                        } else {
-                            $still.context.currentView = cmpRegistror[cmp].instance;
-                        }
+            } else {
 
-                        $still.context.currentView.isRoutable = true;
-                        if (!$still.context.currentView.stillParsedState) {
-                            $still.context.currentView = (new Components).getNewParsedComponent(
-                                $still.context.currentView
-                            );
-                        }
-                    }
-                    Router.getAndDisplayPage($still.context.currentView, imported);
-                });
+                if (!(cmp in cmpRegistror)) $still.context.currentView = $still.component.list[cmp];
+                else $still.context.currentView = cmpRegistror[cmp].instance;
+
+                $still.context.currentView.isRoutable = true;
+                if (!$still.context.currentView.stillParsedState) {
+                    $still.context.currentView = (new Components).getNewParsedComponent(
+                        $still.context.currentView
+                    );
+                }
+            }
+            ComponentRegistror.register(
+                $still.context.currentView.constructor.name,
+                $still.context.currentView
+            );
+            Router.getAndDisplayPage($still.context.currentView, imported);
+            //    });
         }
 
     }
@@ -244,7 +244,6 @@ class Router {
                 if (!Components.checkStInit(cmp.constructor.name))
                     setTimeout(async () => await cmp.stAfterInit(), 200);
 
-                console.log(`FOUTING FLAG: `, Router.initRouting);
                 /**
                  * Load component parts or sub-components inside the main loaded component
                  * if(!Components.stAppInitStatus) is to prevent compoenent parts Parsing

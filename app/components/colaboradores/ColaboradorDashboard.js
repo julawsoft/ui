@@ -1,4 +1,6 @@
-class ColaboradorDashboard extends ViewComponent {
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+
+export class ColaboradorDashboard extends ViewComponent {
   htmlRefId = "clientDataTable";
   dataSource;
 

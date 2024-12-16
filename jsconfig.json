@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+      "moduleResolution": "nodenext",
+      "baseUrl": "./",
+      "paths": {
+          "#*": ["./src/*"]
+      },
+      "outDir": "./build"
+  }
+}

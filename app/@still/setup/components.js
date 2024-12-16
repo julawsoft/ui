@@ -639,8 +639,14 @@ export class Components {
     /** @param {ViewComponent} cmp */
     static async reloadedComponent(cmp, isHome) {
 
-        /** @type { ViewComponent } */
-        let newInstance = eval(`new ${cmp.constructor.name}()`);
+        const { ViewComponent } = await import('../../@still/component/super/ViewComponent.js');
+        /**
+         * the bellow line clears previous component from memory
+         * @type { ViewComponent }
+         */
+        const module = await Components.importAsNeeded(cmp.constructor.name);
+        let newInstance = eval(`new ${module[cmp.constructor.name]}()`);
+
         newInstance = (new Components()).getParsedComponent(newInstance);
         newInstance.setUUID(cmp.getUUID());
         newInstance.setRoutableCmp(true);
@@ -675,6 +681,8 @@ export class Components {
 
         const { dynCmpGeneratedId, stillElement, proxyName, cmpName } = details;
         const module = await Components.importAsNeeded(cmpName);
+
+        const { Router } = await import('../../@still/routing/router.js');
         const cmp = eval(`new ${module[cmpName]}()`);
 
         cmp.onRender();

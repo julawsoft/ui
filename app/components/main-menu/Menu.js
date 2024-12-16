@@ -1,4 +1,5 @@
 import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+import { Router } from "../../@still/routing/router.js";
 
 export class Menu extends ViewComponent {
 
@@ -116,8 +117,8 @@ export class Menu extends ViewComponent {
     // this.canListColaborador = this.roles.includes('CAN_CREATE_PROCESS');
   }
 
-  gotoView(viewComponent) {
-    Router.goto(viewComponent);
+  async gotoView(viewComponent) {
+    await Router.goto(viewComponent);
   }
 
   static propagateEventsIntoAllItemMenu() {

@@ -1,3 +1,4 @@
+
 /**
  * Don't change the constante name as it'll impact on the component routing
  */
@@ -25,6 +26,9 @@ const routesMap = {
             Despesas: 'components/despesas',
             POC: 'components/uipoc',
             CreateButton: 'generics/button',
+            TabulatorComponent: './@still/vendors/tabulator/',
+            TUICalendarComponent: './@still/vendors/toast-ui/calendar/',
+            ViewComponent: './@still/component/super/',
         }
     },
 }
