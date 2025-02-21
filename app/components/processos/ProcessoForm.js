@@ -312,7 +312,7 @@ class ProcessoForm extends ViewComponent {
                                         <i class="material-icons">date_range</i> Data de Suspensão
                                     </span>
                                     <div class="form-line">
-                                        <input type="date" id="dataSuspensaoInput" (change)="updateDataSuspensao($event)" class="form-control date" (value)="dataSuspensao">
+                                        <input  (required)="true" type="date" id="dataSuspensaoInput" (change)="updateDataSuspensao($event)" class="form-control date" (value)="dataSuspensao">
                                     </div>
                                 </div>
                             </div>
@@ -323,7 +323,7 @@ class ProcessoForm extends ViewComponent {
                                     <i class="material-icons">date_range</i> Data de Encerramento
                                 </span>
                                 <div class="form-line">
-                                    <input type="date" id="dataEncerramentoInput" (change)="updateDataEncerramento($event)" class="form-control date" (value)="dataEncerramento">
+                                    <input  (required)="true" type="date" id="dataEncerramentoInput" (change)="updateDataEncerramento($event)" class="form-control date" (value)="dataEncerramento">
                                 </div>
                             </div>
                         </div>
@@ -380,8 +380,8 @@ class ProcessoForm extends ViewComponent {
             "clienteId": this.clienteId.value === "" ? null : this.clienteId.value,
             "gestorId": this.gestorId.value === "" ? null : this.gestorId.value,
             "contraParte": this.contraParte.value,
-            "dataRegisto": document.getElementById('dataRegistoInput').value,
-            "dataSuspensao": document.getElementById('dataSuspensaoInput').value,
+            "dataRegisto": document.getElementById('dataRegistoInput').value ?? '',
+            "dataSuspensao": document.getElementById('dataSuspensaoInput').value ?? '',
             "colaboradorIdSuspendeu": null,
             "dataEncerramento": document.getElementById('dataEncerramentoInput').value,
             "colaboradorIdEnderrou": null,
@@ -404,10 +404,10 @@ class ProcessoForm extends ViewComponent {
         if (isValidForm) {
             const idP = Router.data("ProcessoForm");
 
-            if (idP !== "") {
-                this.updateProcesso(payload)
-            } else {
+              if (idP === undefined || idP === null || idP === "") {
                 this.saveProcesso(payload)
+            } else {
+                this.updateProcesso(payload)
             }
         }else{
             AppTemplate.toast({status: 'warning', message: 'Por favor, preencha os campos obrigatórios'})
@@ -474,11 +474,11 @@ class ProcessoForm extends ViewComponent {
 
     updateProcesso(payload) {
 
-        console.log("estamos a editar o processo", payload)
+        const idP = Router.data("ProcessoForm");
 
         if (this.isValidInputForm()) {
             $still.HTTPClient.put(
-                `/api/v1/processo/${this.id.value}`,
+                `/api/v1/processo/${idP}`,
                 JSON.stringify(payload),
                 {
                     headers: {
@@ -543,8 +543,8 @@ class ProcessoForm extends ViewComponent {
 
     async stAfterInit() {
         const idP = Router.data("ProcessoForm");
-        await this.getListColaboradores();
-        await this.getListClientes();
+        this.getListColaboradores();
+        this.getListClientes();
 
         if (idP) {
             this.id = idP;
