@@ -267,6 +267,12 @@ class ClientForm extends ViewComponent {
 
     registerClient() {
         const routingData = Router.data('ClientForm');
+
+        console.log("routingData registerClient : ", JSON.stringify(routingData))
+
+        console.log("tipoClienteId registerClient CLIEND ID : ", this.tipoClienteId)
+        console.log("tipoClienteId registerClient NIF : ", this.nif.value)
+
         let tipoClientId = this.tipoClienteId.value;
         if ((!tipoClientId || tipoClientId == '') && routingData)
             tipoClientId = routingData?.tipo_id;
@@ -321,11 +327,14 @@ class ClientForm extends ViewComponent {
 
     updateClient(payload) {
 
+
+        console.log("payload do Update :::  ", JSON.stringify(payload))
+
         const tipoCliente = this.routingData.value.tipo;
         delete tipoCliente.created_at;
     
-        payload.id = Router.data("ClientForm");
-        //payload.tipo = tipoCliente;
+       const {id} = Router.data("ClientForm");
+       payload.id = id;
 
         $still.HTTPClient.put(
             '/api/v1/cliente',
@@ -358,7 +367,9 @@ class ClientForm extends ViewComponent {
         const routeData = Router.data('ClientForm');
         if (routeData) {
 
-            console.log("tipoId ", routeData)
+            console.log("tipoId ", JSON.stringify(routeData))
+            console.log("tipoId ", routeData.tipo)
+            console.log("tipoId ", routeData.tipo_id)
 
             const {
                 id, denominacao, tipo_id, nif, endereco, pessoa_contacto,

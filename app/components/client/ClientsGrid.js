@@ -20,7 +20,7 @@ class ClientsGrid extends ViewComponent {
   dataTableLabels = [
     { hozAlign: "center", editRow: true, icon: "<i class='fa fa-pen'></i>", width: 20 },
     /*{ hozAlign: "center", deleteRow: true, icon: "<i class='fa fa-trash'></i>", width: 20 },*/
-    { title: "Tipo Cliente", field: "tipo_id", sorter: "string", width: 200 },
+    { title: "Tipo Cliente", field: "tipo", sorter: "string", width: 200 },
     { title: "Nome", field: "denominacao", sorter: "string" },
     { title: "NIF", field: "nif", sorter: "string" },
     { title: "Endereco", field: "endereco", sorter: "string" },
@@ -149,7 +149,7 @@ class ClientsGrid extends ViewComponent {
               pessoa_contacto: item.pessoa_contacto,
               contacto_cobranca: item.contacto_cobranca,
               tipo: item.tipo.description,
-              tipo_id: item.tipo ? item.tipo.description : '-',
+              tipo_id: item.tipo ? item.tipo.id : '-',
               e_mail: item.e_mail,
               nota: item.nota,
               created_at: new Date(item.created_at)
