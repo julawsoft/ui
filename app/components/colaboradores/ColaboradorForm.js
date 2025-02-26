@@ -440,13 +440,10 @@ class ColaboradorForm extends ViewComponent {
             },
         };
 
-        console.log("Payload is: ", payload);
 
         const isValidForm = this.colaboradorForm.validate();
 
         if (isValidForm) {
-
-            console.log("isNotEmptyCedula ", this.isEditForm)
 
             if(!this.isNotEmptyCedula()) {
                 AppTemplate.toast({ status: 'Error', message: "N.º da Cédula é obrigatória."})

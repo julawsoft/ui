@@ -266,7 +266,6 @@ class ClientForm extends ViewComponent {
 
 
     registerClient() {
-
         const routingData = Router.data('ClientForm');
         let tipoClientId = this.tipoClienteId.value;
         if ((!tipoClientId || tipoClientId == '') && routingData)
@@ -283,14 +282,9 @@ class ClientForm extends ViewComponent {
             "nota": document.getElementById('clientNotaID').value,
             "status": "pending"
         }
-
-        console.log("payload ", payload)
-
-
         const isValidForm = this.clientForm.validate();
-
         if (isValidForm) {
-            if (!routingData) {
+                if (routingData === undefined || routingData === null || routingData === "") {
                 this.saveClient(payload);
             } else {
                 this.updateClient(payload);
@@ -329,7 +323,8 @@ class ClientForm extends ViewComponent {
 
         const tipoCliente = this.routingData.value.tipo;
         delete tipoCliente.created_at;
-        payload.id = this.routingData.value.id;
+    
+        payload.id = Router.data("ClientForm");
         //payload.tipo = tipoCliente;
 
         $still.HTTPClient.put(
