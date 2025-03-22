@@ -367,7 +367,7 @@ export class ProcessoDetalhes extends ViewComponent {
                     <a href="#tarefas" data-toggle="tab">Tarefas</a>
                 </li>
                 <li role="presentation">
-                    <a href="#precedentes" data-toggle="tab">Procedentes</a>
+                    <a href="#precedentes" data-toggle="tab">Associados</a>
                 </li>
                 <li role="presentation">
                     <a href="#anexos" data-toggle="tab">Anexos</a>

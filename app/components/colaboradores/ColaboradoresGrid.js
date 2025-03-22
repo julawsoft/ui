@@ -14,11 +14,10 @@ export class ColaboradoresGrid extends ViewComponent {
   dataTableLabels = [
     { hozAlign: "center", editRow: true, icon: "<i class='fa fa-pen'></i>", width: 20 },
     { hozAlign: "center", deleteRow: false, icon: "<i class='fa fa-trash'></i>", width: 20 },
-    { title: "Estado", field: "status", sorter: "string", width: 200 },
-    { title: "Tipo Colaborador", field: "description", sorter: "string", width: 200 },
-    { title: "Nome Completo", field: "nome_completo", sorter: "string" },
+    { title: "Estado", field: "status", sorter: "string", width: 100 },
     { title: "Nome Profissional", field: "nome_profissional", sorter: "string" },
-    { title: "Contacto", field: "contact_value", sorter: "string" },
+    { title: "Tipo Colaborador", field: "description", sorter: "string", width: 200 },
+    /* { title: "Contacto", field: "contact_value", sorter: "string" },*/
   ];
 
   template = `
@@ -86,7 +85,7 @@ export class ColaboradoresGrid extends ViewComponent {
   }
 
   goToColaboradorDetalhes(row, col, data) {
-    console.log(data.id);
+    console.log("<<<< <<<  ", data.id);
 
     Router.goto("ColaboradorDetalhes", {
       data: data.id
@@ -161,7 +160,7 @@ export class ColaboradoresGrid extends ViewComponent {
     }
 
     this.dataSource = colaboradorData
-    console.log(colaboradorData)
+    console.log(">>> <<< ", colaboradorData.contact_value)
 
   }
 
@@ -179,8 +178,7 @@ export class ColaboradoresGrid extends ViewComponent {
         AppTemplate.hideLoading();
         if (r.data) {
           console.log(r.data);
-          //this.dataSource = r.data;
-          this.dataTable.dataSource = r.data;
+          this.dataTable.dataSource = r.data
           //this.makeColaboradorDTO(r.data);
         }
       }

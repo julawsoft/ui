@@ -35,14 +35,15 @@ export class ProcessosGrid extends ViewComponent {
     { title: "Progresso", field: "progress", sorter: "30", hozAlign: "left", formatter: "progress" },
     { title: "Referência", field: "ref", sorter: "string" },
     { title: "Assunto", field: "assunto", sorter: "string" },
-    { title: "Área", field: "area", sorter: "string" },
+    /*{ title: "Área", field: "area", sorter: "string" },*/
     { title: "Instituição", field: "instituicao", sorter: "string" },
     { title: "Modo Facturação", field: "modo_facturacao", sorter: "string" },
     { title: "Cliente", field: "cliente", sorter: "string" },
     { title: "Gestor", field: "gestor", sorter: "string" },
     { title: "Data Cadastro", field: "data_registo", sorter: "string" },
-    { title: "Data Suspensão", field: "data_suspensao", sorter: "string" },
+    /*{ title: "Data Suspensão", field: "data_suspensao", sorter: "string" },
     { title: "Data Encerramento", field: "data_encerramento", sorter: "string" },
+     */
   ];
 
 

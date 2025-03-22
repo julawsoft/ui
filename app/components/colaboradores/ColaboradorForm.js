@@ -19,6 +19,7 @@ export class ColaboradorForm extends ViewComponent {
 
     identificacoes_bi;
     identificacoes_cedula;
+    identificacoes_passaporte;
     taxa_horaria;
 
     status = "Activo";
@@ -305,19 +306,47 @@ export class ColaboradorForm extends ViewComponent {
                             </div>
                         </div>
 
+
                         <div class="row clearfix">
                         <div class="col-md-6">
                                 <span class="input-group-addon">
                                 <i class="far fa-id-card"></i> Tipo de Identificação :
                                 </span>
                             <select>
-                                <option selected >Cédula OAA</option>
+                                <option selected >Passaporte </option>
                             </select>
                         </div>
                         <div class="col-md-6">
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                    <i class="far fa-id-card"></i>  N.º de Identificação :   </span>
+                                    <i class="far fa-id-card"></i>  N.º de Passaporte :   </span>
+                                    <div class="form-line">
+                                    <input 
+                                        id="identificacao_passaporte" 
+                                        type="text" 
+                                        class="form-control" 
+                                        (value)="identificacoes_passaporte" 
+                                        placeholder="n.º passaporte"
+                                    >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+
+
+                        <div class="row clearfix">
+                        <div class="col-md-6">
+                                <span class="input-group-addon">
+                                <i class="far fa-id-card"></i> Tipo de Identificação :
+                                </span>
+                            <select>
+                                <option selected >Cédula Ordem</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                    <i class="far fa-id-card"></i>  N.º de Cédula Ordem :   </span>
                                     <div class="form-line">
                                     <input 
                                         id="identificacao_cedula" 
@@ -433,6 +462,10 @@ export class ColaboradorForm extends ViewComponent {
                 {
                     "tipo": 1,
                     "valor": this.identificacoes_bi.value,
+                },
+                {
+                    "tipo": 2,
+                    "valor": this.identificacoes_passaporte.value,
                 }
             ],
 
@@ -443,7 +476,9 @@ export class ColaboradorForm extends ViewComponent {
             },
         };
 
-        console.log("Payload is: ", payload);
+        console.log("Payload is: >>>>>>>>>>>> ", payload);
+
+        return 0
 
         const isValidForm = this.colaboradorForm.validate();
 

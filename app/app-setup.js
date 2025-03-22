@@ -7,18 +7,12 @@ import { ProcessoForm } from "./components/processos/ProcessoForm.js";
 
 export class StillAppSetup extends StillAppMixin(Components) {
 
-
     constructor() {
-
-        console.log("O Setup da App... ", Home)
-
-        return 0
-
         super();
         this.setHomeComponent(Home);
         this.setServicePath('/services');
-        StillHTTPClient.setBaseUrl('http://5.252.53.178:3000');
-        //StillHTTPClient.setBaseUrl('http://localhost:3000');
+        // StillHTTPClient.setBaseUrl('http://5.252.53.178:3000');
+        StillHTTPClient.setBaseUrl('http://localhost:3000');
 
         this.configurePrefetch();
         this.runPrefetch();

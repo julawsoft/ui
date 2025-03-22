@@ -4,6 +4,7 @@ export class ClientsGrid extends ViewComponent {
 
   htmlRefId = "clientDataTable";
   dataSource;
+  clientType;
 
   /** 
    * @Proxy
@@ -67,6 +68,49 @@ export class ClientsGrid extends ViewComponent {
             <h2><strong>Cliente </strong>Cadastrados</h2>
             </div>
             <div class="body">
+
+
+
+            <div class="col-md-4">
+            <div class="input-group">
+                <div class="input-field col s12">
+                    <span class="input-group-addon">
+                        <i class="material-icons">person</i> Tipo Empresa
+                    </span>
+                    <select
+                        (required)="false"
+                        (value)="clientType"
+                        (change)="changeEmpresaFiltro($event)" 
+                        (forEach)="clientType"
+                        id="tipoEmpresaId"
+                        >                     
+                        <option each="item" value="">Selecione uma opção</option>
+                        <option each="item" value="{item.id}">{item.value}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+        <div class="input-group">
+            <div class="input-field col s12">
+                <span class="input-group-addon">
+                    &nbsp;
+                </span>
+                <st-element
+                    label="Pesquisar"
+                    iconName="search"
+                    color="bg-blue"
+                    component="CreateButton"
+                    (onClick)="getEmpresasFilter()"
+                >
+            </div>
+        </div>
+    </div>
+
+
+
+
             <div  (showIf)="self.isNotEmptyData">
             <div class="table-responsive">
                 <st-element
@@ -122,6 +166,11 @@ export class ClientsGrid extends ViewComponent {
     });
   }
 
+  changeEmpresaFiltro(event) {
+
+    console.log("Mudou o filtro de empresa ", event)
+  }
+
   async onRender() {
     /** For Test purpose only */
     await this.stLazyExecution(async () => {
@@ -135,7 +184,74 @@ export class ClientsGrid extends ViewComponent {
     });
   }
 
+  getEmpresasFilter() {
+
+    const tipoEmpresaId = document.getElementById("tipoEmpresaId").value;
+    console.log("Filtrar empresas ", tipoEmpresaId);
+    
+    $still.HTTPClient.get(`/api/v1/cliente_type/${tipoEmpresaId}`).then(
+      (r) => {
+        if (r.data) {
+
+          console.log("dados da empresa", r.data)
+
+          this.isNotEmptyData = true;
+          this.isEmptyData = false;
+          let clieteDTO = r.data.map((item) => {
+            return {
+              id: item.id,
+              denominacao: item.denominacao,
+              nif: item.nif,
+              endereco: item.endereco,
+              pessoa_contacto: item.pessoa_contacto,
+              contacto_cobranca: item.contacto_cobranca,
+              tipo: item.tipo.description,
+              tipo_id: item.tipo ? item.tipo.description : '-',
+              e_mail: item.e_mail,
+              nota: item.nota,
+              created_at: new Date(item.created_at)
+                .toLocaleString("PT")
+                .substring(0, 10)
+            };
+          });
+          this.dataSource = clieteDTO;
+          this.dataTable.dataSource = clieteDTO;
+      
+        
+          AppTemplate.hideLoading();
+        } else {
+          
+          console.log("dados da  do else", r.data)
+
+          this.dataSource = []
+          this.isNotEmptyData = false;
+          this.isEmptyData = true;
+          AppTemplate.hideLoading();
+        }
+      }
+    ).catch(e => {
+      AppTemplate.toast({ status: 'Erro', message: e })
+      AppTemplate.hideLoading();
+    })
+
+
+
+  }
+
   stAfterInit(val) {
+
+    this.clientType = [
+      { value: 'Empresa', id: 1 },
+      { value: 'Particular', id: 2 },
+      { value: 'Ministério', id: 3 },
+      { value: 'Instituto Público', id: 4 },
+      { value: 'Associação', id: 5 },
+      { value: 'Outro', id: 6 }
+  ];
+
+  console.log("tipo empresa" , this.clientType)
+
+
     $still.HTTPClient.get("/api/v1/cliente/").then((r) => {
       try {
         let dataResponse = r.data;
