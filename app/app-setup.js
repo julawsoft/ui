@@ -10,6 +10,10 @@ export class StillAppSetup extends StillAppMixin(Components) {
 
     constructor() {
 
+        console.log("O Setup da App... ", Home)
+
+        return 0
+
         super();
         this.setHomeComponent(Home);
         this.setServicePath('/services');
