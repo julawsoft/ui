@@ -38,7 +38,13 @@ export const stillRoutesMap = {
             CreateButton: 'components/generics/button',
             TopNavBar: 'components/navbar',
             Menu: 'components/main-menu',
-            ProcessoTimeSheet: 'components/processos'
+            ProcessoTimeSheet: 'components/processos',
+            TimesheetForm: 'components/timesheets',
+            TimesheetsGrid: 'components/timesheets',
+            MeusTimesheetsGrid: 'components/timesheets',
+            HonorarioForm: 'components/honorarios',
+            HonorariosGrid: 'components/honorarios',
+            MeusHonorariosGrid: 'components/honorarios',
         }
     },
 }

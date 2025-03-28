@@ -37,6 +37,16 @@ export class Menu extends ViewComponent {
   /** @Prop */
   canListDespesas = true;
 
+    /** @Prop */
+    canCreateHonorarios = true;
+    /** @Prop */
+    canListHonorarios = true;
+
+    /** @Prop */
+    canListTimeSheet = true;
+  /** @Prop */
+  canCreateTimeSheet = true;
+
   template = `
   <aside id="leftsidebar" class="sidebar" style="padding: 0">
     <ul class="menu-julaw">
@@ -94,6 +104,33 @@ export class Menu extends ViewComponent {
                   </li>
             </ul>
       </li>
+
+      <li class="menu-item-julaw">
+        <a href="#" class="item-menu"><i class='far fa-calendar-alt'></i> TimeSheet</a>
+        <ul class="submenu">
+            <li (renderIf)="self.canCreateTimeSheet"><a href="#" (click)="gotoView('TimesheetForm')"> Registar </a>
+            </li>          
+            <li (renderIf)="self.canListTimeSheet"><a href="#"  (click)="gotoView('TimesheetsGrid')"> Geral </a>
+            </li>
+            <li><a href="#"  (click)="gotoView('MeusTimesheetsGrid')"> Meus TimeSheets</a>
+            </li>
+          </ul>
+        </li>
+
+
+      <li class="menu-item-julaw">
+        <a href="#" class="item-menu"><i class="fas fa-money-check-alt"></i> Honorários</a>
+        <ul class="submenu">
+          <li (renderIf)="self.canCreateHonorarios"><a href="#" (click)="gotoView('HonorarioForm')"> Registar </a>
+          </li>
+          <li (renderIf)="self.canListHonorarios"><a href="#"  (click)="gotoView('HonorariossGrid')"> Listar</a>
+          </li>
+          <li><a href="#"  (click)="gotoView('MeusHonorariossGrid')"> Meus Honorários</a>
+          </li>
+        </ul>
+      </li>
+
+
       <li (renderIf)="self.devProfile" class="menu-item-julaw">
             <a href="#" class="item-menu"><i class="fas fa-user"></i> POC</a>
             <ul class="submenu">
@@ -146,6 +183,12 @@ export class Menu extends ViewComponent {
 
     this.canCreateColaborador = this.roles.includes('CAN_CREATE_COLABORADOR');
     this.canListColaborador = this.roles.includes('CAN_SEE_COLABORADOR_LIST');
+
+    this.canCreateHonorarios = this.roles.includes('CAN_CREATE_HONORARIOS');
+    this.canListHonorarios = this.roles.includes('CAN_LIST_HONORARIOS');
+
+    this.canListTimeSheet = this.roles.includes('CAN_LIST_TIMESHEET');
+    this.canCreateTimeSheet = this.roles.includes('CAN_CREATE_TIMESHEET');
 
     if (this.userFuncao !== "cliente") {
       this.canSeeHomePage = true;
