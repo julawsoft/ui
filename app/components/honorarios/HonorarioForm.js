@@ -30,7 +30,7 @@ export class HonorarioForm extends ViewComponent {
         <div class="row clearfix">
             <div class="title-grid-component" style="display: flex">
                 <span class="fas fa-user title-grid-component-icon"></span>    
-                <h3>Novo Cliente</h3>
+                <h3> Novo Cliente - Honorario </h3>
             </div>
 
             <div 

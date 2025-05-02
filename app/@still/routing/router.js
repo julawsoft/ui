@@ -48,6 +48,9 @@ export class Router {
      * @param {{data, path}} param1 
      */
     static goto(cmp, { data = {} } = { data: {} }) {
+
+        console.log("log do goto router.js", cmp);
+
         Router.initRouting = false;
         Components.setRemovingPartsVersionId($still.context.currentView?.versionId);
         /**

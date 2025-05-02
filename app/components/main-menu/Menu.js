@@ -123,9 +123,9 @@ export class Menu extends ViewComponent {
         <ul class="submenu">
           <li (renderIf)="self.canCreateHonorarios"><a href="#" (click)="gotoView('HonorarioForm')"> Registar </a>
           </li>
-          <li (renderIf)="self.canListHonorarios"><a href="#"  (click)="gotoView('HonorariossGrid')"> Listar</a>
+          <li (renderIf)="self.canListHonorarios"><a href="#"  (click)="gotoView('HonorariosGrid')"> Listar</a>
           </li>
-          <li><a href="#"  (click)="gotoView('MeusHonorariossGrid')"> Meus Honorários</a>
+          <li><a href="#"  (click)="gotoView('MeusHonorariosGrid')"> Meus Honorários</a>
           </li>
         </ul>
       </li>
