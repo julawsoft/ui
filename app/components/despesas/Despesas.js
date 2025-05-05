@@ -54,201 +54,86 @@ export class Despesas extends ViewComponent {
     processoService;
 
     template = `
-    <section class="content">
-        <div class="body">
+    <section class="content p-4">
+    
+        <div class="container-fluid">
 
+        <div class="d-flex flex-end">
+        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Library</li>
+          </ol>
+        </nav>
+      </div>
+
+
+
+         <div class="card">
+
+            <div class="card-header p-2 mb-2">
+                
             <form id="client_wizard_with_validation" (formRef)="filtroForm" onsubmit="javascript: return false;">
-                <!-- <h3>Da</h3> -->
-                <fieldset>
-                    <h2 class="card-inside-title">Filtrar por cliente e/ou processo</h2>
-                    <div class="row clearfix">
+            <!-- <h3>Da</h3> -->
+            <fieldset>
 
-                        <div class="col-md-3">
+                <h5 class="card-inside-title">Filtrar por cliente e/ou processo</h5>
 
-                            <st-element
-                                label="Novo registo"
-                                iconName="add_circle"
-                                component="CreateButton"
-                                (onClick)="goToDespesasForm()"
-                            >
-
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="input-group">
-                                <div class="input-field col s12">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">person</i> Cliente
-                                    </span>
-                                    <select
-                                        (required)="true"
-                                        (value)="nomeClienteFiltro"
-                                        (change)="setNomeClienteFiltro($event)" 
-                                        (forEach)="clientList"
-                                           id="clienteId"
-                                        >
-                                     
-                                        <option each="item" value="">Selecione uma opção</option>
-                                        <option each="item" value="{item.id}">{item.descricao}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <div class="input-field col s12">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">folder</i> Processo
-                                    </span>
-                                    <select Dados Pessoais
-                                        (required)="true"
-                                        (value)="numProcessoFiltro"
-                                        (change)="setNumProcessoFiltro($event)" 
-                                        (forEach)="listProcesso"
-                                           id="processoId"
-                                        >
-                                        <option each="item" value="">Selecione uma opção</option>
-                                        <option each="item" value="{item.id}">{item.numero}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-2">
-                            <div class="input-group">
-                                <div class="input-field col s12">
-                                    <span class="input-group-addon">
-                                        &nbsp;
-                                    </span>
-                                    <st-element
-                                        label="Pesquisar"
-                                        iconName="search"
-                                        color="bg-blue"
-                                        component="CreateButton"
-                                        (onClick)="getDespesaFilter()"
+                <div class="row">
+                    <div class="col-md-4">
+                               <label>Cliente</label>
+                                <select
+                                    (required)="true"
+                                    class="form-control"
+                                    (value)="nomeClienteFiltro"
+                                    (change)="setNomeClienteFiltro($event)" 
+                                    (forEach)="clientList"
+                                       id="clienteId"
                                     >
-                                </div>
-                            </div>
-                        </div>
-
+                                 
+                                    <option each="item" value="">Selecione uma opção</option>
+                                    <option each="item" value="{item.id}">{item.descricao}</option>
+                                </select>
                     </div>
-                </fieldset>
-            </form>
 
-            <form  
-                (showIf)="self.createFormVisible"
-                (formRef)="despesaForm" 
-                onsubmit="javascript: return false;">
-                <!-- <h3>Da</h3> -->
-                <fieldset>
-                    <h2 class="card-inside-title">Cadastro de nova despesa</h2>
-                    <div class="row clearfix">
-
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <div class="input-field col s12">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">person</i> Cliente
-                                    </span>
-                                    <select
-                                        (required)="true"
-                                        (value)="nomeCliente"
-                                        (change)="setNomeCliente($event)" 
-                                        (forEach)="clientList">
-                                        <option each="item" value="">Selecione uma opção</option>
-                                        <option each="item" value="{item.id}">{item.descricao}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <div class="input-field col s12">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">folder</i> Processo
-                                    </span>
-                                    <select
-                                        (required)="true"
-                                        (value)="numeroProcesso"
-                                        (change)="setNumeroProcesso($event)"
-                                        (forEach)="listProcesso">
-                                        <option each="item" value="">Selecione uma opção</option>
-                                        <option each="item" value="{item.id}">{item.numero}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <div class="input-field col s12">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">vertical_align_center</i> Tipo Movimento
-                                    </span>
-                                    <select
-                                        (required)="true"
-                                        (value)="tipoMovimento"
-                                        (change)="setTipoMovimento($event)"
-                                        (forEach)="tipoMovimentos"
-                                    >
-                                        <option each="item" value="">Selecione uma opção</option>
-                                        <option each="item" value="{item.id}">{item.name}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <div class="input-field col s12">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">monetization_on</i> Valor
-                                    </span>
-                                    <input type="text" (value)="valorDespesa">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <div class="input-field col s12">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">monetization_on</i> Data
-                                    </span>
-                                    <input 
-                                        type="date"
-                                        id="dataDespesa"
-                                        (value)="dataDespesa"
-                                        >
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <span class="input-group-addon">&nbsp;</span>
-                            <span class="input-group-addon">&nbsp;</span>
-                            <st-element
-                                label="Salvar"
-                                iconName="save"
-                                component="CreateButton"
-                                (onClick)="saveNewDespesa()"
+                    <div class="col-md-3">
+                            <label>Processo</label>
+                            <select
+                                (required)="true"
+                                class="form-control"
+                                (value)="numProcessoFiltro"
+                                (change)="setNumProcessoFiltro($event)" 
+                                (forEach)="listProcesso"
+                                id="processoId"
                             >
-                        </div>
-
+                                    <option each="item" value="">Selecione uma opção</option>
+                                    <option each="item" value="{item.id}">{item.numero}</option>
+                            </select>
                     </div>
-                </fieldset>
-            </form>
 
+                    <div class="col-md-2" style="display: flex;
+                                                justify-content: center;
+                                                align-items: center;
+                                                margin-top: 20px;">
+                        <button class="btn btn-primary" type="submit" (click)="getDespesaFilter()">
+                            Filtrar
+                            <i class="bi bi-funnel"></i>
+                        </button>       
+                    </div>
+
+                </div>
+            </fieldset>
+        </form>   
+            </div>
+
+        <div class="card-body">
+            <st-element 
+                component="@tabulator/TabulatorComponent"
+                tableHeader="parent.dataTableLabels"
+                proxy="despesasTableProxy"
+            >
         </div>
-
-        <st-element 
-            component="@tabulator/TabulatorComponent"
-            tableHeader="parent.dataTableLabels"
-            proxy="despesasTableProxy"
-        >
-
+    </div>
     </section>
     `;
 

@@ -185,7 +185,7 @@ export class Template {
 
         const uuid = Template.getToastId();
 
-        const content = `
+       const content = `
             <div class="still-toast">
                 <div class="still-toast-content">
                     <i class="fas fa-solid fa-check check"></i>
@@ -198,7 +198,9 @@ export class Template {
                 <div class="still-toast-progress"></div>
             </div>
         `;
+        
 
+       // const content = ``;
         document.body.insertAdjacentHTML('beforebegin', content);
 
     }

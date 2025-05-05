@@ -21,14 +21,33 @@ export class ColaboradoresGrid extends ViewComponent {
   ];
 
   template = `
-    <section class="content">
-          <div class="row clearfix">
+  <section class="content p-4">
+    
+  <div class="container-fluid">
+
+  <div class="d-flex flex-end">
+  <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Library</li>
+    </ol>
+  </nav>
+</div>
+
+
+    <div class="card mb-4 p-2">        
+      <div class="row">
+        <div class="col-md-4">
+            <button (click)="gotoView('ColaboradorForm')" type="button" class="btn btn-primary m-t-15 waves-effect">Novo</button>
+        </div>
+      </div>
+    </div>
+
+
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div>
-                    <button (click)="gotoView('ColaboradorForm')" type="button" class="btn btn-primary m-t-15 waves-effect">Novo</button>
-                </div>
+               
                 <div class="card">
-                    <div class="header" 
+                    <div class="card-header" 
                         style="display: flex;
                         justify-content: space-between;
                     ">
@@ -39,7 +58,7 @@ export class ColaboradoresGrid extends ViewComponent {
                             <!-- <span class="far fa-file-pdf"></span> -->                    
                         </div>
                     </div>
-                    <div class="body">
+                    <div class="card-body">
                         <div class="body table-responsive">
                           <st-element
                             component="@tabulator/TabulatorComponent"

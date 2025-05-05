@@ -3,33 +3,13 @@ import { BaseComponent } from "../../@still/component/super/BaseComponent.js";
 export class Home extends BaseComponent {
 
   template = `
-    <section class="content">
-        
-            <div class="container-fluid">
-                <!-- Dashboard Widgets -->
-                <div id="dashBoardCards" class="row"></div>
-
-                <div class="row">
-                  <st-element component="BarChart"></st-element>
-                  <st-element 
-                    component="LineChart"
-                    ref="HomeLineChart"
-                  ></st-element>
-                </div>
-
-                <div class="row clearfix">
-                  <st-element component="CircularAnimatedChart"></st-element>
-                </div>
-                
-                <div class="row clearfix">
-                  <st-element component="ProjectGrid"></st-element>
-                  <st-element component="Calendar"></st-element>
-                </div>
-                
-            </div>
-        
-    </section>
-    `;
+    <main class="content p-4">
+      <div class="container-fluid">
+        <h1>Dashboard</h1>
+        <p class="lead">Conteúdo principal aqui.</p>
+      </div>
+    </main>
+  `;
 
 
 

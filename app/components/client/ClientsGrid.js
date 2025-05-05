@@ -33,83 +33,73 @@ export class ClientsGrid extends ViewComponent {
 
 
   template = `
-    <section class="content">
-        <br>
-        <div class="block-header">
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                        
-                    <st-element
-                        component="CreateButton"
-                        (onClick)="gotoCreateCliente()"
-                    >
+  <section class="content p-4">
+    
+  <div class="container-fluid">
 
-                    <ul class="breadcrumb breadcrumb-style" style="
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        padding: 5px;"
-                    >
-                        <li class="breadcrumb-item 	bcrumb-1">
-                            <a href="/">
-                                <i class="material-icons">home</i>
-                                Home
-                            </a>
-                        </li>
-                        <li class="breadcrumb-item bcrumb-1 active">Cliente</li>
-                        <li class="breadcrumb-item active">Lista de Clientes</li>
-                    </ul>
-                </div>
+  <div class="d-flex flex-end">
+  <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Library</li>
+    </ol>
+  </nav>
+</div>
+
+
+        <div class="card mb-4 p-2">        
+            <div class="row">
+              <div class="col-md-4">
+                <label>Cliente</label>
+                <select
+                class="form-control"
+                (required)="false"
+                (value)="clientType"
+                (change)="changeEmpresaFiltro($event)" 
+                (forEach)="clientType"
+                id="tipoEmpresaId"
+                >                     
+                  <option each="item" value="">Selecione uma opção</option>
+                  <option each="item" value="{item.id}">{item.value}</option>
+                </select>
+              </div>
+
+              <div class="col-md-4">
+              <label>Tipo de Empresa</label>
+
+              <select
+              (required)="false"
+              class="form-control"
+              (value)="clientType"
+              (change)="changeEmpresaFiltro($event)" 
+              (forEach)="clientType"
+              id="tipoEmpresaId"
+              >                     
+              <option each="item" value="">Selecione uma opção</option>
+              <option each="item" value="{item.id}">{item.value}</option>
+          </select>
+
+            </div> 
+           
+            <div class="col-md-2" style="display: flex;
+              justify-content: center;
+              align-items: center;
+              margin-top: 20px;">
+              <button class="btn btn-primary" type="submit" (click)="getEmpresasFilter()">
+                Filtrar
+                <i class="bi bi-funnel"></i>
+              </button>       
             </div>
+          </div>
         </div>
+
+
 
         <div class="card">
-            <div class="header">
+            <div class="card-header">
             <h2><strong>Cliente </strong>Cadastrados</h2>
-            </div>
-            <div class="body">
 
-
-
-            <div class="col-md-4">
-            <div class="input-group">
-                <div class="input-field col s12">
-                    <span class="input-group-addon">
-                        <i class="material-icons">person</i> Tipo Empresa
-                    </span>
-                    <select
-                        (required)="false"
-                        (value)="clientType"
-                        (change)="changeEmpresaFiltro($event)" 
-                        (forEach)="clientType"
-                        id="tipoEmpresaId"
-                        >                     
-                        <option each="item" value="">Selecione uma opção</option>
-                        <option each="item" value="{item.id}">{item.value}</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-2">
-        <div class="input-group">
-            <div class="input-field col s12">
-                <span class="input-group-addon">
-                    &nbsp;
-                </span>
-                <st-element
-                    label="Pesquisar"
-                    iconName="search"
-                    color="bg-blue"
-                    component="CreateButton"
-                    (onClick)="getEmpresasFilter()"
-                >
-            </div>
-        </div>
-    </div>
-
-
-
+        <div class="card-body">
 
             <div  (showIf)="self.isNotEmptyData">
             <div class="table-responsive">
@@ -131,6 +121,7 @@ export class ClientsGrid extends ViewComponent {
             </div>
           </div>
             </div>
+        </div>
         </div>
 
     </section>

@@ -216,7 +216,7 @@ class ProcessoService {
     }
     async getHonorarios() {
         const response = await $still.HTTPClient.get(
-            `/api/v1/processo_factura/${id}`
+            `/api/v1/processo_factura/`
         );
         return response?.data;
     }

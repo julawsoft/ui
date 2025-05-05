@@ -48,10 +48,20 @@ export class ProcessosGrid extends ViewComponent {
 
 
   template = `
-  <section class="content">
+  <main class="content p-4">
+      <div class="container-fluid">
 
-  <br />
-  <div class="block-header">
+      <div class="d-flex flex-end">
+        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Library</li>
+          </ol>
+        </nav>
+      </div>
+
+
+  <div class="">
       <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <div>
@@ -68,34 +78,29 @@ export class ProcessosGrid extends ViewComponent {
           </span>
           </button>
       </span>   
-
-              <ul class="breadcrumb breadcrumb-style" style="
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 5px;">
-                  <li class="breadcrumb-item 	bcrumb-1">
-                      <a href="/">
-                          <i class="material-icons">home</i>
-                          Home</a>
-                  </li>
-                  <li class="breadcrumb-item bcrumb-1 active">Processo</li>
-                  <li class="breadcrumb-item active">Lista dos Processos</li>
-              </ul>
+           
           </div>
       </div>
   </div>
 
-  <div class="row clearfix">
+
+
+  <div class="row clearfix mt-4">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card p-2 mb-2">
+          <h6>Para os filtros</h6>    
+        </div>
+      </div>
+
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="card">
-              <div class="header">
+              <div class="card-header">
                   <h2><strong>Lista </strong>Geral dos Processos</h2>
                   <p style="font-size: 12px">Encontre aqui, todos os processos</p>
         <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">        
        
-              <div class="body">
+              <div class="card-body">
                 <div  (showIf)="self.isNotEmptyData">
                   <div class="table-responsive">
                       <st-element component="@tabulator/TabulatorComponent" 
@@ -107,7 +112,7 @@ export class ProcessosGrid extends ViewComponent {
                       </st-element>
                   </div>
                 </div>
-                <div  (showIf)="self.isEmptyData">
+                <div (showIf)="self.isEmptyData">
                   <div class="alert alert-warning">
                     <p  style="color: #555"><strong>Atenção!</strong> Nenhum processo encontrado.</p>&nbsp;<a href="#" (click)="gotoView('ProcessoForm')">Crie aqui um</a>
                   </div>
@@ -116,7 +121,9 @@ export class ProcessosGrid extends ViewComponent {
           </div>
       </div>
   </div>
-</section>
+</div>
+</div>
+</main>
     `;
 
   constructor() {
