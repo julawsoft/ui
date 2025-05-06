@@ -1,6 +1,6 @@
 import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
 
-export class TimesheetForm extends ViewComponent {
+export class ProcessoTimeSheet extends ViewComponent {
 
   id;
   referencia;
@@ -13,115 +13,115 @@ export class TimesheetForm extends ViewComponent {
   processoId;
   userLoggedIn;
 
-  clienteId;
-
-  listColaboradores;
-  listPrecedentes;
-
 
   /** @Proxy @type { TUICalendarComponent } */
-  calendarRegisterTimeSheetProxy;
+  calendarProxy;
+
 
   template = `  <section class="content p-4">
     
   <div class="container-fluid">
 
-    <div class="d-flex flex-end">
-      <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Library</li>
-        </ol>
-      </nav>  
-    </div>
+  <div class="d-flex flex-end">
+  <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Library</li>
+    </ol>
+  </nav>  
+</div>
 
 
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <h2>Registo das Actividades</h2>
-        <p style="font-size: 12px">Cadastre aqui uma intervenções no Processo</p>
-    </div>
-
-
-
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <h2>Registo das Actividades</h2>
+          <p style="font-size: 12px">Registo das intervenções no Processo</p>
+        </div>
+      </div>
+      
+    </div>  
     <div class="row">
-        <div class="col-3">
-            <div class="card">
-              <div class="card-header">Detalhes</div>
-              <div class="card-body">
-              <div id="mail-nav">
-    
-                <div style="margin-bottom: 5px">
-                  <label>Processos</label>
-                    <select 
-                        class="form-control"
-                        id="processoAssociadoInput" 
-                        (change)="updatePrecedentes($event)" 
-                        (forEach)="listPrecedentes">
-                    <option each="item" value="">Selecione uma opção</option>
-                    <option each="item" value="{item.id}">{item.descricao}</option>
-                    </select>
-                </div>
-    
-                <div style="margin-bottom: 5px">
-                  <label>Clientees</label>
-                  <select 
-                    class="form-control"
-                    id="processoAssociadoInput" 
-                    (change)="updateClientes($event)" 
-                    (forEach)="listColaboradores">
-                    <option each="item" value="">Selecione uma opção</option>
-                    <option each="item" value="{item.id}">{item.descricao}</option>
-                </select>
-                </div>
-               
-                </div>
-            </div>
-
-            <div class="card-footer">
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <div class="card">
+          <div class="card-body">
+            <div id="mail-nav">
+  
               <div style="margin-bottom: 5px">
-                <div style="font-weight: bold;">Colaborador</div>
-                 <div>
-                  <span id="colaboradorInputId"></span>
-                  <p style="font-size: 12px" id="colaboradorInputFuncao"></p>
+                <div style="font-weight: bold;">Referêcia do Processo</div>
+                <div><input id="input_referencia" (value)="referencia" style="border: none; background-color: #d3d3d3;" readonly="true" /></div>
+              </div>
+  
+              <div style="margin-bottom: 5px">
+                <div style="font-weight: bold;">Assunto</div>
+                <div><input id="input_assunto" (value)="assunto" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
+              </div>
+  
+              <div style="margin-bottom: 5px">
+                <div style="font-weight: bold;">Modo de Facturação</div>
+                <div><input id="input_modo_facturacao" (value)="modo_facturacao" style="border: none; background-color: #f5f5f5;" readonly="true" />
                 </div>
               </div>
-
+  
               <div style="margin-bottom: 5px">
-                <div style="font-weight: bold;">Total de Horas</div>
-                  <div>
-                     <i class="bi bi-clock"></i></i> <span id="horasInputId"> 0 </span> horas
-                  </div>
-                </div>
+                <div style="font-weight: bold;">Cliente</div>
+                <div><input id="input_cliente" (value)="cliente" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
+              </div>
+  
+              <div style="margin-bottom: 5px">
+                <div style="font-weight: bold;">Gestor do Processo</div>
+                <div><input id="input_gestor" (value)="gestor" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
+              </div>
+  
+            </div>
+            
+          </div>
+        </div>
+
+        <div class="card">
+        <div class="card-body">
+          <div id="mail-nav" style="background-color: #fafafa">
+
+            <div style="margin-bottom: 5px">
+              <div style="font-weight: bold;">Colaborador</div>
+              <div>
+                <span id="colaboradorInputId"></span>
+                <p style="font-size: 12px" id="colaboradorInputFuncao"></p>
               </div>
             </div>
 
+            <div style="margin-bottom: 5px">
+              <div style="font-weight: bold;">Total de Horas</div>
+              <div>
+                <i class="bi bi-clock"></i></i> <span id="horasInputId"> 0 </span> horas
+              </div>
+            </div>
+
+            </div>
+
+        </div>
       </div>
 
-        
-        <div class="col-9">
-          <div class="card">
-            <div class="card-header"></div>
-            <div class="card-body">
-              <div style="positon: relative">
-                <st-element
-                  component="@toast-ui/calendar/TUICalendarComponent"
-                  (onEventCreate)="saveRegisterTimeSheetEvent()"
-                  editLabel="Editar"
-                  milestoneTitle="Objectivo"
-                  (onEventUpdate)="updateEvent()"
-                  (onEventDeletion)="deleteEvent()"
-                  proxy="calendarRegisterTimeSheetProxy"
-                >
-                </st-element> 
-              </div>
-            
-            </div>
-            <div class="card-footer"></div>
-          </div>
-        </div>    
+      </div>
+         
+      <div class="col-9">
+            <div style="positon: relative">
+            <st-element
+              component="@toast-ui/calendar/TUICalendarComponent"
+              (onEventCreate)="saveEvent()"
+              editLabel="Editar"
+              milestoneTitle="Objectivo"
+              (onEventUpdate)="updateEvent()"
+              (onEventDeletion)="deleteEvent()"
+              proxy="calendarProxy"
+              >
+            </st-element> 
+        </div>
+        </div>
+      </div>
     </div>
-
-    
+    </div>
+    </div>  
+  
+  
     </div>
   </section>
     `;
@@ -141,7 +141,7 @@ export class TimesheetForm extends ViewComponent {
     // horasInputId
 
     if (data) {
-      this.calendarRegisterTimeSheetProxy.addNewEvents(
+      this.calendarProxy.addNewEvents(
         data.map((item) => {
           console.log(item);
           totalHours += parseFloat(item.horas)
@@ -198,19 +198,17 @@ export class TimesheetForm extends ViewComponent {
       this.userLoggedIn = JSON.parse(localStorage.getItem("_user"));
       console.log(this.userLoggedIn);
 
-      this.getListPrecedentes()
-      this.getListColaboradores()
-
       document.getElementById('colaboradorInputId').innerHTML = this.userLoggedIn.value.nome_completo;
       document.getElementById('colaboradorInputFuncao').innerHTML = this.userLoggedIn.value.tipo.description;
 
       const routeData = Router.data("ProcessoTimeSheet");
       this.processoId = routeData
 
-      // this.init()
+      this.init()
     } catch (e) {
       console.log("fn populates attributes", e);
     }
+
 
   }
 
@@ -238,22 +236,16 @@ export class TimesheetForm extends ViewComponent {
     }
   }
 
-  async saveRegisterTimeSheetEvent(data) {
+  async saveEvent(data) {
 
     if (this.userLoggedIn.value.id === "")
       alert("Nenhum Colaborador definido.")
-
-
-    console.log(">>>> processo >>> ", parseInt(this.processoId.value))
-    console.log(">>>> cliente >>> ", parseInt(this.clienteId.value))
-
 
     let horasCalculadas = (data.end.d.d - data.start.d.d) / 3600000
 
     let payload = {
       tipoEventoId: data.calendarId = 'entrevista' ? 1 : 2,
-      processoId: 2  ,//parseInt(this.processoId.value),   para  testes
-      clienteId: null,
+      processoId: parseInt(this.processoId.value),
       descricao: data.title,
       dadosImportantes: JSON.stringify(data),
       dataInicio: data.start.d.d,
@@ -261,9 +253,6 @@ export class TimesheetForm extends ViewComponent {
       horas: horasCalculadas.toFixed(2),
       colaboradorId: this.userLoggedIn.value.id
     };
-
-    console.log("payload a ser enviada" , payload)
-    AppTemplate.showLoading();
 
     let response = await $still.HTTPClient.post(
       "/api/v1/processo_time_sheets",
@@ -279,17 +268,21 @@ export class TimesheetForm extends ViewComponent {
       return false
     } else {
 
+      // const eventData = {
+      //   ...data,
+      //   start: data.start.d.d,
+      //   end: data.end.d.d,
+      // };
+
+      // console.log(">>>> ", this.calendarProxy)
+
+      // this.calendarProxy.on('load', () => {
+      //   this.calendarProxy.addNewEvents(eventData);
+      // });
+
+      //this.calendarProxy.addNewEvents(eventData);
+      //this.init()
       this.updateHorasColaborador(true, horasCalculadas)
-      setTimeout(() => {
-        
-        AppTemplate.hideLoading();
-        AppTemplate.toast({ status: 'Sucesso', message: 'TimeSheet salvo com sucesso!' })
-        Router.goto("MeusTimesheetsGrid", {
-            data: [],
-        });
-
-      }, 2000)
-
       return true
     }
 
@@ -363,7 +356,7 @@ export class TimesheetForm extends ViewComponent {
       return false
     } else {
       console.log("Alterações feita com sucesso");
-      //this.calendarRegisterTimeSheetProxy.clearGrid()
+      //this.calendarProxy.clearGrid()
       //this.init()
       if (isChanged)
         this.updateHorasColaborador(isPlus, horasPlus)
@@ -398,58 +391,6 @@ export class TimesheetForm extends ViewComponent {
       return true
     }
 
-  }
-
-  getListPrecedentes() {
-    $still.HTTPClient.get("/api/v1/processo/").then(
-      (r) => {
-        if (r.data) {
-          let processoData = [];
-
-          for (let processo of r.data) {
-            processoData.push({
-              id: processo.id,
-              descricao: `${processo.ref} - ${processo.assunto}`,
-              ref: processo.ref,
-              assunto: processo.assunto,
-            });
-          }
-
-          console.log("processoData", processoData)
-
-          this.listPrecedentes = processoData;
-        }
-      }
-    );
-  }
-
-  getListColaboradores() {
-    $still.HTTPClient.get("/api/v1/colaborador/").then(
-      (r) => {
-        if (r.data) {
-          let colaboradorData = [];
-
-          for (let colaborador of r.data) {
-            colaboradorData.push({
-              id: colaborador.id,
-              descricao: `${colaborador.description} - ${colaborador.nome_completo}`,
-            });
-          }
-
-          console.log("colaboradorData", colaboradorData)
-
-          this.listColaboradores = colaboradorData;
-        }
-      }
-    );
-  }
-
-  updatePrecedentes(evt) {
-    console.log("... ", evt)
-    this.processoId = evt.target.value;
-  }
-  updateClientes(evt) {
-    this.clienteId = evt.target.value;
   }
 
   setValueById(id, value) {

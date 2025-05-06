@@ -43,6 +43,7 @@ export class MeusTimesheetsGrid extends ViewComponent {
     { title: "Data Fim", field: "data_fim", sorter: "string" },
     { title: "Cliente", field: "cliente", sorter: "string" },
     { title: "Colaborador", field: "colaborador", sorter: "string" },
+    { title: "Registado em", field: "data_registo", sorter: "string" },
     /*{ title: "Data Suspensão", field: "data_suspensao", sorter: "string" },
     { title: "Data Encerramento", field: "data_encerramento", sorter: "string" },
      */
@@ -184,7 +185,8 @@ export class MeusTimesheetsGrid extends ViewComponent {
         data_inicio: item.data_inicio ? new Date(item.data_inicio).toLocaleString("PT") : item.data_inicio,
         data_fim: item.data_fim ? new Date(item.data_fim).toLocaleString("PT") : item.data_fim,
         cliente: item.cliente ?? 'N/A',
-        colaborador: item.colaborador
+        colaborador: item.colaborador,
+        data_registo: item.data_registo ? new Date(item.data_registo).toLocaleString("PT") : item.data_registo,
       }
     })
   }

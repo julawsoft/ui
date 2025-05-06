@@ -17,129 +17,107 @@ export class ProcessoTimeSheet extends ViewComponent {
   /** @Proxy @type { TUICalendarComponent } */
   calendarProxy;
 
+  template = `  <section class="content p-4">
+    
+  <div class="container-fluid">
 
-  template = `<section class="content">
-    <div class="block-header">
+    <div class="d-flex flex-end">
+      <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Library</li>
+        </ol>
+      </nav>  
+    </div>
 
-      <div class="row">
-        <br />
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <ul class="breadcrumb breadcrumb-style" style="
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              padding: 5px;">
-            <li class="breadcrumb-item 	bcrumb-1">
-              <a href="/">
-                  <i class="material-icons">home</i>
-                  Home</a>
-            </li>
-            <li class="breadcrumb-item bcrumb-1 active">Processo</li>
-            <li class="breadcrumb-item active">TimeSheet do Processo</li>
-          </ul>
-        </div>
 
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <h2>Registo das Actividades</h2>
-          <p style="font-size: 12px">Registo das intervenções no Processo</p>
-        </div>
-      </div>
-      
-    </div>  
-    <div class="row" style="height: 100vh;">
-      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-        <div class="card">
-          <div class="body">
-            <div id="mail-nav">
-  
-              <div style="margin-bottom: 5px">
-                <div style="font-weight: bold;">Referêcia do Processo</div>
-                <div><input id="input_referencia" (value)="referencia" style="border: none; background-color: #d3d3d3;" readonly="true" /></div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h2>Registo das Actividades</h2>
+        <p style="font-size: 12px">Registo das intervenções no Processo</p>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-3">
+            <div class="card">
+              <div class="card-header">Detalhes</div>
+              <div class="card-body">
+              <div id="mail-nav">
+    
+                <div style="margin-bottom: 5px">
+                  <div style="font-weight: bold;">Referêcia do Processo</div>
+                  <div><input id="input_referencia" (value)="referencia" style="border: none; background-color: #d3d3d3;" readonly="true" /></div>
+                </div>
+    
+                <div style="margin-bottom: 5px">
+                  <div style="font-weight: bold;">Assunto</div>
+                  <div><input id="input_assunto" (value)="assunto" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
+                </div>
+    
+                <div style="margin-bottom: 5px">
+                  <div style="font-weight: bold;">Modo de Facturação</div>
+                  <div><input id="input_modo_facturacao" (value)="modo_facturacao" style="border: none; background-color: #f5f5f5;" readonly="true" />
+                  </div>
+                </div>
+    
+                <div style="margin-bottom: 5px">
+                  <div style="font-weight: bold;">Cliente</div>
+                  <div><input id="input_cliente" (value)="cliente" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
+                </div>
+    
+                <div style="margin-bottom: 5px">
+                  <div style="font-weight: bold;">Gestor do Processo</div>
+                  <div><input id="input_gestor" (value)="gestor" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
+                </div>
+    
               </div>
-  
+            </div>
+            <div class="card-footer">
               <div style="margin-bottom: 5px">
-                <div style="font-weight: bold;">Assunto</div>
-                <div><input id="input_assunto" (value)="assunto" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
-              </div>
-  
-              <div style="margin-bottom: 5px">
-                <div style="font-weight: bold;">Modo de Facturação</div>
-                <div><input id="input_modo_facturacao" (value)="modo_facturacao" style="border: none; background-color: #f5f5f5;" readonly="true" />
+                <div style="font-weight: bold;">Colaborador</div>
+                 <div>
+                  <span id="colaboradorInputId"></span>
+                  <p style="font-size: 12px" id="colaboradorInputFuncao"></p>
                 </div>
               </div>
-  
+
               <div style="margin-bottom: 5px">
-                <div style="font-weight: bold;">Cliente</div>
-                <div><input id="input_cliente" (value)="cliente" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
+                <div style="font-weight: bold;">Total de Horas</div>
+                  <div>
+                     <i class="bi bi-clock"></i></i> <span id="horasInputId"> 0 </span> horas
+                  </div>
+                </div>
               </div>
-  
-              <div style="margin-bottom: 5px">
-                <div style="font-weight: bold;">Gestor do Processo</div>
-                <div><input id="input_gestor" (value)="gestor" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
-              </div>
-  
             </div>
+
+      </div>
+
+        
+        <div class="col-9">
+          <div class="card">
+            <div class="card-header"></div>
+            <div class="card-body">
+              <div style="positon: relative">
+                <st-element
+                  component="@toast-ui/calendar/TUICalendarComponent"
+                  (onEventCreate)="saveEvent()"
+                  editLabel="Editar"
+                  milestoneTitle="Objectivo"
+                  (onEventUpdate)="updateEvent()"
+                  (onEventDeletion)="deleteEvent()"
+                  proxy="calendarProxy"
+                >
+                </st-element> 
+              </div>
             
+            </div>
+            <div class="card-footer">3</div>
           </div>
-        </div>
-
-        <div class="card">
-        <div class="body">
-          <div id="mail-nav" style="background-color: #fafafa,">
-
-            <div style="margin-bottom: 5px">
-              <div style="font-weight: bold;">Colaborador</div>
-              <div>
-                <span id="colaboradorInputId"></span>
-                <p style="font-size: 12px" id="colaboradorInputFuncao"></p>
-              </div>
-            </div>
-
-            <div style="margin-bottom: 5px">
-              <div style="font-weight: bold;">Total de Horas</div>
-              <div>
-               <i class="fas fa-clock"></i> <span id="horasInputId"> 0 </span> horas
-              </div>
-            </div>
-
-            </div>
-
-        </div>
-      </div>
-
-      </div>
-         
-      <div class="">
-      <div style="background: #fff;
-                  padding: 15px;
-                  margin-left: 10px;
-                  display: flex;
-                  flex-direction: column;
-                  min-width: 750px;
-                  width: 1200px;
-                  color: #555;
-                  font-size: 14px;
-                  border: 1px solid #e1e0e0;
-            ">
-            <div style="positon: relative">
-            <st-element
-              component="@toast-ui/calendar/TUICalendarComponent"
-              (onEventCreate)="saveEvent()"
-              editLabel="Editar"
-              milestoneTitle="Objectivo"
-              (onEventUpdate)="updateEvent()"
-              (onEventDeletion)="deleteEvent()"
-              proxy="calendarProxy"
-              >
-            </st-element> 
-        </div>
-        </div>
-      </div>
+        </div>    
     </div>
-    </div>
-    </div>  
-  
-  
+
+    
     </div>
   </section>
     `;
