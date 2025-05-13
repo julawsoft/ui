@@ -47,28 +47,28 @@ export class ProcessoTimeSheet extends ViewComponent {
     
                 <div style="margin-bottom: 5px">
                   <div style="font-weight: bold;">Referêcia do Processo</div>
-                  <div><input id="input_referencia" (value)="referencia" style="border: none; background-color: #d3d3d3;" readonly="true" /></div>
+                  <div><input class="form-control" id="input_referencia" (value)="referencia" style="border: none; background-color: #d3d3d3;" readonly="true" /></div>
                 </div>
     
                 <div style="margin-bottom: 5px">
                   <div style="font-weight: bold;">Assunto</div>
-                  <div><input id="input_assunto" (value)="assunto" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
+                  <div><input class="form-control" id="input_assunto" (value)="assunto" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
                 </div>
     
                 <div style="margin-bottom: 5px">
                   <div style="font-weight: bold;">Modo de Facturação</div>
-                  <div><input id="input_modo_facturacao" (value)="modo_facturacao" style="border: none; background-color: #f5f5f5;" readonly="true" />
+                  <div><input class="form-control" id="input_modo_facturacao" (value)="modo_facturacao" style="border: none; background-color: #f5f5f5;" readonly="true" />
                   </div>
                 </div>
     
                 <div style="margin-bottom: 5px">
                   <div style="font-weight: bold;">Cliente</div>
-                  <div><input id="input_cliente" (value)="cliente" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
+                  <div><input class="form-control" id="input_cliente" (value)="cliente" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
                 </div>
     
                 <div style="margin-bottom: 5px">
                   <div style="font-weight: bold;">Gestor do Processo</div>
-                  <div><input id="input_gestor" (value)="gestor" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
+                  <div><input class="form-control" id="input_gestor" (value)="gestor" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
                 </div>
     
               </div>

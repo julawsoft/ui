@@ -280,11 +280,643 @@ export class ProcessoDetalhes extends ViewComponent {
 
     </style>
   
-  <section class="content">    
-      <div class="still-popup-curtain" (showIf)="self.showFactura"></div>
+  <section class="content p-4">
+    <div class="container-fluid">
+    <!-- <div class="still-popup-curtain" (showIf)="self.showFactura"></div>-->
+    <div class="d-flex flex-end">
+      <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Library</li>
+        </ol>
+      </nav>  
+    </div>
 
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <h2>Detalhes do Processo</h2>
+      <p style="font-size: 12px">Cadastre aqui uma intervenções no Processo</p>
+    </div>
+
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+        <div class="card">
+          <div class="card-header">
+            <div class="d-flex g-1">
+            <label
+              id="input_estado" 
+              class="label"
+              (value)="estado" 
+              style="border: none; font-size: 18px; font-weight: 600;" 
+              readonly="true"></label>
+              <button 
+              class="btn btn-primary btn-sm"
+              title="Editar Processo"
+              (click)="editProcesso(undefined)"
+              >
+              Editar Processo
+             <i class="bi bi-pencil-square"></i></button>
+           </div>
+          </div>
+          <div class="card-body">
+            
+          <div style="margin-bottom: 5px">
+          <div style="font-weight: bold;">Referêcia do Processo</div>
+          <div><input class="form-control" id="input_referencia" (value)="referencia" style="border: none; background-color: #d3d3d3;" readonly="true" /></div>
+        </div>
+
+        <div style="margin-bottom: 5px">
+          <div style="font-weight: bold;">Assunto</div>
+          <div><input class="form-control" id="input_assunto" (value)="assunto" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
+        </div>
+
+        <div style="margin-bottom: 5px">
+          <div style="font-weight: bold;">Área</div>
+          <div><input class="form-control" id="input_area" (value)="area" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
+        </div>
+
+        <div style="margin-bottom: 5px">
+          <div style="font-weight: bold;">Fase</div>
+          <div><input class="form-control" id="input_fase" (value)="fase" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
+        </div>
+
+        <div style="margin-bottom: 5px">
+          <div style="font-weight: bold;">Contra Parte</div>
+          <div><input class="form-control" id="input_contraparte" (value)="contraParte" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
+        </div>
+
+        <div style="margin-bottom: 5px">
+          <div style="font-weight: bold;">Instituição</div>
+          <div><input class="form-control" id="input_instituicao" (value)="instituicao" style="border: none; background-color: #f5f5f5;" readonly="true" />
+          </div>
+        </div>
+
+        <div style="margin-bottom: 5px">
+          <div style="font-weight: bold;">Modo de Facturação</div>
+          <div><input class="form-control" id="input_modo_facturacao" (value)="modo_facturacao" style="border: none; background-color: #f5f5f5;" readonly="true" />
+          </div>
+        </div>
+
+        <div style="margin-bottom: 5px">
+          <div style="font-weight: bold;">Cliente</div>
+          <div><input class="form-control" id="input_cliente" (value)="cliente" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
+        </div>
+
+        <div style="margin-bottom: 5px">
+          <div style="font-weight: bold;">Gestor do Processo</div>
+          <div><input class="form-control" id="input_gestor" (value)="gestor" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
+        </div>
+
+        <div style="margin-bottom: 5px">
+          <div style="font-weight: bold;">Data de Registo</div>
+          <div><input class="form-control" (value)="dataRegisto" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
+        </div>
+
+        
+        <div style="margin-bottom: 5px">
+          <div style="font-weight: bold;">Data Encerramento</div>
+          <div><input class="form-control" (value)="dataEncerramento" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
+        </div>
+
+        <div style="margin-bottom: 5px">
+          <div style="font-weight: bold;">Data Suspensão</div>
+          <div><input class="form-control" (value)="dataSuspensao" style="border: none; background-color: #f5f5f5;" readonly="true" /></div>
+        </div>
+
+          </div>
+          <div class="card-footer">
+            3
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-9">
+       <div class="card">
+          <div class="card-header">
+                
+          <ul class="nav nav-underline" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="metodologias-tab" data-bs-toggle="tab" data-bs-target="#metodologias" type="button" role="tab" aria-controls="home" aria-selected="true">Metodologias</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="equipas-tab" data-bs-toggle="tab" data-bs-target="#equipas" type="button" role="tab" aria-controls="profile" aria-selected="false">Equipas</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="tarefas-tab" data-bs-toggle="tab" data-bs-target="#tarefas" type="button" role="tab" aria-controls="contact" aria-selected="false">Tarefas</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="precedentes-tab" data-bs-toggle="tab" data-bs-target="#precedentes" type="button" role="tab" aria-controls="contact" aria-selected="false">Associados</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="anexos-tab" data-bs-toggle="tab" data-bs-target="#anexos" type="button" role="tab" aria-controls="contact" aria-selected="false">Anexos</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="honorarios-tab" data-bs-toggle="tab" data-bs-target="#honorarios" type="button" role="tab" aria-controls="contact" aria-selected="false">Honorário</button>
+            </li>
+          </ul>
+
+          </div>
+
+          <div class="card-body">
+          
+          
+          <!-- Tab Content -->
+        <div class="tab-content" id="myTabContent">
+          <!-- Tab metodologia -->
+            <div class="tab-pane fade show active" id="metodologias" role="tabpanel" aria-labelledby="home-tab">
+          
+            <div class="product-description">
+                <div class="div-title-abas display-flex">
+                    <label class="title-abas">Métodos e Procedimentos</label>
+                </div>
+
+                <div>
+                    <div>
+                        <div class="gap-2 full-body" id="accordion_5" role="tablist"
+                            aria-multiselectable="true">
+                            <div class="card card-primary p-2 mb-2">
+                                <div class="card-heading" role="tab" id="headingOne_5">
+                                    <h4 class="panel-title d-flex gap-2 col-12 mx-auto justify-content-between">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion_5"
+                                            href="#collapseOne_5" aria-expanded="true"
+                                            aria-controls="collapseOne_5">
+                                            Metodologias
+                                        </a>
+                                        <div class="display-flex">
+                                            <a title="Editar Metodologias do Processo" style="cursor: pointer"
+                                                (click)="editResourcesProcesso('input_metodologia')">
+                                               <i class="bi bi-pencil-square" style="color: #383838" ></i>
+                                            </a>
+                                            <a title="Salvar as alterações da metodologia do Processo"
+                                                style="cursor: pointer"
+                                                (click)="saveResourcesProcesso('input_metodologia')">
+                                                <i class="bi bi-floppy-fill" style="color: #01d28e"></i>
+                                            </a>
+                                        </div>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne_5" class="panel-collapse collapse in show" role="tabpanel"
+                                    aria-labelledby="headingOne_5">
+                                    <div class="card-body"
+                                        style="background-color: #fff; border: 1px solid #f5f5f5;">
+                                        <textarea class="form-control" readonly="true" style="border: none;  height: 120px"
+                                            (value)="metodologia" id="input_metodologia"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card card-primary p-2 mb-2">
+                                <div class="card-heading" role="tab" id="headingTwo_5">
+                                    <h4 class="panel-title d-flex gap-2 col-12 mx-auto justify-content-between">
+                                        <a class="collapsed" role="button" data-toggle="collapse"
+                                            data-parent="#accordion_5" href="#collapseTwo_5"
+                                            aria-expanded="false" aria-controls="collapseTwo_5">
+                                            Estrategias
+                                        </a>
+                                        <div class="display-flex">
+                                            <a title="Editar Estrategia do Processo" style="cursor: pointer"
+                                                (click)="editResourcesProcesso('input_estrategias')">
+                                               <i class="bi bi-pencil-square" style="color: #383838" ></i>
+                                            </a>
+                                            <a title="Salvar as alterações" style="cursor: pointer"
+                                                (click)="saveResourcesProcesso('input_estrategias')">
+                                                <i class="bi bi-floppy-fill" style="color: #01d28e"></i>
+                                            </a>
+                                        </div>
+                                    </h4>
+                                </div>
+                                <div id="collapseTwo_5" class="panel-collapse collapse" role="tabpanel"
+                                    aria-labelledby="headingTwo_5">
+                                    <div class="card-body"
+                                        style="background-color: #fff; border: 1px solid #f5f5f5;">
+                                        <textarea class="form-control" readonly="true" style="border: none;  height: 120px"
+                                            id="input_estrategias"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card card-primary p-2 mb-2">
+                                <div class="card-heading" role="tab" id="headingThree_5">
+                                    <h4 class="panel-title d-flex gap-2 col-12 mx-auto justify-content-between">
+                                        <a class="collapsed" role="button" data-toggle="collapse"
+                                            data-parent="#accordion_5" href="#collapseThree_5"
+                                            aria-expanded="false" aria-controls="collapseThree_5">
+                                            Objectivos
+                                        </a>
+                                        <div class="display-flex">
+                                            <a title="Editar Objectivos do Processo" style="cursor: pointer"
+                                                (click)="editResourcesProcesso('input_objectivos')">
+                                               <i class="bi bi-pencil-square" style="color: #383838" ></i>
+                                            </a>
+                                            <a title="Salvar as alterações" style="cursor: pointer"
+                                                (click)="saveResourcesProcesso('input_objectivos')">
+                                                <i class="bi bi-floppy-fill" style="color: #01d28e"></i>
+                                            </a>
+                                        </div>
+                                    </h4>
+                                </div>
+                                <div id="collapseThree_5" class="panel-collapse collapse" role="tabpanel"
+                                    aria-labelledby="headingThree_5">
+                                    <div class="card-body"
+                                        style="background-color: #fff; border: 1px solid #f5f5f5;">
+                                        <textarea class="form-control" readonly="true" style="border: none;  height: 120px"
+                                            id="input_objectivos"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card card-primary p-2 mb-2">
+                                <div class="card-heading" role="tab" id="headingThree_6">
+                                    <h4 class="panel-title d-flex gap-2 col-12 mx-auto justify-content-between">
+                                        <a class="collapsed" role="button" data-toggle="collapse"
+                                            data-parent="#accordion_5" href="#collapseThree_6"
+                                            aria-expanded="false" aria-controls="collapseThree_6">
+                                            Factos
+                                        </a>
+                                        <div class="display-flex">
+                                            <a title="Editar Factos do Processo" style="cursor: pointer"
+                                                (click)="editResourcesProcesso('input_factos')">
+                                               <i class="bi bi-pencil-square" style="color: #383838" ></i>
+                                            </a>
+                                            <a title="Salvar as alterações" style="cursor: pointer"
+                                                (click)="saveResourcesProcesso('input_factos')">
+                                                 <i class="bi bi-floppy-fill" style="color: #01d28e"></i>
+                                            </a>
+                                        </div>
+                                    </h4>
+                                </div>
+                                <div id="collapseThree_6" class="panel-collapse collapse" role="tabpanel"
+                                    aria-labelledby="headingThree_6">
+                                    <div class="card-body"
+                                        style="background-color: #fff; border: 1px solid #f5f5f5;">
+                                        <textarea class="form-control" readonly="true" style="border: none;  height: 120px"
+                                            id="input_factos"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="card card-primary p-2 mb-2">
+                                <div class="card-heading" role="tab" id="headingThree_7">
+                                    <h4 class="panel-title d-flex gap-2 col-12 mx-auto justify-content-between">
+                                        <a class="collapsed" role="button" data-toggle="collapse"
+                                            data-parent="#accordion_5" href="#collapseThree_7"
+                                            aria-expanded="false" aria-controls="collapseThree_7">
+                                            Dados Importantes
+                                        </a>
+                                        <div class="display-flex">
+                                            <a title="Editar Dados Importantes do Processo"
+                                                style="cursor: pointer"
+                                                (click)="editResourcesProcesso('input_dados_importantes')">
+                                                <i class="bi bi-pencil-square" style="color: #383838" ></i>
+                                            </a>
+                                            <a title="Salvar as alterações" style="cursor: pointer"
+                                                (click)="saveResourcesProcesso('input_dados_importantes')">
+                                                <i class="bi bi-floppy-fill" style="color: #01d28e"></i>
+                                            </a>
+                                        </div>
+                                    </h4>
+                                </div>
+                                <div id="collapseThree_7" class="panel-collapse collapse" role="tabpanel"
+                                    aria-labelledby="headingThree_7">
+                                    <div class="card-body"
+                                        style="background-color: #fff; border: 1px solid #f5f5f5;">
+                                        <textarea class="form-control" readonly="true" style="border: none;  height: 120px"
+                                            (value)="dadosImportantes" id="input_dados_importantes"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+              
+
+            </div>
+          <!-- #Tab metodologia -->
+          <!-- Tab Equipas -->
+          <div class="tab-pane fade" id="equipas" role="tabpanel" aria-labelledby="contact-tab">
+          
+
+          <div class="div-title-abas">
+              <label class="title-abas">Equipas Associadas ao Processo</label>
+              <span (click)="toggleForms('form_tab_equipas')" class="btn-details-processo-form"
+                  title="Adicionar equipas">
+                  <i class="fas fa-plus"></i>
+              </span>
+          </div>
+
+          <!-- inicio form add tarefas -->
+          <div class="card p-2 mb-2">
+          <div class="form_add_resources hiddenForm" id="form_tab_equipas">
+              <form id="wizard_with_validatio" onsubmit="javascript: return false;">
+                  <div class="row">
+                      <div class="input-field col s12 mb-2">
+                          <label> Equipas </label>
+                          <select
+                          id="equipaSelectedColaborador"
+                          class="form-control"
+                          (change)="updateEquipasProcesso($event)" (forEach)="listEquipas">
+                              <option each="item" value="">Selecione um Advogado</option>
+                              <option each="item" value="{item.id}">{item.descricao}</option>
+                          </select>
+                      </div>
+                  </div>
+                  <div class="card-footer">
+                      <button (click)="addEquipaProcesso('form_tab_equipas')"
+                          class="btn btn-success">Salvar</button>
+                  </div>
+              </form>
+          </div>
+          </div>
+          <!-- fim form add tarefas -->
+
+          <st-element 
+              component="@tabulator/TabulatorComponent" 
+              proxy="dataTableListProcessosEquipas"
+              tableHeader="parent.dataTableLabelsEquipas" 
+              (onEditColumn)="editProcessoEquipa(fieldName, data)"
+              (onDeleteRow)="removerColaboradorProcesso(fieldName, data)"
+              (onCellClick)="cellClickProcessoEquipa(row, col, data)">
+          </st-element>
+
+          
+
+          </div> 
+          <!-- #Tab Equipas -->
+          <!-- Tab Tarefas -->
+          <div class="tab-pane fade" id="tarefas" role="tabpanel" aria-labelledby="contact-tab">
+            <div class="div-title-abas display-flex">
+              <label class="title-abas">Tarefas do Processo</label>
+            </div>
+
+            <div class="product-description">
+            <st-element component="@tabulator/TabulatorComponent" proxy="dataTableListProcessosTarefas"
+              tableHeader="parent.dataTableLabelsTarefas"
+              (onEditColumn)="concluirTarefaProcesso(fieldName, data)"
+              (onDeleteRow)="removerTarefaProcesso(fieldName, data)"
+              ></st-element>
+            </div>
+          </div> 
+          <!-- #Tab Tarefas -->
+          <!-- Tab Precedentes  -->
+          <div class="tab-pane fade" id="precedentes" role="tabpanel" aria-labelledby="profile-tab">
+          
+
+          <div class="div-title-abas display-flex">
+              <label class="title-abas">Processos Associados</label>
+              <span (click)="toggleForms('form_tab_precedentes')" class="btn-details-processo-form"
+                  title="Vincular Processos">
+                  <i class="fas fa-plus"></i>
+              </span>
+          </div>
+          
+
+          <!-- inicio form add tarefas -->
+          <div class="card p-2 mb-2">
+          <div class="form_add_resources hiddenForm" id="form_tab_precedentes">
+              <form id="wizard_with_validatio" onsubmit="javascript: return false;">
+                  <div class="row">
+                      <div class="input-field col s12 mb-2">
+                          <label>Processos à Associar
+                          </label>
+                          <select class="form-control" id="processoAssociadoInput" (change)="updatePrecedentes($event)" (forEach)="listPrecedentes">
+                              <option each="item" value="">Selecione uma opção</option>
+                              <option each="item" value="{item.id}">{item.descricao}</option>
+                          </select>
+                      </div>
+                  </div>
+                  <div class="card-footer">
+                      <button (click)="addPrecedentesProcesso('form_tab_precedentes')"
+                          class="btn btn-primary">Salvar</button>
+                  </div>
+              </form>
+          </div>
+          </div>
+          <!-- fim form add tarefas -->
+
+
+          <div class="product-description">
+              <st-element 
+                  component="@tabulator/TabulatorComponent" 
+                  proxy="dataTableListProcessosPrecedentes"
+                  tableHeader="parent.dataTableLabelsPrecedentes"
+                  (onEditColumn)="editProcessoPrecedente(fieldName, data)"
+                  (onDeleteRow)="removerPrecedenteProcesso(fieldName, data)"
+                  (onCellClick)="detalhesProcesso(row, col, data)">
+              >
+              </st-element>
+
+          </div>
+          </div>
+          <!-- #Tab Precedentes  -->
+
+          <!-- Tab Anexos  -->
+          <div class="tab-pane fade" id="anexos" role="tabpanel" aria-labelledby="contact-tab">
+            
+          <div class="div-title-abas display-flex">
+              <label class="title-abas">Anexos Associados ao Processo</label>
+              <span (click)="toggleForms('form_tab_anexos')" class="btn-details-processo-form"
+                  title="Associar anexos ao Processo">
+                  <i class="fas fa-plus"></i>
+              </span>
+          </div>
+  
+          <!-- inicio form add tarefas -->
+          <div class="card p-2 mb-2">
+          <div class="form_add_resources hiddenForm" id="form_tab_anexos">
+              <form>
+                  <div class="row">
+                      <div class="input-field col s12 mb-2">
+                          <label>Descrição</label>
+                          <input class="form-control" type="text" class="form-control" (value)="inputAnexoDescricao" />
+                          <br />
+                          <input class="form-control" id="inputUploadAnexo" class="form-control" accept="image/*, .pdf" type="file" />
+                          <img style="display: none" id="inputUploadAnexoHidden" src="" />
+                      </div>
+                  </div>
+                  <div class="card-footer">
+                      <button (click)="addAnexoProcesso('form_tab_anexos')" class="btn btn-success">Salvar</button>
+                  </div>
+              </form>
+          </div>
+          </div>
+          <!-- fim form add anexos -->
+  
+          <div class="product-description">
+              <st-element 
+                  component="@tabulator/TabulatorComponent" 
+                  proxy="dataTableListProcessosAnexos"
+                  tableHeader="parent.dataTableLabelsAnexos" 
+                  (onEditColumn)="downalodAnexoProcesso(fieldName, data)"
+                  (onDeleteRow)="removerAnexoProcesso(fieldName, data)"
+                  (onCellClick)="visualizarAnexoProcesso(row, col, data)">
+              </st-element>
+          </div>
+          
+          </div> 
+          
+          
+          <!-- #Tab Honorarios  -->
+          <div class="tab-pane fade" id="honorarios" role="tabpanel" aria-labelledby="contact-tab">
+          
+          <fieldset id="idShowModoSuccessFee" style="display: none;">
+          <legend> Modo de Facturação: <span style="font-weight: bold">Success Fee</span> </legend>
+        
+          <div style="margin-bottom: 5px; margin-top: 15px; background-color: #fff;">
+            <div style="font-weight: bold;">Custo do Processo</div>
+            <div>
+              <input class="form-control" id="idCustoProjecto" (value)="custoTotal" style="border: none; background-color: #f5f5f5;"
+                readonly="true" />
+            </div>
+          </div>
+        
+          <div style="background-color: #fff;">
+          <div 
+              (showIf)="self.havePayment"
+              style="
+                margin-bottom: 50px;
+                background-color: #ffffff;
+                padding: 15px;
+                margin-top: 30px;
+                border: 0.5px solid #c3c3c3;
+                "
+            >
+            <h4>Parcelas pagas</h4>
+            <table>
+              <thead>
+                <tr style="text-align: center;">
+                    <th>#</th>
+                    <th>Valor Pago</th>
+                    <th>Data registo</th>
+                </tr>
+              </thead>
+              <tbody (forEach)="pagamentosProcesso">
+                <tr each="item" style="text-align: center">
+                    <td class="invoice-align-to-center">{item.id}</td>
+                    <td class="invoice-align-to-center">{item.valor_pago}</td>
+                    <td class="invoice-align-to-center">{item.created_at}</td>
+                </tr>
+              </tbody>
+            </table> 
+          
+          </div>
+          <div>
+          
+            <div class="form-line">
+              <input class="form-control" id="idCustoParcelaApagar" (required)="true" (validator)="number" type="text" class=""
+                placeholder="custo da Parcela a pagar" (value)="custoParcelaApagar">
+            </div>
+          </div>
+          </div>
+        
+          <div style="display: flex; justify-content: right; margin-top: 30px;">
+            <!-- <span (click)="checkHonorarios()">Validar</span> -->
+            <button class="btn btn-primary julaw-submit-button" (click)="generateHonorarioModoSuccessFee()">
+              Gerar Recibo
+            </button>
+          </div>
+        </fieldset>
+        
+        
+        
+        <fieldset id="idShowModoFixo" style="display: none;">
+          <legend> Modo de Facturação: <span style="font-weight: bold">Fixo</span> </legend>
+        
+          <div style="margin-bottom: 5px; margin-top: 15px; background-color: #fff;">
+            <div style="font-weight: bold;">Custo do Processo</div>
+            <div>
+              <input (value)="custoTotal" style="border: none; background-color: #f5f5f5;" readonly="true" />
+            </div>
+          </div>
+        
+          <div style="display: flex; justify-content: right; margin-top: 30px;">
+            <!-- <span (click)="checkHonorarios()">Validar</span> -->
+            <button class="btn btn-primary julaw-submit-button" (click)="generateHonorarioModoFixo()">
+              Gerar Recibo
+            </button>
+          </div>
+        
+        </fieldset>
+        
+        
+        <fieldset id="idShowAvenca" style="display: none;">
+          <legend> Modo de Facturação: <span style="font-weight: bold">Avença</span> </legend>
+        
+          <div style="margin-bottom: 5px; margin-top: 15px; background-color: #fff;">
+            <div style="font-weight: bold;">Horas/Mês do Processo</div>
+            <div>
+              <input class="form-control" id="horasMes" (value)="horasMes" style="border: none; background-color: #f5f5f5;" readonly="true" />
+            </div>
+          </div>
+        
+        
+          <div class="d-flex justify-content-between gap-4">
+        
+            <div class="input-field col s12">
+              <select class="form-control" (change)="updatePrecedentes($event)" (forEach)="modePagamento">
+                <option each="item" value="">Modo de pagamento</option>
+                <option each="item" value="{item.code}">{item.designacao}</option>
+              </select>
+            </div>
+            <div class="input-field col s12">
+              <select class="form-control" (change)="updatePrecedentes($event)" (forEach)="listEquipas">
+                <option each="item" value="">Nome Advogado</option>
+                <option each="item" value="{item.id}">{item.descricao}</option>
+              </select>
+            </div>
+        
+          </div>
+        
+          <st-element component="@tabulator/TBDragableGrid" proxy="honorarioProxy" tableData="parent.dadosTimeSheet"
+            tableFields="parent.horarioCabecalho" destFields="parent.horarioDestCabecalho"
+            destPlaceholder="Arraste aqui o item a pagar">
+          </st-element>
+        
+          <div style="display: flex; justify-content: right; margin-top: 30px;">
+            <!-- <span (click)="checkHonorarios()">Validar</span> -->
+            <button class="btn btn-primary julaw-submit-button" (click)="generateHonorario()">
+              Gerar Honorário
+            </button>
+          </div>
+        
+        </fieldset>
+        
+        
+        <fieldset id="idModoProbono" style="display: none;">
+          <legend>Modo de Facturação: <span style="font-weight: bold">Probono</span></legend>
+        
+          <div style="margin-bottom: 5px">
+            <p>Obs.: O modo de facturação do Processo, é isento de qualquer pagamento.</p>
+          </div>
+        </fieldset>
+        
+          
+
+          </div> 
+          <!-- Tab Honorarios  -->
+          
+          
+        </div>
+
+
+          
+          </div>
+          <div class="card-footer">3</div>
+      </div>
+      </div>
+    </div>
+    
+    
+  
+
+
+
+    </div>
   </section>
 
+  <!--
   <div 
     class="factura-wrapper" 
     (showIf)="self.showFactura"
@@ -296,7 +928,7 @@ export class ProcessoDetalhes extends ViewComponent {
       >
     </st-element>
   <div>
-
+    -->
     `;
 
   constructor() {

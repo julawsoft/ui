@@ -36,13 +36,13 @@ export class ColaboradorDashboard extends ViewComponent {
     {
       hozAlign: "center",
       editRow: true,
-      icon: "<i class='fas fa-check'></i>",
+      icon: "<i class='bi bi-check-circle'></i>",
       width: 20,
     },
     {
       hozAlign: "center",
       deleteRow: true,
-      icon: "<i class='fas fa-pencil-alt'></i>",
+      icon: "<i class='bi bi-pencil-square'></i>",
       width: 20,
     },
     { title: "Estado", field: "estado", sorter: "string", width: 100 },
@@ -63,13 +63,13 @@ export class ColaboradorDashboard extends ViewComponent {
     {
       hozAlign: "center",
       editRow: true,
-      icon: "<i class='far fa-calendar-alt'></i>",
+      icon: "<i class='bi bi-calendar-week'></i>",
       width: 20,
     },
     {
       hozAlign: "center",
       deleteRow: true,
-      icon: "<i class='fas fa-file-alt'></i>",
+      icon: "<i class='bi bi-file-earmark-fill'></i>",
       width: 20,
     },
     { title: "Estado", field: "estado", sorter: "string", width: 100 },
@@ -123,7 +123,7 @@ export class ColaboradorDashboard extends ViewComponent {
       <!-- Meus Processos -->
       <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
           
-            <div class="card">
+            <div class="card mb-3 p-2">
             <div class="row">
             <div class="col-lg-3 col-sm-6">
             <div class="info-box7 l-bg-green order-info-box7">
@@ -176,7 +176,7 @@ export class ColaboradorDashboard extends ViewComponent {
             <div class="card">
               <div class="card-header">
               <div class="header">
-              <h2><strong>Teus </strong>Processos</h2>
+              <h2><strong>Meus </strong>Processos</h2>
               <p style="font-size: 12px">Encontre aqui, os processos que foram partilhados consigo</p>
             </div>
               </div>
