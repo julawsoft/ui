@@ -184,7 +184,7 @@ class ClienteDetalhes extends ViewComponent {
                           
                             <div class="body">
 
-                            <div  (showIf)="self.isNotEmptyDataProcesso">
+                            <div  (showif)="self.isNotEmptyDataProcesso">
                             <div class="table-responsive">
                                 <st-element component="TabulatorComponent" 
                                   proxy="dataTableListProcessos"
@@ -196,7 +196,7 @@ class ClienteDetalhes extends ViewComponent {
                                 </st-element>
                             </div>
                           </div>
-                          <div  (showIf)="self.isEmptyDataProcesso">
+                          <div id="isEmptyDataProcessoID" (showif)="self.isEmptyDataProcesso">
                             <div class="alert alert-warning">
                               <p  style="color: #555"><strong>Atenção!</strong> Nenhum processo encontrado.</p>&nbsp;
                             </div>
