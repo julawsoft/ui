@@ -304,7 +304,7 @@ export class HonorarioForm extends ViewComponent {
 
         this.userLogged = JSON.parse(localStorage.getItem("_user"));
 
-        const data = this.honorarioProxy.getDestData();
+            const data = this.honorarioProxy.getDestData();
 
         console.log("data de destino da table ", data)
 
@@ -323,11 +323,14 @@ export class HonorarioForm extends ViewComponent {
                 )
                 .reduce((accum, val) => accum + val);
 
+
+            console.log("processo ... ", this.processoId)
+
             // mexer aqui
             let payload = {
-                'processo_id': 2, // this.processoId.value
-                'cliente_id': 1, // this.clienteId.value,
-                'colaborador_id': this.userLogged.value.id,
+                'processo_id': this.processoId.value,
+                'cliente_id': this.clienteId.value,
+                'colaborador_id': this.userLogged.value !== undefined ? this.userLogged.value.id : this.userLogged.id,
                 'horas': totalHoras,
                 'custo': totalFactura,
                 'status': 'pendente',
@@ -338,6 +341,10 @@ export class HonorarioForm extends ViewComponent {
                     "dados_adicionais": JSON.stringify(item)
                 }))
             }
+
+            console.log("payload ", payload)
+
+            return 0;
 
             AppTemplate.showLoading();
 

@@ -49,6 +49,7 @@ export class ClientsGrid extends ViewComponent {
 
         <div class="card mb-4 p-2">        
             <div class="row">
+              <!--
               <div class="col-md-4">
                 <label>Cliente</label>
                 <select
@@ -63,6 +64,7 @@ export class ClientsGrid extends ViewComponent {
                   <option each="item" value="{item.id}">{item.value}</option>
                 </select>
               </div>
+              -->
 
               <div class="col-md-4">
               <label>Tipo de Empresa</label>
@@ -97,11 +99,10 @@ export class ClientsGrid extends ViewComponent {
 
         <div class="card">
             <div class="card-header">
-            <h2><strong>Cliente </strong>Cadastrados</h2>
+            <h2><strong>Cliente </strong>Registados</h2>
 
         <div class="card-body">
-
-            <div  (showIf)="self.isNotEmptyData">
+            <div (showIf)="self.isNotEmptyData">
             <div class="table-responsive">
                 <st-element
                     component="@tabulator/TabulatorComponent"
@@ -115,11 +116,11 @@ export class ClientsGrid extends ViewComponent {
                 </st-element>
             </div>
             </div>
-            <div  (showIf)="self.isEmptyData">
-            <div class="alert alert-warning">
-              <p  style="color: #555"><strong>Atenção!</strong> Nenhum cliente encontrado.</p>&nbsp;<a href="#" (click)="gotoView('ClientForm')">Crie aqui um</a>
+            <div id="isEmptyDataId" (showIf)="self.isEmptyData">
+                <div class="alert alert-warning">
+                  <p  style="color: #555"><strong>Atenção!</strong> Nenhum cliente encontrado.</p>&nbsp;<a href="#" (click)="gotoView('ClientForm')">Crie aqui um</a>
+                </div>
             </div>
-          </div>
             </div>
         </div>
         </div>
@@ -240,7 +241,7 @@ export class ClientsGrid extends ViewComponent {
       { value: 'Outro', id: 6 }
   ];
 
-  console.log("tipo empresa" , this.clientType)
+  console.log("tipo empresa" , this.isEmptyData)
 
 
     $still.HTTPClient.get("/api/v1/cliente/").then((r) => {
@@ -249,6 +250,9 @@ export class ClientsGrid extends ViewComponent {
         if (dataResponse.length > 0) {
           this.isNotEmptyData = true;
           this.isEmptyData = false;
+
+          document.getElementById('isEmptyDataId').style.display = 'none'
+
           let clieteDTO = dataResponse.map((item) => {
             return {
               id: item.id,

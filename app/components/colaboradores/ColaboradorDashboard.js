@@ -130,7 +130,7 @@ export class ColaboradorDashboard extends ViewComponent {
               <div class="info-box7-block">
                 <h4 class="m-b-20">Processos Rascunho</h4>
                 <h2 class="text-right">
-                  <i class="fas fa-folder-open pull-left"></i><span id="processosRascunho">0</span>
+                <i class="bi bi-folder-plus"></i><span id="processosRascunho">0</span>
                 </h2>
               </div>
             </div>
@@ -141,7 +141,7 @@ export class ColaboradorDashboard extends ViewComponent {
               <div class="info-box7-block">
                 <h4 class="m-b-20">Processos Proposta</h4>
                 <h2 class="text-right">
-                  <i class="far fa-folder-open pull-left"></i><span id="processosProposta">0</span>
+                <i class="bi bi-folder-plus"></i><span id="processosProposta">0</span>
                 </h2>
               </div>
             </div>
@@ -152,7 +152,7 @@ export class ColaboradorDashboard extends ViewComponent {
               <div class="info-box7-block">
                 <h4 class="m-b-20">Processos Suspenso</h4>
                 <h2 class="text-right">
-                  <i class="far fa-folder pull-left"></i><span id="processosSuspenso">0</span>
+               <i class="bi bi-folder-plus"></i><span id="processosSuspenso">0</span>
                 </h2>
               </div>
             </div>
@@ -163,7 +163,7 @@ export class ColaboradorDashboard extends ViewComponent {
               <div class="info-box7-block">
                 <h4 class="m-b-20">Processos Encerrado</h4>
                 <h2 class="text-right">
-                  <i class="fas fa-folder pull-left"></i><span id="processosEncerrado">0</span>
+               <i class="bi bi-folder-plus"></i><span id="processosEncerrado">0</span>
                 </h2>
               </div>
             </div>
@@ -252,7 +252,7 @@ export class ColaboradorDashboard extends ViewComponent {
       <div class="form_add_resources" id="form_tab_tarefas">
       <form id="wizard_with_validatio" (formRef)="tarefaForm" class="" onsubmit="javascript: return false;">
   
-        <div class="row clearfix">
+        <div class="row clearfix ">
   
             <div class="col-md-4">
                 <label> Processos à Associar</label>

@@ -2013,7 +2013,7 @@ export class ProcessoDetalhes extends ViewComponent {
       let payload = {
         'processo_id': this.id.value,
         'cliente_id': this.clienteId.value,
-        'colaborador_id': this.userLogged.value.id,
+        'colaborador_id': this.userLogged.value.id ?? this.userLogged.id,
         'horas': totalHoras,
         'custo': totalFactura,
         'status': 'pendente',
@@ -2092,7 +2092,7 @@ export class ProcessoDetalhes extends ViewComponent {
     let payload = {
       'processo_id': this.id.value,
       'cliente_id': this.clienteId.value,
-      'colaborador_id': this.userLogged.value.id,
+      'colaborador_id': this.userLogged.value.id ?? this.userLogged.id,
       'horas': 0,
       'custo': this.custoParcelaApagar.value,
       'status': 'pendente',
@@ -2159,7 +2159,7 @@ export class ProcessoDetalhes extends ViewComponent {
     let payload = {
       'processo_id': this.id.value,
       'cliente_id': this.clienteId.value,
-      'colaborador_id': this.userLogged.value.id,
+      'colaborador_id': this.userLogged.value.id ?? this.userLogged.id,
       'horas': 0,
       'custo': totalFactura,
       'status': 'pendente',

@@ -48,7 +48,7 @@ export class Menu extends ViewComponent {
   canCreateTimeSheet = true;
 
   template = `
-  <div style="position:fixed; bottom:0; top:0; margin-top:59px; width: 280px; color: #fff;" class="d-flex flex-column flex-shrink-0 p-3 bg-light shadow-sm">
+  <div style="position:fixed; bottom:0; top:0; margin-top:59px; width: 280px; color: #323232; background-color: #2094f3;" class="d-flex flex-column flex-shrink-0 p-3 shadow-sm">
   <ul class="list-unstyled ps-0">
     <li class="mb-1">
       <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">

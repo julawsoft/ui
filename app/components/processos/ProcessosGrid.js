@@ -112,7 +112,7 @@ export class ProcessosGrid extends ViewComponent {
                       </st-element>
                   </div>
                 </div>
-                <div (showIf)="self.isEmptyData">
+                <div id="isEmptyDataId" (showIf)="self.isEmptyData">
                   <div class="alert alert-warning">
                     <p  style="color: #555"><strong>Atenção!</strong> Nenhum processo encontrado.</p>&nbsp;<a href="#" (click)="gotoView('ProcessoForm')">Crie aqui um</a>
                   </div>
@@ -164,6 +164,7 @@ export class ProcessosGrid extends ViewComponent {
           } else {
             this.isNotEmptyData = true;
             this.isEmptyData = false;
+             document.getElementById('isEmptyDataId').style.display = 'none'
             this.dataTableListProcessos.dataSource = this.transformDataTable(r.data);
           }
           AppTemplate.hideLoading();

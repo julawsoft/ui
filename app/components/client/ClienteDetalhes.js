@@ -10,21 +10,21 @@ class ClienteDetalhes extends ViewComponent {
   endereco;
   createdAt;
 
-    /** @Prop */
-    isEmptyDataProcesso = true;
+  /** @Prop */
+  isEmptyDataProcesso = true;
 
-    /** @Prop */
-    isNotEmptyDataProcesso = false;
+  /** @Prop */
+  isNotEmptyDataProcesso = false;
 
-    /** @Prop */
-    isNotEmptyDataFactura = false;
-  
-    /** @Prop */
-    isEmptyDataFactura = true;
+  /** @Prop */
+  isNotEmptyDataFactura = false;
+
+  /** @Prop */
+  isEmptyDataFactura = true;
 
 
 
-    /** @Proxy @type { TabulatorComponent } */
+  /** @Proxy @type { TabulatorComponent } */
   dataTableListProcessos = Proxy;
 
   /** @Prop */
@@ -79,14 +79,14 @@ class ClienteDetalhes extends ViewComponent {
   /** @Proxy @type { ModalListPagamentos } */
   modalListPagamentosProxy;
 
-    /** @Prop */
-    showModalDetalhesFactura = false;
-    /** @Prop */
-    showModalPagamento = false;
-    /** @Prop */
-    showModalListPagamentos = false;
-    /** @Prop */
-    showModal = false ;
+  /** @Prop */
+  showModalDetalhesFactura = false;
+  /** @Prop */
+  showModalPagamento = false;
+  /** @Prop */
+  showModalListPagamentos = false;
+  /** @Prop */
+  showModal = false;
 
   /**
   * @Inject
@@ -95,235 +95,25 @@ class ClienteDetalhes extends ViewComponent {
   clienteService;
 
   template = `
-  <section class="content">
-  <form>
-    <div class="block-header">
-      <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="height: 100px; margin-top: 30px">
-          <h1>Detalhes do CLiente</h1>
-          <h3 class="title-grid-component-description">Veja aqui todo envolvimento do cliente na Plataforma</h3>
-        </div>
-      </div>
-    </div>
-  
-    <div class="row" style="height: 100vh;">
-      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-        <div class="card">
-          <div class="body">
-            <div id="mail-nav">    
-              <div style="margin-bottom: 5px">
-                <div style="font-weight: bold;">Denominação</div>
-                <input id="input_referencia" (value)="denominacao" style="border: none; background-color: #d3d3d3;" readonly="true" />
-              </div>
-  
-              <div style="margin-bottom: 5px">
-                <div style="font-weight: bold;">Tipo de Cliente</div>
-                <input id="input_referencia" (value)="tipoCliente" style="border: none; background-color: #d3d3d3;" readonly="true" />
-              </div>
-
-              <div style="margin-bottom: 5px">
-                <div style="font-weight: bold;">NIF</div>
-                <input id="input_referencia" (value)="nif" style="border: none; background-color: #d3d3d3;" readonly="true" />
-              </div>
-  
-              <div style="margin-bottom: 5px">
-                <div style="font-weight: bold;">Pessoa de Contacto</div>
-                <input id="input_referencia" (value)="pessoaContacto" style="border: none; background-color: #d3d3d3;" readonly="true" />
-              </div>
-
-              <div style="margin-bottom: 5px">
-                <div style="font-weight: bold;">Contacto</div>
-                <input id="input_referencia" (value)="contacto" style="border: none; background-color: #d3d3d3;" readonly="true" />
-              </div>
-  
-              <div style="margin-bottom: 5px">
-                <div style="font-weight: bold;">E-mail</div>
-                <input id="input_referencia" (value)="email" style="border: none; background-color: #d3d3d3;" readonly="true" />
-              </div>
-  
-              <div style="margin-bottom: 5px">
-                <div style="font-weight: bold;">Endereço</div>
-                <input id="input_referencia" (value)="endereco" style="border: none; background-color: #d3d3d3;" readonly="true" />
-              </div>
-  
-              <div style="margin-bottom: 5px">
-                <div style="font-weight: bold;">Data de Cadastro</div>
-                <input id="input_referencia" (value)="createdAt" style="border: none; background-color: #d3d3d3;" readonly="true" />
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-  
-      <!-- ABAs -->
-
-  <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
-    <div class="card">
-        <div class="body">
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs tab-nav-right" role="tablist">
-                <li role="presentation">
-                    <a href="#processos" data-toggle="tab" class="active show">Processos</a>
-                </li>
-                <li role="presentation">
-                    <a href="#facturas" data-toggle="tab">Facturas</a>
-                </li>
-            </ul>
-            <!-- Tab panes -->
-
-            <div class="tab-content">
-            
-        <!-- Inicio TAB Processos -->
-                <div role="tabpanel" class="tab-pane fade in active show" id="processos">
-
-                    <div class="product-description">
-                        <div class="div-title-abas display-flex">
-                            <label class="title-abas">Os teus Processos</label>
-                            </div>
-                          
-                            <div class="body">
-
-                            <div  (showif)="self.isNotEmptyDataProcesso">
-                            <div class="table-responsive">
-                                <st-element component="TabulatorComponent" 
-                                  proxy="dataTableListProcessos"
-                                  tableHeader="parent.dataTableProcessosLabels" 
-                                  tableHeight="auto"
-                                  (onEditColumn)="editProcesso(fieldName, data)"
-                                  (onDeleteRow)="deleteProcesso(fieldName, data)" 
-                                  (onCellClick)="detalhesProcesso(row, col, data)">
-                                </st-element>
-                            </div>
-                          </div>
-                          <div id="isEmptyDataProcessoID" (showif)="self.isEmptyDataProcesso">
-                            <div class="alert alert-warning">
-                              <p  style="color: #555"><strong>Atenção!</strong> Nenhum processo encontrado.</p>&nbsp;
-                            </div>
-                          </div>      
-                        </div>
-                    </div>
-                </div>
-        <!-- Fim TAB Processos -->
-
-        <!-- Inicio TAB Facturas -->
-                <div role="tabpanel" class="tab-pane fade" id="facturas">
-
-                <div class="product-description">
-                <div class="div-title-abas display-flex">
-                    <label class="title-abas">As tuas Facturas</label>
-                    </div>
-                  
-                    <div class="body">
-                      <div  (showIf)="self.isNotEmptyDataFactura">
-                        <div class="table-responsive">
-                            <st-element component="TabulatorComponent" 
-                              proxy="dataTableListFacturas"
-                              tableHeader="parent.dataTableFacturasLabels" 
-                              tableHeight="auto"
-                              (onEditColumn)="detalhessFacturaCliente(fieldName, data)"
-                              (onDeleteRow)="detalhessPagamentosFacturaCliente(fieldName, data)" 
-                              (onCellClick)="callModalPagamento(row, col, data)"
-                              >
-                            </st-element>
-                        </div>
-                      </div>
-                      <div  (showIf)="self.isEmptyDataFactura">
-                        <div class="alert alert-warning">
-                          <p  style="color: #555"><strong>Atenção!</strong> Nenhuma factura encontrado.</p>&nbsp;
-                        </div>
-                      </div>
-                </div>
-                   
-                           
-                </div>
-            </div>
-                    
-                </div>
-   <!-- Fim TAB Facturas -->
-
-   </form>
-
-
-   <div class="still-popup-curtain" (showIf)="self.showModal"></div>
-
-   <style>
+  <section class="content p-4">
+      <div class="container-fluid">
       
-   .modal-wrapper{
-    position: absolute;
-        top: 0;
-        background: white;
-        z-index: 529985;
-        width: 66%;
-        margin: 0 auto;
-        position: absolute;
-        left: 50%;
-        top: 25%;
-        transform: translate(-50%,-50%);
-   }
-
-    .still-popup-curtain{
-
-      position: fixed;
-      padding: 0;
-      margin: 0;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 529983;
-
-    }
-
-    .modal-pagamento {
-      margin-top: 125px !important ;
-    }
-
- </style>
-
-
-</section>
-
-      <div 
-        class="modal-wrapper"
-        id="idShowModalDetalhesFactura"
-        style="display: none" 
-      > 
-        <st-element
-          component="ModalDetalhesFactura"
-          proxy="modalDetalhesFacturaProxy"
-          (onCloseModal)="fecharModalDetalhesFactura()"
-        >
-        </st-element>
+      <!-- <div class="still-popup-curtain" (showIf)="self.showFactura"></div>-->
+      <div class="d-flex flex-end">
+        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Library</li>
+          </ol>
+        </nav>  
       </div>
-  
-    <div 
-      class="modal-wrapper" 
-      id="idShowModalPagamento"
-      style="display: none"
-    >
-      <st-element
-        component="ModalPagamento"
-        proxy="modalPagamentoProxy"
-        (onCloseModal)="fecharModalPagamento()"
-      >
-      </st-element>
-    </div>
 
-      <div 
-        class="modal-wrapper modal-pagamento" 
-        id="idShowModalPagamentosFactura"
-        style="display: none"
-      >
-      <st-element
-        component="ModalListPagamentos"
-        proxy="modalListPagamentosProxy"
-        (onCloseModal)="fecharModalPagamentosFactura()"
-      >
-      </st-element>
-    </div>
 
+      
+
+
+      </div>
+  </section>
   `;
 
   constructor() {
@@ -336,11 +126,11 @@ class ClienteDetalhes extends ViewComponent {
     const userLogged = JSON.parse(localStorage.getItem("_user"));
     // se for cliente não veja os detalhes do Processo!
     // if(userLogged.funcao != "cliente") {
-    if(userLogged.auth.roles.includes('CAN_SEE_PROCESS_DETAILS')){
+    if (userLogged.auth.roles.includes('CAN_SEE_PROCESS_DETAILS')) {
       Router.goto("ProcessoDetalhes", {
         data: record.id,
       });
-    }else{
+    } else {
       console.log("sem permissao para ver detalhes do Processo ")
     }
   }
@@ -396,6 +186,7 @@ class ClienteDetalhes extends ViewComponent {
   }
 
   getProcessosCliente(idCliente) {
+
     $still.HTTPClient.get(
       `/api/v1/cliente_processos/${idCliente}`
     ).then((r) => {
@@ -414,10 +205,10 @@ class ClienteDetalhes extends ViewComponent {
     ).then((r) => {
       let dataResponse = r.data;
       if (dataResponse) {
-          console.log("As facturas do cliente", dataResponse)
-          this.isNotEmptyDataFactura = true;
-          this.isEmptyDataFactura = false;
-          this.dataTableListFacturas.dataSource = dataResponse;
+        console.log("As facturas do cliente", dataResponse)
+        this.isNotEmptyDataFactura = true;
+        this.isEmptyDataFactura = false;
+        this.dataTableListFacturas.dataSource = dataResponse;
       }
     });
   }

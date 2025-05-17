@@ -112,9 +112,8 @@ export class HonorariosGrid extends ViewComponent {
                       </st-element>
                   </div>
                 </div>
-                <div (showIf)="self.isEmptyData">
+                <div id="isEmptyDataId" (showIf)="self.isEmptyData">
                 <br/><br/>
-                  Rever o ShowIf here...
                   <div class="alert alert-warning">
                     <p  style="color: #555"><strong>Atenção!</strong> Nenhum timesheet encontrado.</p>&nbsp;<a href="#" (click)="gotoView('TimeSheetForm')">Crie aqui um</a>
                   </div>
@@ -160,6 +159,7 @@ export class HonorariosGrid extends ViewComponent {
     if(resposeData.length > 0) {
         this.isEmptyData = false;
         this.isNotEmptyData = true;
+        document.getElementById('isEmptyDataId').style.display = 'none'
     }else{
         this.isEmptyData = true;
         this.isNotEmptyData = false;

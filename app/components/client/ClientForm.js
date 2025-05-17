@@ -26,218 +26,147 @@ export class ClientForm extends ViewComponent {
     routingData; //Used to assign data if sent from Router
 
     template = `
-    <section class="content">
-        <div class="row clearfix">
-            <div class="title-grid-component" style="display: flex">
-                <span class="fas fa-user title-grid-component-icon"></span>    
-                <h3>Novo Cliente</h3>
-            </div>
+    <section class="content p-4">
+    
+    <div class="container-fluid">
+      
+    <!-- <div class="still-popup-curtain" (showIf)="self.showFactura"></div>-->
+    <div class="d-flex flex-end">
+      <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Novo Cliente</li>
+        </ol>
+      </nav>  
+    </div>
 
-            <div 
-                style="margin-top: -55px;"
-                class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h2>Cliente</h2>
+            <p style="font-size: 12px">Cadastre ou edite aqui os dados dos seus clientes</p>
+        </div>
+
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="card">
-                    <div class="header">
-                        <h2><strong>Cadastro</strong> de cliente</h2>
-                        <ul class="header-dropdown m-r--5">
-                            <li class="dropdown">
-                                <a href="#" onClick="return false;" class="dropdown-toggle" data-toggle="dropdown"
-                                    role="button" aria-haspopup="true" aria-expanded="false">
-                                    <i class="material-icons">more_vert</i>
-                                </a>
-                                <ul class="dropdown-menu pull-right">
-                                    <li>
-                                        <a href="#" onClick="return false;">Action</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" onClick="return false;">Another action</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" onClick="return false;">Something else here</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
+                    <div class="card-header">
+                        Dados Cliente
                     </div>
-                    <div class="body">
-                        <form id="client_wizard_with_validation" (formRef)="clientForm" onsubmit="javascript: return false;">
-                            <h3>Dados Pessoais</h3>
-                            <fieldset>
+                
+                    <div class="card-body">
+                        
+                    <form id="clientFormId" (formRef)="clientForm" onsubmit="javascript: return false;">
+                           
+                    <div class="row">
+                        <div class="col-md-6">
+                             <label class="form-label">Tipo de cliente</label>
+                             <select 
+                             class="form-control"
+                             (required)="true"
+                             (value)="tipoClienteSelecionado"
+                             (change)="updateTipoCliente($event)" 
+                             (forEach)="clientType">
+                             <option each="item" value="">Selecione uma opção</option>
+                             <option each="item" value="{item.id}">{item.value}</option>
+                         </select>                        
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Nome / Denominação</label>
+                            <input 
+                                (required)="true"
+                                (validator)="text" 
+                                type="text" 
+                                class="form-control date" 
+                                (value)="denominacao"
+                                placeholder="Denominação do cliente">
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <label class="form-label">Endereço</label>
+                            <input 
+                            (required)="true"
+                            (validator)="text" 
+                            type="text" 
+                            class="form-control date" 
+                            placeholder="Endereço" (value)="endereco">
+                        </div>
 
-                                <h2 class="card-inside-title">Detalhes do cliente</h2>
-                                <div class="row clearfix">
-                                    <div class="col-md-4">
-                                        <div class="input-group">
-                                            <div class="input-field col s12">
-                                                <span class="input-group-addon">
-                                                    <i class="material-icons">person</i> Tipo de cliente
-                                                </span>
-                                                <select 
-                                                    (required)="true"
-                                                    (value)="tipoClienteSelecionado"
-                                                    (change)="updateTipoCliente($event)" 
-                                                    (forEach)="clientType">
-                                                    <option each="item" value="">Selecione uma opção</option>
-                                                    <option each="item" value="{item.id}">{item.value}</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <i class="material-icons">person</i> Nome / Denominação
-                                            </span>
-                                            <div class="form-line">
-                                                <input 
-                                                    (required)="true"
-                                                    (validator)="text"
-                                                    type="text" 
-                                                    class="form-control date" 
-                                                    (value)="denominacao" 
-                                                    placeholder="Denominação do cliente">
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Número de Identificação Fiscal</label>
+                                <input 
+                                    (validator)="alhpanumeric"
+                                    (validator-warn)="Digite um NIF válido, ex: 000300931LA009"
+                                    (required)="true"
+                                    (value)="nif" 
+                                    placeholder="NIF"
+                                    class="form-control"
+                                >                                   
+                        </div>
 
-                                </div>
-                                <div class="row clearfix">
-                                    <div class="col-md-4">
-                                        <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <i class="material-icons">location_city</i> Endereço
-                                            </span>
-                                            <div class="form-line">
-                                                <input 
-                                                    (validator)="text"
-                                                    type="text"
-                                                    class="form-control date" 
-                                                    (value)="endereco" 
-                                                    placeholder="Endereço">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <i class="material-icons">receipt</i> Número de Identificação Fiscal
-                                            </span>
-                                            <div class="form-line">
-                                                <input 
-                                                    (validator)="alhpanumeric"
-                                                    (validator-warn)="Digite um NIF válido, ex: 000300931LA009"
-                                                    type="text" 
-                                                    class="form-control date" 
-                                                    (value)="nif" 
-                                                    placeholder="NIF">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <i class="material-icons">person_outline</i> Pessoa de contacto
-                                            </span>
-                                            <div class="form-line">
-                                                <input 
-                                                    (required)="true"
-                                                    (validator)="text"
-                                                    type="text" 
-                                                    class="form-control date" 
-                                                    (value)="pessoaContacto" 
-                                                    placeholder="Pessoa de Contacto"
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Pessoa de contacto</label>
+                            <input 
+                            (required)="true"
+                            (validator)="text"
+                            type="text" 
+                            class="form-control date" 
+                            (value)="pessoaContacto" 
+                            placeholder="Pessoa de Contacto"
+                        >
+                        </div>
+                       
+                        <div class="col-md-6">
+                            <label class="form-label">Telefone</label>
+                            <input 
+                            (required)="true"
+                            type="text" 
+                            class="form-control date" 
+                            (value)="contactoCobranca" 
+                            placeholder="ex.: 900 000 000">                               
+                        </div>
 
-                            </fieldset>
+                        <div class="col-md-6">
+                            <label class="form-label">E-mail</label>
+                            <input 
+                            (required)="true"
+                            (validator)="email"
+                            type="text" 
+                            class="form-control date" 
+                            (value)="e_mail" 
+                            placeholder="cliente@exemplo.com"
+                            >                           
+                        </div>
 
-                            <h3>Contactos</h3>
-                            <fieldset>
-                                <h2 class="card-inside-title">Dados de contactos</h2>
-                                <div class="row clearfix">
-                                    <div class="col-md-6">
-                                        <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <i class="material-icons">phone</i> Telefone
-                                            </span>
-                                            <div class="form-line">
-                                                <input 
-                                                    (required)="true"
-                                                    type="text" 
-                                                    class="form-control date" 
-                                                    (value)="contactoCobranca" 
-                                                    placeholder="ex.: 900 000 000">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <i class="material-icons">mail</i> E-mail
-                                            </span>
-                                            <div class="form-line">
-                                                <input 
-                                                    (required)="true"
-                                                    (validator)="email"
-                                                    type="text" 
-                                                    class="form-control date" 
-                                                    (value)="e_mail" 
-                                                    placeholder="cliente@exemplo.com"
-                                                    >
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Nota</label>
+                            <textarea id="clientNotaID" class="form-control" (value)="clientNota" rows="5"></textarea>
+                        </div>            
+                    
+                    </div>    
 
-                            </fieldset>
-                            <h3>Nota</h3>
-                            <fieldset>
-                                <!-- TinyMCE -->
-                                <div class="row clearfix">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <div class="card">
-                                            <div class="header">
-                                                <h2>
-                                                    <strong>Nota</strong>
-                                                </h2>
-                                                <ul class="header-dropdown m-r--5">
-                                                    <li class="dropdown">
-                                                        <a href="#" onClick="return false;" class="dropdown-toggle" data-toggle="dropdown"
-                                                            role="button" aria-haspopup="true" aria-expanded="false">
-                                                            <i class="material-icons">more_vert</i>
-                                                        </a>
-                                                        <ul class="dropdown-menu pull-right">
-                                                            <li>
-                                                                <a href="#" onClick="return false;">Action</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#" onClick="return false;">Another action</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#" onClick="return false;">Something else here</a>
-                                                            </li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="body">
-                                                <textarea id="clientNotaID" (value)="clientNota" style="height: 150px; padding: 4px" cols="100" rows="50"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <button class="julaw-submit-button" (click)="registerClient()">Submeter</button>
-                                    <button class="julaw-cancel-button" (click)="resetState()">Cancelar</button>
-
-                                </div>
-                            </fieldset>
-                        </form>
-                    </div>
+                    <div 
+                        class="card-footer mt-4" 
+                        style="display: flex;
+                            justify-content: end;
+                            align-items: center;"
+                    >
+                    <button class="btn btn-success julaw-submit-button" type="submit" (click)="registerClient()">
+                        Guardar
+                        <i class="bi bi-floppy-fill"></i>
+                    </button>
                 </div>
-            </div>
+                </div>
+        </form>
+
+                    </div>
+
+                    <div class="card-footer">
+                     
+                    </div>
+
+          
         </div>
     </section>
     `;
@@ -270,6 +199,10 @@ export class ClientForm extends ViewComponent {
 
     registerClient() {
 
+        alert("Cadastrando... ")
+
+        console.log(">>>>", this.denominacao)
+
         const routingData = Router.data('ClientForm');
         let tipoClientId = this.tipoClienteId.value;
         if ((!tipoClientId || tipoClientId == '') && routingData)
@@ -289,8 +222,9 @@ export class ClientForm extends ViewComponent {
 
         console.log("payload ", payload)
 
-
         const isValidForm = this.clientForm.validate();
+
+        console.log("aui", isValidForm)
 
         if (isValidForm) {
             if (!routingData) {
