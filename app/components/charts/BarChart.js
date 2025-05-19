@@ -1,9 +1,18 @@
-class CBarChart extends ViewComponent {
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+import { StillAppSetup } from "../../app-setup.js";
+import { TestService } from "../../services/TestService.js";
+import { LineChart } from "./LineChart.js";
+
+export class BarChart extends ViewComponent {
 
     htmlRefId = 'barCharPlaceholder';
     novoField = '';
+    /** @Prop @type { LineChart } */
+    line;
+
+
     template = `
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" (click)="parsingForBar()">
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" fitWidth (click)="parsingForBar()">
         <div class="card">
             <div class="header">
                 <h2>
@@ -58,12 +67,26 @@ class CBarChart extends ViewComponent {
     </div>
     `;
 
-    parsingForBar(){
+
+    constructor() {
+        super();
+        this.stLazyExecution(() => {
+            this.line = StillAppSetup.inject(LineChart);
+        });
+    }
+
+    parsingForBar() {
         alert('First content');
         this.novoField = 'Novo valor';
+        (new TestService()).print()
+        this.line.printFromAnother();
+    }
+
+    anotherMethod() {
+        alert('Another called method');
     }
 
 }
 
-/** @type {CBarChart} */
-const BarChart = $still.component.expose(new CBarChart());
+///** @type {CBarChart} */
+//const BarChart = $still.component.expose(new CBarChart());

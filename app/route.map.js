@@ -1,7 +1,9 @@
+
 /**
  * Don't change the constante name as it'll impact on the component routing
  */
-const routesMap = {
+export const stillRoutesMap = {
+
     viewRoutes: {
         regular: {
             Login: 'components/auth',
@@ -9,7 +11,13 @@ const routesMap = {
             ClientsGrid: 'components/client',
         },
         lazyInitial: {
+            BarChart: 'components/charts',
+            LineChart: 'components/charts',
+            CircularAnimatedChart: 'components/charts',
+            ProjectGrid: 'components/project-list',
             ClientForm: 'components/client',
+            Calendar: 'components/calendar',
+            CardDisplay: 'components/dashboard-card',
             ClienteDetalhes: 'components/client',
             ColaboradorForm: 'components/colaboradores',
             ColaboradoresGrid: 'components/colaboradores',
@@ -27,7 +35,16 @@ const routesMap = {
             Despesas: 'components/despesas',
             DespesasForm: 'components/despesas',
             POC: 'components/uipoc',
-            CreateButton: 'generics/button',
+            CreateButton: 'components/generics/button',
+            TopNavBar: 'components/navbar',
+            Menu: 'components/main-menu',
+            ProcessoTimeSheet: 'components/processos',
+            TimesheetForm: 'components/timesheets',
+            TimesheetsGrid: 'components/timesheets',
+            MeusTimesheetsGrid: 'components/timesheets',
+            HonorarioForm: 'components/honorarios',
+            HonorariosGrid: 'components/honorarios',
+            MeusHonorariosGrid: 'components/honorarios',
         }
     },
 }
@@ -36,12 +53,12 @@ const routesMap = {
 
 
 let routeMapInverse = [];
-function $stillGetRouteMap() {
+export function $stillGetRouteMap() {
 
     /* if (!routeMapInverse.length) {
 
         routeMapInverse = Object
-            .entries(routesMap.viewRoutes)
+            .entries(stillRoutesMap.viewRoutes)
             .reduce((accum, [cmp, path]) => {
                 accum[path] = cmp;
                 return accum;
@@ -50,8 +67,8 @@ function $stillGetRouteMap() {
 
     return {
         route: {
-            ...routesMap.viewRoutes.regular,
-            ...routesMap.viewRoutes.lazyInitial
+            ...stillRoutesMap.viewRoutes.regular,
+            ...stillRoutesMap.viewRoutes.lazyInitial
         },
         //inverse: routeMapInverse
     }

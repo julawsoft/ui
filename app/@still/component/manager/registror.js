@@ -1,4 +1,6 @@
-class ComponentNotFoundException extends Error {
+import { stillRoutesMap } from "../../../route.map.js";
+
+export class ComponentNotFoundException extends Error {
     name = 'ComponentNotFoundException';
     constructor(cmpName) {
         super();
@@ -11,7 +13,7 @@ class ComponentNotFoundException extends Error {
 
 
 
-class ComponentRegistror {
+export class ComponentRegistror {
 
     componentList = {};
     static registror = null;
@@ -71,12 +73,18 @@ class ComponentRegistror {
     static register(name, instance) {
         $still.context.componentRegistror.componentList[name] = { instance }
     }
+
+    static getFromRef(name) {
+        const source = $still.context.componentRegistror.componentList;
+        if (name in source) return source[name].instance;
+        else return null
+    }
 }
 
-const $still = {
+export const $still = {
     context: {
         componentRegistror: ComponentRegistror.get(),
-        componentMap: routesMap.viewRoutes,
+        componentMap: stillRoutesMap.viewRoutes,
         currentView: null,
     },
     component: {
@@ -96,3 +104,6 @@ const $still = {
     HTTPClient: new StillHTTPClient(),
 
 }
+
+window.$still = $still;
+window.ComponentRegistror = ComponentRegistror;

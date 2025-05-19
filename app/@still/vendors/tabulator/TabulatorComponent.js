@@ -1,4 +1,7 @@
-class TabulatorComponent extends ViewComponent {
+import { ViewComponent } from "../../component/super/ViewComponent.js";
+import './tabulator6.2.25.js';
+
+export class TabulatorComponent extends ViewComponent {
 
     template = `
         <div>
@@ -33,7 +36,9 @@ class TabulatorComponent extends ViewComponent {
      * @type { Array<{ pos, icon }> } 
      * */
     editColMetadata;
-    tableHeight = Prop("317px");
+
+    /** @Prop */
+    tableHeight = "317px";
 
     async load() {
 
@@ -149,8 +154,8 @@ class TabulatorComponent extends ViewComponent {
 
     updateRow(data, columnId, id) {
         const existingData = [...this.table.getData()];
-        const filterData = existingData.map((item)  => {
-            if(item[columnId] == id)
+        const filterData = existingData.map((item) => {
+            if (item[columnId] == id)
                 return data
             else
                 return item
@@ -179,5 +184,14 @@ class TabulatorComponent extends ViewComponent {
      * @returns { boolean } 
      * */
     onCellClick(col, row, data) { }
+
+    static importAssets() {
+
+        return {
+            scripts: ["tabulator6.2.25.js"],
+            styles: ["tabulator.min.css"],
+        };
+
+    }
 
 }

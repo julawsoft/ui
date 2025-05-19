@@ -1,3 +1,13 @@
+import { StillAppSetup } from "../../../app-setup.js";
+import { stillRoutesMap } from "../../../route.map.js";
+import { Components } from "../../setup/components.js";
+import { $stillconst } from "../../setup/constants.js";
+import { UUIDUtil } from "../../util/UUIDUtil.js";
+import { $still, ComponentNotFoundException, ComponentRegistror } from "../manager/registror.js";
+import { sleepForSec } from "../manager/timer.js";
+import { STForm } from "../type/STForm.js";
+import { BehaviorComponent } from "./BehaviorComponent.js";
+
 class SettingType {
     componentName = undefined;
     path = undefined;
@@ -47,7 +57,7 @@ class ComponentPart {
 
 }
 
-class BaseComponent extends BehaviorComponent {
+export class BaseComponent extends BehaviorComponent {
 
 
     /**
@@ -75,6 +85,11 @@ class BaseComponent extends BehaviorComponent {
     versionId = null;
     #annotations = new Map();
     wasAnnotParsed = false;
+    baseUrl = window.location.href;
+    routesMap = {
+        ...stillRoutesMap.viewRoutes.lazyInitial,
+        ...stillRoutesMap.viewRoutes.regular
+    };
 
 
     /**
@@ -93,6 +108,10 @@ class BaseComponent extends BehaviorComponent {
     stAfterInit() { }
 
     reRender() { }
+
+    static importScripts() { }
+
+    static importAssets() { }
 
     props(props = {}) {
         this.cmpProps = props;
@@ -114,6 +133,8 @@ class BaseComponent extends BehaviorComponent {
     getInstanceName() {
         return this.constructor.name.replace('C', '');
     }
+
+
 
     getProperties() {
 
@@ -226,7 +247,6 @@ class BaseComponent extends BehaviorComponent {
 
         if (this.template instanceof Array)
             this.template = this.template.join('');
-
 
         let tamplateWithState = this.template;
 
@@ -640,20 +660,22 @@ class BaseComponent extends BehaviorComponent {
         this.componentName = this.constructor.name;
         this.settings = settings;
 
+        if (settings.scripts) settings.scripts.forEach(BaseComponent.importScript);
+
         new Promise((resolve) => {
 
-            setTimeout(() => {
-                if (settings.includs) {
-                    settings.includs.forEach((/** @type {ViewComponent} */cmp) => cmp.render());
-                    resolve(null);
-                } else {
-                    resolve(null);
-                }
-            });
+            //setTimeout(() => {
+            //    if (settings.includs) {
+            //        settings.includs.forEach((/** @type {ViewComponent} */cmp) => cmp.render());
+            //        resolve(null);
+            //    } else {
+            //        resolve(null);
+            //    }
+            //});
 
         }).then(() => {
 
-            if (settings.scripts) settings.scripts.forEach(this.importScript);
+            //if (settings.scripts) settings.scripts.forEach(this.importScript);
 
         });
 
@@ -674,11 +696,36 @@ class BaseComponent extends BehaviorComponent {
         $still.context.componentRegistror.export(settings);
     }
 
-    importScript(scriptPath) {
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = scriptPath;
-        document.head.appendChild(script);
+    static importScript(scriptPath, module = false, cls = null) {
+
+        const ext = scriptPath.slice(-3);
+        const type = {
+            '.js': document.createElement('script'),
+            'css': document.createElement('link'),
+        }
+
+        const script = type[ext];
+
+        if (ext == '.js') {
+            script.async = true;
+            script.src = scriptPath;
+            if (module) script.type = 'module';
+        }
+
+        if (ext == 'css') {
+            script.href = scriptPath;
+            script.rel = 'stylesheet';
+        }
+
+        try {
+
+            document.head.appendChild(script);
+            if (module)
+                script.onload(() => window[cls] = cls);
+
+        } catch (error) { }
+
+
     }
 
     updateState(object = {}) {
@@ -745,7 +792,7 @@ class BaseComponent extends BehaviorComponent {
             });
 
         }).then(() => {
-            if (settings.scripts) settings.scripts.forEach(this.importScript);
+            if (settings.scripts) settings.scripts.forEach(BaseComponent.importScript);
         });
     }
 
@@ -831,7 +878,8 @@ class BaseComponent extends BehaviorComponent {
                 .replace(">", "");
         }
 
-        let re = /\<st-element[\> \. \" \, \w \s \= \- \ \( \)]{0,}/g;
+        let styleRe = /(style\=\"(.*)\")/;
+        let re = /\<st-element[\> \@ \/ \. \" \, \w \s \= \- \ \( \)]{0,}/g;
         if (cmpInternalId == 'fixed-part')
             re = /\<st-fixed[\> \. \" \, \w \s \= \- \ \( \)]{0,}/g;
 
@@ -843,48 +891,40 @@ class BaseComponent extends BehaviorComponent {
         const parentCmp = this;
         template = template.replace(re, (mt) => {
 
-            const propMapper = {};
-            mt.split(' ').forEach(r => {
+            const [propMapper, props] = [{}, {}];
+
+            for (const r of mt.split(' ')) {
                 if (r != '' && r.indexOf('="') > 0) {
                     let [f, v] = r.split('=');
                     const [field, value] = [f, parseValue(r, v, f, mt)];
                     propMapper[field] = value;
                 }
-            });
+            }
+
+            let checkStyle = mt.match(styleRe), foundStyle = false;
+            if (checkStyle?.length == 3) foundStyle = mt.match(styleRe)[2];
 
             const [cmpName, proxy] = [propMapper['component'], propMapper['proxy']];
             parentCmp[proxy] = { on: () => { } };
 
-            const props = {};
-            Object.entries(propMapper).forEach(([prop, val]) => {
+            for (const [prop, val] of Object.entries(propMapper))
                 props[prop] = val;
-            });
 
-            const [cmpId, cmp] = [`st_${UUIDUtil.numberId()}`, eval(`new ${cmpName}()`)];
-            cmp.onRender();
-            cmp.dynCmpGeneratedId = cmpId;
-            cmp.cmpInternalId = `dynamic-${cmp.getUUID()}${cmpName}`;
-            cmp.stillElement = true;
-            cmp.proxyName = proxy;
-            ComponentRegistror.register(
-                cmp.cmpInternalId,
-                cmp
-            );
-
-            if (!(this.cmpInternalId in Components.componentPartsMap)) {
+            if (!(this.cmpInternalId in Components.componentPartsMap))
                 Components.componentPartsMap[this.cmpInternalId] = [];
-            }
 
             Components.componentPartsMap[this.cmpInternalId].push(
                 new ComponentPart({
-                    template: null, component: cmp,
+                    template: null, component: cmpName,
                     proxy, props,
                     annotations: this.#annotations
                 })
             );
 
-            return `<still-placeholder style="display:content;" class="still-placeholder${uuid}"></still-placeholder>`;
-
+            return `<still-placeholder 
+                        style="display:contents; ${foundStyle != false ? foundStyle : ''}" 
+                        class="still-placeholder${uuid}">
+                    </still-placeholder>`;
         });
 
         return template;
@@ -972,7 +1012,7 @@ class BaseComponent extends BehaviorComponent {
             for (const [propertyName, annotation] of annotations) {
                 if (annotation?.propParsing) {
                     if (annotation?.inject) {
-                        let service = ComponentSetup.get()?.services?.get(annotation?.type);
+                        let service = StillAppSetup.get()?.services?.get(annotation?.type);
                         cmp.#handleServiceInjection(cmp, propertyName, annotation?.type, service);
                     }
                     cmp.#annotations.set(propertyName, annotation);
@@ -1005,7 +1045,7 @@ class BaseComponent extends BehaviorComponent {
                         propParsing = result.propParsing;
 
                         if (inject) {
-                            let service = ComponentSetup.get()?.services?.get(type);
+                            let service = StillAppSetup.get()?.services?.get(type);
                             cmp.#handleServiceInjection(cmp, propertyName, type, service);
                         }
                     }
@@ -1074,7 +1114,7 @@ class BaseComponent extends BehaviorComponent {
             return;
         }
 
-        const servicePath = ComponentSetup.get().servicePath + '/' + type + '.js';
+        const servicePath = StillAppSetup.get().servicePath + '/' + type + '.js';
 
         if (!document.getElementById(servicePath)) {
 
@@ -1083,7 +1123,7 @@ class BaseComponent extends BehaviorComponent {
             script.onload = async function () {
 
                 const service = eval(`new ${type}()`);
-                ComponentSetup.get()?.services?.set(type, service);
+                StillAppSetup.get()?.services?.set(type, service);
                 handleServiceAssignement(service);
                 Components.emitAction(type);
             }
@@ -1093,7 +1133,7 @@ class BaseComponent extends BehaviorComponent {
             Components.subscribeAction(
                 type,
                 () => {
-                    const service = ComponentSetup.get()?.services?.get(type);
+                    const service = StillAppSetup.get()?.services?.get(type);
                     handleServiceAssignement(service);
                 }
             );

@@ -1,4 +1,7 @@
-class ColaboradorForm extends ViewComponent {
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+import { disabledTaxaHoraria, loadWizardColaborador } from "../utils/wizard.js";
+
+export class ColaboradorForm extends ViewComponent {
 
     id;
     username;
@@ -16,10 +19,11 @@ class ColaboradorForm extends ViewComponent {
 
     identificacoes_bi;
     identificacoes_cedula;
+    identificacoes_passaporte;
     taxa_horaria;
 
     status = "Activo";
-    
+
 
     /** @Prop */
     isEditForm = false;
@@ -28,68 +32,70 @@ class ColaboradorForm extends ViewComponent {
     colaboradorForm;
 
     template = `
-    <section class="content">
-    <div class="container-fluid">"
-       
-        <div 
-            class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
-            style="margin-top: -55px;"
-            >
-            <div class="card">
-                <div class="header">
-                    <h2><strong>Cadastro</strong> de colaborador</h2>
-                </div>
-                <div class="body">
-                    <form id="col_wizard_with_validation" (formRef)="colaboradorForm" onsubmit="javascript: return false;">
-                        <h3>Dados Pessoais</h3>
-                        <fieldset>
+    <section class="content p-4">
+    
+    <div class="container-fluid">
+      
+    <!-- <div class="still-popup-curtain" (showIf)="self.showFactura"></div>-->
+    <div class="d-flex flex-end">
+      <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Novo Colaborador</li>
+        </ol>
+      </nav>  
+    </div>
 
-                            <h2 class="card-inside-title">Detalhes do colaborador</h2>
-                            <div class="row clearfix">
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">person</i> Nome Completo
-                                        </span>
-                                        <div class="form-line">
-                                            <input 
-                                            (required)="true"
-                                            (validator)="text"
-                                            type="text" 
-                                            class="form-control date" 
-                                            (value)="nome_completo" 
-                                            placeholder="Nome completo">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">group</i> Nome Profissional
-                                        </span>
-                                        <div class="form-line">
-                                            <input   
-                                                (required)="true"
-                                                (validator)="text" 
-                                                type="text" 
-                                                class="form-control date" 
-                                                (value)="nome_profissional" 
-                                                placeholder="Nome">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                <div class="input-group">
-                                    <div class="input-field col s12">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">person</i> Tipo de colaborador
-                                        </span>
-                                        <select 
-                                            (required)="true" 
-                                            id="select-tipo-colaborador" 
-                                            (change)="updateTipoColaborador($event)"
-                                            (value)="tipo_colaborador_id"
-                                        >
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h2>Colaborador</h2>
+            <p style="font-size: 12px">Cadastre ou edite aqui os dados dos seus Colaborador</p>
+        </div>
+
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        Dados Colaborador
+                    </div>
+                
+                    <div class="card-body">
+                        
+                    <form id="colaboradorFormId" (formRef)="colaboradorForm" onsubmit="javascript: return false;">
+                           
+                    <div class="row">
+                        <div class="col-md-6">
+                             <label class="form-label">Nome Completo</label>
+                             <input 
+                             (required)="true"
+                             (validator)="text"
+                             type="text" 
+                             class="form-control date" 
+                             (value)="nome_completo" 
+                             placeholder="Nome completo">
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Nome Profissional</label>
+                            <input   
+                            (required)="true"
+                            (validator)="text" 
+                            type="text" 
+                            class="form-control date" 
+                            (value)="nome_profissional" 
+                            placeholder="Nome">
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="form-label">Tipo de colaborador</label>
+                            <select 
+                                (required)="true" 
+                                id="select-tipo-colaborador" 
+                                (change)="updateTipoColaborador($event)"
+                                (value)="tipo_colaborador_id"
+                                class="form-control"
+                            >
                                             <option 
                                                 value="" 
                                                 disabled 
@@ -100,258 +106,192 @@ class ColaboradorForm extends ViewComponent {
                                             <option value="3">Advogado - Sénior</option>
                                             <option value="4">Advogado - Estagiário</option>
                                         </select>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                                <div class="col-md-4">
-                                <div class="input-field col s12">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">person</i> Categoria
-                                </span>
-                                <select  
-                                        (required)="true" 
-                                        (change)="updateTipoCategoria($event)" 
-                                        (value)="funcao"
-                                >
-                                    <option  value="" disabled selected>Selecione uma categoria</option>
-                                    <option value="administrativo">Administrativo</option>
-                                    <option value="adv_junior">Júnior</option>
-                                    <option value="adv_senior">Sénior</option>
-                                    <option value="adv_estagiario">Estagiário</option>
-                                </select>
-                            </div>
-                            </div>
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">today</i> Data de Nascimento
-                                        </span>
-                                        <div class="form-line">
-                                            <input type="date" id="dataNascimento" class="form-control date" (value)="data_nascimento">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                <div class="input-field col s12">
-                                <span class="input-group-addon">
-                                    <i class="material-icons">person</i> Status
-                                </span>
-                                <select (change)="updateStatus($event)" (value)="status">
-                                    <option value="" disabled >Selecione um status</option>
-                                    <option  value="pending">Pendente</option>
-                                    <option  selected value="active">Activo</option>
-                                    <option value="inactive">Inactivo</option>
-                                </select>
-                            </div>
-                            
-                            </div>
-
-                            <div class="col-md-4">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">person</i> Usuário
-                                        </span>
-                                        <div class="form-line">
-                                            <input 
-                                                id="userName"
-                                                type="text" 
-                                                class="form-control date" 
-                                                (value)="username" 
-                                                placeholder="Nome de Usuário"
-                                            >
-                                        </div>
-                                    </div>
-                                </div>
-
-                        </fieldset>
-
-                        <h3>Contactos</h3>
-                        <fieldset>
-                            <h2 class="card-inside-title">Dados de contactos</h2>
-                            <div class="row clearfix">
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">mail</i> E-mail Pessoal
-                                    </span>
-                                <div class="form-line">
-                                    <input 
-                                        type="text" 
-                                        class="form-control date" 
-                                        (value)="contactos_email_pessoal" 
-                                        placeholder="e-mail pessoal">
-                                </div>
                         </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">mail</i> E-mail Corporativo
-                                    </span>
-                                <div class="form-line">
-                                    <input 
-                                        type="text" 
-                                        class="form-control date" 
-                                        (value)="contactos_email_corporativo" 
-                                        placeholder="e-mail corporativo"
-                                    >
-                                </div>
-                                </div>
-                            </div>
 
-                            <div class="col-md-6">
-                            <div class="input-group">
-                            <span class="input-group-addon">
-                                <i class="material-icons">phone</i> Contacto Pessoal
-                            </span>
-                        <div class="form-line">
+                        <div class="col-md-4">
+                            <label class="form-label">Categoria</label>
+                            <select  
+                                (required)="true" 
+                                (change)="updateTipoCategoria($event)" 
+                                (value)="funcao"
+                                class="form-control"
+                            >
+                                <option  value="" disabled selected>Selecione uma categoria</option>
+                                <option value="administrativo">Administrativo</option>
+                                <option value="adv_junior">Júnior</option>
+                                <option value="adv_senior">Sénior</option>
+                                <option value="adv_estagiario">Estagiário</option>
+                            </select>
+
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">Data de Nascimento</label>
+                            <input 
+                            (required)="true"
+                            (validator)="text"
+                            type="date" 
+                            id="dataNascimento"
+                            class="form-control date" 
+                            (value)="data_nascimento" 
+                            placeholder="Pessoa de Contacto"
+                        >
+                        </div>
+                       
+                        <div class="col-md-4">
+                            <label class="form-label">Status</label>
+                            <select  class="form-control" (change)="updateStatus($event)" (value)="status">
+                            <option value="" disabled >Selecione um status</option>
+                            <option  value="pending">Pendente</option>
+                            <option  selected value="active">Activo</option>
+                            <option value="inactive">Inactivo</option>
+                        </select>                             
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">Usuário</label>
+                            <input 
+                                id="userName"
+                                type="text" 
+                                class="form-control" 
+                                (value)="username" 
+                                placeholder="Nome de Usuário"
+                            >                           
+                        </div>
+
+                        <!-- Dados de contactos -->
+
+                        <div class="col-md-4">
+                            <label class="form-label">E-mail Pessoal</label>
+                            <input 
+                                type="e-mail" 
+                                class="form-control" 
+                                (value)="contactos_email_pessoal" 
+                                placeholder="e-mail pessoal"
+                            >                           
+                        </div>
+
+                        <div class="col-md-4">
+                        <label class="form-label">E-mail Corporativo</label>
+                        <input 
+                            type="e-mail" 
+                            class="form-control" 
+                            (value)="contactos_email_corporativo" 
+                            placeholder="e-mail corporativo"
+                        >                           
+                        </div>
+
+                        <div class="col-md-4">
+                        <label class="form-label">Contacto Pessoal</label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            (value)="contactos_telefone_pessoal" 
+                            placeholder="contacto pessoal"
+                        >                           
+                        </div>
+
+                        <div class="col-md-4">
+                        <label class="form-label">Contacto de Emergência</label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            (value)="contactos_telefone_emergencia" 
+                            placeholder="contacto de emergenciaio"
+                        >                           
+                        </div>
+
+                        <div class="col-md-9">
+                        <label class="form-label">Endereço</label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            (value)="contactos_telefone_endereco" 
+                            placeholder="Cidade, Bairro - casa n.º"
+                        >                           
+                        </div>
+
+                       <!-- # Dados de contactos -->
+
+                        <!-- Dados de Identificacao -->
+
+                        <div class="col-md-3">
+                        <label class="form-label">Taxa Horária</label>
+                        <input 
+                            id="input-taxa-horaria" 
+                            type="numeric" 
+                            class="form-control" 
+                            (value)="taxa_horaria" 
+                            placeholder="0,00kz/h"
+                        >                           
+                        </div>
+
+                        <div class="col-md-3">
+                        <label class="form-label">Tipo de Identificação</label>
+                            <select class="form-control">
+                                <option selected >BI / Passaporte</option>
+                            </select>         
+                        </div>
+
+                        <div class="col-md-3">
+                        <label class="form-label">N.º de Identificação </label>
                             <input  
                                 (required)="true"
                                 type="text" 
-                                class="form-control date" 
-                                (value)="contactos_telefone_pessoal" 
-                                placeholder="contacto pessoal"
-                            >
-                        </div>
-                        </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">phone</i>Contacto de Emergência
-                                    </span>
-                                <div class="form-line">
-                                    <input 
-                                        type="text" 
-                                        class="form-control date" 
-                                        (value)="contactos_telefone_emergencia" 
-                                        placeholder="contacto de emergenciaio"
-                                    >
-                            </div>
-                                </div>
-                            </div>
-                           
-                            <div class="col-md-12">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="material-icons">room</i> Endereço :   </span>
-                                        <div class="form-line">
-                                            <input 
-                                                type="text" 
-                                                class="form-control date" 
-                                                (value)="contactos_telefone_endereco" 
-                                                placeholder="Cidade, Bairro - casa n.º"
-                                            >
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </fieldset>
-
-                        <h3>Custo Financeiro</h3>
-                        <fieldset>
-                            <h2 class="card-inside-title">Dados de custo financeiro</h2>
-                                <div class="row clearfix">
-                                    <div class="col-md-2">
-                                        <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <i class="material-icons">payment</i> Taxa Horária
-                                            </span>
-                                            <div class="form-line">
-                                                <input                                                    
-                                                   id="input-taxa-horaria" 
-                                                   type="numeric" 
-                                                   class="form-control date" 
-                                                   (value)="taxa_horaria" 
-                                                   placeholder="0,00kz/h"
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </fieldset>
-
-                        <h3>Identificação</h3>
-                        <fieldset>
-                        <h2 class="card-inside-title">Dados de identificação</h2>
-                        <div class="row clearfix">
-                        <div class="col-md-6">
-                                <span class="input-group-addon">
-                                    <i class="far fa-id-card"></i> Tipo de Identificação :
-                                </span>
-                            <select>
-                                <option selected >Billhete de Identidade</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="far fa-id-card"></i> N.º de Identificação :   </span>
-                                    <div class="form-line">
-                                    <input  
-                                            (required)="true"
-                                            type="text" 
-                                            class="form-control" 
-                                            (value)="identificacoes_bi" 
-                                            placeholder="n.º identificação"
-                                    >
-                                    </div>
-                                </div>
-                            </div>
+                                class="form-control" 
+                                (value)="identificacoes_bi" 
+                                placeholder="n.º identificação"
+                            >        
                         </div>
 
-                        <div class="row clearfix">
-                        <div class="col-md-6">
-                                <span class="input-group-addon">
-                                <i class="far fa-id-card"></i> Tipo de Identificação :
-                                </span>
-                            <select>
-                                <option selected >Cédula OAA</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                    <i class="far fa-id-card"></i>  N.º de Identificação :   </span>
-                                    <div class="form-line">
-                                    <input 
-                                        id="identificacao_cedula" 
-                                        type="text" 
-                                        class="form-control" 
-                                        (value)="identificacoes_cedula" 
-                                        placeholder="n.º identificação"
-                                    >
-                                    </div>
-                                </div>
-                            </div>
-                        </div>    
-
-                        <div style="display: flex;
-                        justify-content: end;
-                        align-items: center;"
-
-            >
-                        
-                            <button class="btn btn-primary julaw-submit-button" (click)="registerColaborador()">Salvar</button>
-
+                        <div class="col-md-3">
+                        <label class="form-label">Tipo de Identificação </label>
+                            <select class="form-control" >
+                                <option selected >Cédula Ordem</option>
+                            </select>     
                         </div>
 
-
-                        
+                        <div class="col-md-3">
+                        <label class="form-label">N.º de Cédula Ordem  </label>
+                            <input 
+                                id="identificacao_cedula" 
+                                type="text" 
+                                class="form-control" 
+                                (value)="identificacoes_cedula" 
+                                placeholder="n.º identificação"
+                            >      
                         </div>
-                                                
-               
 
-                        </div>
-                        </fieldset>
-                    </form>
+                        <!-- #Dados de Identificacao -->
+                    
+                    </div>    
+
+                    <div 
+                        class="card-footer mt-4" 
+                        style="display: flex;
+                            justify-content: end;
+                            align-items: center;"
+                    >
+                    <button class="btn btn-success julaw-submit-button" type="submit" (click)="registerColaborador()">
+                        Guardar
+                        <i class="bi bi-floppy-fill"></i>
+                    </button>
                 </div>
-            </div>
+                </div>
+        </form>
+
+                    </div>
+
+                    <div class="card-footer">
+                     
+                    </div>
+
+          
         </div>
-    </div>
     </section>
+    
+
+
     `;
 
     constructor() {
@@ -391,7 +331,6 @@ class ColaboradorForm extends ViewComponent {
 
     registerColaborador() {
 
-
         const payload = {
             "username": this.username.value,
             "nome_completo": this.nome_completo.value,
@@ -430,6 +369,10 @@ class ColaboradorForm extends ViewComponent {
                 {
                     "tipo": 1,
                     "valor": this.identificacoes_bi.value,
+                },
+                {
+                    "tipo": 2,
+                    "valor": this.identificacoes_passaporte.value,
                 }
             ],
 
@@ -440,26 +383,29 @@ class ColaboradorForm extends ViewComponent {
             },
         };
 
+        console.log("Payload is: >>>>>>>>>>>> ", payload);
 
         const isValidForm = this.colaboradorForm.validate();
 
         if (isValidForm) {
 
-            if(!this.isNotEmptyCedula()) {
-                AppTemplate.toast({ status: 'Error', message: "N.º da Cédula é obrigatória."})
+            console.log("isNotEmptyCedula ", this.isEditForm)
+
+            if (!this.isNotEmptyCedula()) {
+                AppTemplate.toast({ status: 'Error', message: "N.º da Cédula é obrigatória." })
                 return false
             }
 
-            if(this.isEditForm) {
+            if (this.isEditForm) {
                 this.updateColaborador(payload)
-            }else{
-                if(this.username.value == "") {
-                    AppTemplate.toast({ status: 'Error', message: "O nome de Usuário é obrigatório."})
+            } else {
+                if (this.username.value == "") {
+                    AppTemplate.toast({ status: 'Error', message: "O nome de Usuário é obrigatório." })
                     return false
                 }
                 this.saveColaborador(payload)
             }
-         
+
         } else {
             AppTemplate.toast({ status: 'warning', message: 'Por favor, preencha os campos obrigatórios' })
         }
@@ -494,7 +440,7 @@ class ColaboradorForm extends ViewComponent {
             });
     }
 
-    updateColaborador(payload){
+    updateColaborador(payload) {
 
         AppTemplate.showLoading();
 
@@ -558,7 +504,7 @@ class ColaboradorForm extends ViewComponent {
             let bi;
             let cedula;
 
-            if(routeData.contact_value){
+            if (routeData.contact_value) {
                 contactos = routeData.contact_value.split(',');
                 emailPessoal = contactos[0].split('|')[1];
                 emailEmpresa = contactos[1].split('|')[1];
@@ -567,7 +513,7 @@ class ColaboradorForm extends ViewComponent {
                 endereco = contactos[4].split('|')[1];
             }
 
-            if(routeData.tipo_documentos_code) {
+            if (routeData.tipo_documentos_code) {
                 documentos = routeData.tipo_documentos_code.split(',');
                 bi = documentos[1].split('|')[1];
                 cedula = documentos[0].split('|')[1];
@@ -579,7 +525,7 @@ class ColaboradorForm extends ViewComponent {
             this.nome_profissional = routeData.nome_profissional;
             this.tipo_colaborador_id = routeData.tipo_colaborador_id;
             this.status = routeData.status;
-            this.data_nascimento = routeData.data_nascimento.toString().substring(0,10);
+            this.data_nascimento = routeData.data_nascimento.toString().substring(0, 10);
             this.funcao = routeData.funcao;
             this.status = routeData.status;
             this.contactos_email_pessoal = emailPessoal ?? '';
@@ -603,14 +549,14 @@ class ColaboradorForm extends ViewComponent {
 
     isNotEmptyCedula() {
         var e = document.getElementById("select-tipo-colaborador");
-        var typeCollaborator = e.options[e.selectedIndex].text;    
-    
-        console.log("here ",  (typeCollaborator.toString().includes("Advogado")) 
-        && document.getElementById('identificacao_cedula').value == "")
-    
+        var typeCollaborator = e.options[e.selectedIndex].text;
+
+        console.log("here ", (typeCollaborator.toString().includes("Advogado"))
+            && document.getElementById('identificacao_cedula').value == "")
+
         if (
-            (typeCollaborator.toString().includes("Advogado")) 
-                && 
+            (typeCollaborator.toString().includes("Advogado"))
+            &&
             (document.getElementById('identificacao_cedula').value == ""))
             return false
         else
@@ -618,68 +564,3 @@ class ColaboradorForm extends ViewComponent {
     }
 
 }
-
-function loadWizardColaborador({ enableAllSteps = false } = {}) {
-
-    var form = $('#col_wizard_with_validation').show();
-    const [finish, next, previous] = ["Submeter", "Próximo", "Voltar"]
-    form.steps({
-        showFinishButtonAlways: false,
-        enableFinishButton: false,
-        enableAllSteps,
-        labels: { finish, next, previous },
-        headerTag: 'h3',
-        bodyTag: 'fieldset',
-        transitionEffect: 'slideLeft',
-        onInit: function (event, currentIndex) {
-
-            //Set tab width
-            var $tab = $(event.currentTarget).find('ul[role="tablist"] li');
-            var tabCount = $tab.length;
-            $tab.css('width', (100 / tabCount) + '%');
-
-            //set button waves effect
-            setButtonWavesEffect(event);
-        },
-        onStepChanging: function (event, currentIndex, newIndex) {
-            if (currentIndex > newIndex) { return true; }
-
-            if (currentIndex < newIndex) {
-                form.find('.body:eq(' + newIndex + ') label.error').remove();
-                form.find('.body:eq(' + newIndex + ') .error').removeClass('error');
-            }
-            return form//.valid();
-        },
-        onStepChanged: function (event, currentIndex, priorIndex) {
-            setButtonWavesEffect(event);
-        },
-        onFinishing: function (event, currentIndex) {
-            return form//.valid();
-        },
-        onFinished: function (event, currentIndex) {
-            swal("Good job!", "Submitted!", "success");
-        }
-    });
-}
-
-function setButtonWavesEffect(event) {
-    $(event.currentTarget).find('[role="menu"] li a').removeClass("waves-effect");
-    $(event.currentTarget)
-        .find('[role="menu"] li:not(.disabled) a')
-        .addClass("waves-effect");
-}
-
-function disabledTaxaHoraria() {
-    var e = document.getElementById("select-tipo-colaborador");
-    var typeCollaborator = e.options[e.selectedIndex].text;
-    console.log('o valor do select é', typeCollaborator);
-
-    if (typeCollaborator == "Administrativo") {
-        document.getElementById("input-taxa-horaria").disabled = true;
-    }
-    else {
-        document.getElementById("input-taxa-horaria").disabled = false;
-    }
-
-}
-

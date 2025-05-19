@@ -1,62 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("./service.js", { type: "module" })
+          .then(() => console.log("Service Worker Registered"))
+          .catch((err) => console.log("SW Registration Failed:", err));
+      }
+    </script>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <title>Julaw Soft</title>
     <!-- Favicon-->
-    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
-    <!-- Still CSS stylings, need to be kept in the index.html file -->
-    <link href="@still/css/still-fundamental.css" rel="stylesheet">
-    <!-- Plugins Core Css -->
-    <link href="assets/css/app.min.css" rel="stylesheet">
     <!-- Custom Css -->
-    <link href="assets/css/julaw.css" rel="stylesheet" />
-    <link href="assets/css/style.css" rel="stylesheet" />
-    <link href="assets/css/auth.css" rel="stylesheet" />
-    <link href="assets/css/menu.css" rel="stylesheet" />
-    <link href="assets/css/detail_processo.css" rel="stylesheet" />
-    <!-- <link href="assets/css/login.css" rel="stylesheet" />-->
+    <link
+      href="assets/css/fonts/fontawesome/fontawesome.css"
+      rel="stylesheet"
+    />
 
-    <link href="assets/css/pages/extra_pages.css" rel="stylesheet" />
-    <!-- Theme style. You can choose a theme from css/themes instead of get all themes -->
-    <link href="assets/css/styles/all-themes.css" rel="stylesheet" />
-    <link href="assets/js/bundles/multiselect/css/multi-select.css" rel="stylesheet">
-    <link href="assets/css/julaw-form.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+      crossorigin="anonymous"
+    />
+    <!-- CSS para Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
 
-    <script src="@still/component/manager/timer.js"></script>
-    <script src="@still/util/UUIDUtil.js"></script>
-    <script async src="@still/component/type/Prop.js"></script>
-    <script async src="@still/component/type/STForm.js"></script>
-    <script src="@still/component/super/Template.js"></script>
-    <script src="./app-template.js"></script>
-    <script src="route.map.js"></script>
-    <script src="@still/setup/constants.js"></script>
-    <script src="@still/setup/components.js"></script>
+    <link rel="stylesheet" href="@still/ui/css/still.css" />
+
     <script src="@still/helper/http.js"></script>
-    <script src="@still/component/manager/registror.js"></script>
-    <script src="@still/component/super/BehaviorComponent.js"></script>
-    <script src="@still/component/super/BaseComponent.js"></script>
-    <script src="@still/component/super/ViewComponent.js"></script>
-    <script src="components/auth/Login.js"></script>
-    <script src="components/main-menu/Menu.js"></script>
-    <script src="components/dashboard-card/DashboardCard.js"></script>
-    <script src="components/dashboard-card/CardDisplay.js"></script>
-    <script src="components/navbar/TopNavBar.js"></script>
-    <script src="components/charts/LineChart.js"></script>
-    <script src="components/charts/BarChart.js"></script>
-    <script src="components/charts/CircularAnimatedChart.js"></script>
-    <script src="components/project-list/ProjectGrid.js"></script>
-    <script src="components/calendar/Calendar.js"></script>
-    <script src="components-setup.js"></script>
-</head>
+    <script type="module" src="@still/index.js"></script>
 
-<body class="light">
+    <style>
+      body {
+        min-height: 100vh;
+        overflow-x: hidden;
+        background-color: #f5f5f5;
+      }
+      .content {
+        margin-left: 260px;
+        transition: all 0.3s;
+        padding: 20px;
+      }
+      .content-expanded {
+        margin-left: 70px;
+      }
 
-    <div id="stillUiPlaceholder">
-    </div>
+      body {
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+        color: "#555";
+      }
+
+      html {
+        height: -webkit-fill-available;
+      }
+
+      main {
+        height: 100vh;
+        height: -webkit-fill-available;
+        max-height: 100vh;
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      a[href="#"] {
+        color: #555; /* opcional: mudar estilo */
+        padding: 2px;
+      }
+
+      .dropdown-toggle {
+        outline: 0;
+      }
+
+      .btn-toggle {
+        padding: 0.25rem 0.5rem;
+        font-weight: 600;
+        color: var(--bs-emphasis-color);
+        background-color: transparent;
+      }
+      .btn-toggle:hover,
+      .btn-toggle:focus {
+        color: rgba(var(--bs-emphasis-color-rgb), 0.85);
+        background-color: var(--bs-tertiary-bg);
+      }
+
+      .btn-toggle::before {
+        width: 1.25em;
+        line-height: 0;
+        content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+        transition: transform 0.35s ease;
+        transform-origin: 0.5em 50%;
+      }
+
+      [data-bs-theme="dark"] .btn-toggle::before {
+        content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%28255,255,255,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+      }
+
+      .btn-toggle[aria-expanded="true"] {
+        color: rgba(var(--bs-emphasis-color-rgb), 0.85);
+      }
+      .btn-toggle[aria-expanded="true"]::before {
+        transform: rotate(90deg);
+      }
+
+      .btn-toggle-nav a {
+        padding: 0.1875rem 0.5rem;
+        margin-top: 0.125rem;
+        margin-left: 1.25rem;
+      }
+      .btn-toggle-nav a:hover,
+      .btn-toggle-nav a:focus {
+        background-color: var(--bs-tertiary-bg);
+      }
+
+      .scrollarea {
+        overflow-y: auto;
+      }
+
+      @media (max-width: 768px) {
+        .content {
+          margin-left: 0;
+        }
+
+        .submenu .nav-link {
+          padding-left: 2.5rem;
+          background-color: #3e444a;
+        }
+      }
+
+      /* CARD CSS */
+      .l-bg-green {
+      }
+
+      .layoutBase {
+        background-color: #f5f5f5;
+        color: #323232;
+        border-radius: 8px;
+        padding: 4px;
+      }
+
+      .order-info-box7 {
+        padding: 5px;
+        /* background-color: #323232;*/
+        /*background-color: #5a5a66;*/
+        background-color: #f5f5f5;
+        color: #323232;
+        border-radius: 6px;
+      }
+
+      .order-info-box7 i {
+        padding: 5px;
+        /* background-color: #323232;*/
+        /*background-color: #5a5a66;*/
+        background-color: #f5f5f5;
+        color: #323232;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+
+  <body class="">
+    <div id="stillUiPlaceholder"></div>
     <!-- Plugins Js -->
     <script defer src="assets/js/app.min.js"></script>
     <script defer src="assets/js/chart.min.js"></script>
@@ -66,57 +182,91 @@
     <script defer src="assets/js/bundles/amcharts4/charts.js"></script>
     <script defer src="assets/js/bundles/amcharts4/animated.js"></script>
     <script defer src="assets/js/pages/index.js"></script>
-    <script defer src="@still/routing/router.js"></script>
-    <script async src="components/client/ClientsGrid.js"></script>
-    <script async src="components/colaboradores/ColaboradoresGrid.js"></script>
-    <script async src="components/colaboradores/ColaboradorForm.js"></script>
-    <script async src="components/processos/ProcessoForm.js"></script>
-    <script async src="components/processos/ProcessosGrid.js"></script>
-    <script async src="components/processos/ProcessoDetalhes.js"></script>
-    <script async src="components/processos/ProcessoTimeSheet.js"></script>
-    <script async src="components/colaboradores/ColaboradorDashboard.js"></script>
+    <!-- <script defer src="@still/routing/router.js"></script> -->
     <script defer src="assets/js/table.min.js"></script>
     <!-- Form wizard imports -->
     <script defer src="assets/js/pages/forms/form-wizard.js"></script>
-    <script defer src="assets/js/bundles/jquery-steps/jquery.steps.min.js"></script>
+    <script
+      defer
+      src="assets/js/bundles/jquery-steps/jquery.steps.min.js"
+    ></script>
     <script defer src="assets/js/bundles/tinymce/tinymce.min.js"></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.min.js"
+      integrity="sha384-VQqxDN0EQCkWoxt/0vsQvZswzTHUVOImccYmSyhJTp7kGtPed0Qcx8rK9h9YEgx+"
+      crossorigin="anonymous"
+    ></script>
     <!-- End Form wizard imports -->
 
-    <link rel="stylesheet" href="assets/css/julaw-main.css">
-    <link rel="stylesheet" href="@still/ui/css/still.css">
-    <link href="assets/css/side-menu.css" rel="stylesheet" />
-
-
-    <!-- Tabulator Component -->
-    <!-- Bello CSS needs to move to Component class -->
-    <link href="@still/vendors/tabulator/tabulator.min.css" rel="stylesheet" />
-    <!-- Bellow JS needs to move to Component class -->
-    <script src="@still/vendors/tabulator/tabulator6.2.25.js"></script>
-    <script src="@still/vendors/tabulator/TabulatorComponent.js"></script>
-    <script src="@still/vendors/tabulator/TBDragableGrid.js"></script>
-    <!-- End Tabulator Component -->
-
-
-    <!-- TUICalendar Component -->
-    <link href="@still/vendors/toast-ui/timepicker/time-picker.min.css" rel="stylesheet" />
-    <link href="@still/vendors/toast-ui/datepicker/date-picker.min.css" rel="stylesheet" />
-    <link href="@still/vendors/toast-ui/calendar/toastui-calendar.min.css" rel="stylesheet" />
-    <!-- Bellow JS needs to move to Component class -->
-    <script src="@still/vendors/toast-ui/timepicker/time-picker.js"></script>
-    <script src="@still/vendors/toast-ui/datepicker/date-picker.js"></script>
-    <script src="@still/vendors/toast-ui/calendar/toastui-calendar.min.js"></script>
-    <script src="@still/vendors/toast-ui/calendar/TUICalendarComponent.js"></script>
-    <!-- End TUICalendar Component -->
-
-    <script src="components/factura/Factura.js"></script>
-    <script src="components/generics/button/CreateButton.js"></script>
-
-    <script src="components/Modal/ModalDetalhesFactura.js"></script>
+    <!-- <script src="components/Modal/ModalDetalhesFactura.js"></script>
     <script src="components/Modal/ModalListPagamentos.js"></script>
-    <script src="components/Modal/ModalPagamento.js"></script>
+    <script src="components/Modal/ModalPagamento.js"></script -->
 
-    <!-- JQuery Select imports -->
-    <!-- <script defer src="assets/js/bundles//multiselect/js/jquery.multi-select.js"></script>
-    <script defer src="assets/js/pages/forms/advanced-form-elements.js'"></script> -->
-
-</body>
+    <script>
+      /*
+          // Controle da sidebar recolhível
+          document.getElementById('toggle-sidebar').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('sidebar-collapsed');
+            document.getElementById('content').classList.toggle('content-expanded');
+            
+            const icon = this.querySelector('i');
+            if (document.getElementById('sidebar').classList.contains('sidebar-collapsed')) {
+                icon.classList.remove('bi-chevron-left');
+                icon.classList.add('bi-chevron-right');
+                document.getElementById('sidebar-title').style.display = 'none';
+            } else {
+                icon.classList.remove('bi-chevron-right');
+                icon.classList.add('bi-chevron-left');
+                document.getElementById('sidebar-title').style.display = 'block';
+            }
+        });
+        
+        // Alternativa para o botão no conteúdo principal
+        document.getElementById('toggle-sidebar-btn').addEventListener('click', function() {
+            document.getElementById('toggle-sidebar').click();
+        });
+        
+        // Manter dropdowns abertos
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownElements = document.querySelectorAll('.nav-item.dropdown');
+            
+            dropdownElements.forEach(function(dropdown) {
+                const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+                const dropdownMenu = dropdown.querySelector('.dropdown-menu');
+                const bsDropdown = new bootstrap.Dropdown(dropdownToggle);
+                
+                // Prevenir fechamento ao clicar dentro do dropdown
+                dropdownMenu.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+                
+                // Fechar outros dropdowns quando um novo é aberto
+                dropdownToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Fecha todos os outros dropdowns
+                    document.querySelectorAll('.nav-item.dropdown.show').forEach(function(openDropdown) {
+                        if (openDropdown !== dropdown) {
+                            const openBsDropdown = bootstrap.Dropdown.getInstance(
+                                openDropdown.querySelector('.dropdown-toggle')
+                            );
+                            openBsDropdown.hide();
+                        }
+                    });
+                    
+                    // Alterna o dropdown atual
+                    bsDropdown.toggle();
+                });
+            });
+        });
+        */
+    </script>
+  </body>
+</html>

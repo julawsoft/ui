@@ -1,4 +1,6 @@
-class TUICalendarComponent extends ViewComponent {
+import { ViewComponent } from "../../../component/super/ViewComponent.js";
+
+export class TUICalendarComponent extends ViewComponent {
 
 
     /** @Prop */
@@ -52,10 +54,10 @@ class TUICalendarComponent extends ViewComponent {
         <div>
             <p>&nbsp;</p>
             <header class="header-toastui-calendar">
-                <nav class="navbar-toastui-calendar">
-                    <button (click)="navigateCalendar('today')" class="button is-rounded today calendar-btn-today">Hoje</button>
-                    <button (click)="navigateCalendar('prev')" class="calendar-btn-prev today is-rounded"> < </button>
-                    <button (click)="navigateCalendar('next')" class="calendar-btn-next today is-rounded"> > </button>
+                <nav class="navbar-toastui-calendar mb-3">
+                    <button (click)="navigateCalendar('today')" class="btn btn-secondary button is-rounded today calendar-btn-today">Hoje</button>
+                    <button (click)="navigateCalendar('prev')" class="btn btn-outline-dark calendar-btn-prev today is-rounded"> < </button>
+                    <button (click)="navigateCalendar('next')" class="btn btn-outline-dark calendar-btn-next today is-rounded"> > </button>
                     <span class="toastui-time-range" id="@dateRangePlaceId"></span>
                 </nav>
             </header>

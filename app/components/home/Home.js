@@ -1,52 +1,83 @@
-class Home extends BaseComponent {
+import { BaseComponent } from "../../@still/component/super/BaseComponent.js";
+
+export class Home extends BaseComponent {
 
   template = `
-    <section class="content">
-        
-            <div class="container-fluid">
-                <!-- Dashboard Widgets -->
-                <div id="dashBoardCards" class="row"></div>
+    <main class="content p-4">
+      <div class="container-fluid">
+        <h1>Dashboard - Exemplo</h1>
+        <p class="lead">Fique a par de tudo</p>
 
-                <div class="row">
-                    <div id="barCharPlaceholder" style="display: contents;"></div>
-                    <div id="lineCharPlaceholder" style="display: contents;"></div>
+            <div class="row mb-3">
+              <div class="col-3">
+                <div class="card">
+                  <div class="card-header">Total de Processos</div>
+                  <div class="card-body">0</div>
                 </div>
+              </div>
+              <div class="col-3">
+                <div class="card">
+                  <div class="card-header"> Pendências / Atrasos</div>
+                  <div class="card-body">0</div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="card">
+                  <div class="card-header">Clientes ativos</div>
+                  <div class="card-body">0</div>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="card">
+                  <div class="card-header">Colaboradores Activos</div>
+                  <div class="card-body">body</div>
+                </div>
+              </div>
+        </div>
 
-                <div class="row clearfix">
-                    <div id="animateCharts" style="display: none;"></div>
-                </div>
-                
-                <div class="row clearfix">
-                    <div id="projectGrid" style="display: contents;"></div>
-                    <div id="dashboardCalendar" style="display: contents;"></div>
-                </div>
-                
+        <div class="row mb-3">
+              <div class="col-6">
+              <div class="card">
+              <div class="card-header">Processos por modo de Facturação</div>
+              <div class="card-body">0</div>
+              </div>
+              </div>
+
+              <div class="col-6">
+              <div class="card">
+              <div class="card-header">Tarefas e execução</div>
+              <div class="card-body">0</div>
             </div>
-        
-    </section>
-    `;
+              </div>
+        </div>
 
-  cardDisplayDS;
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">Notificações gerais</div>
+              <div class="card-body">Nenhuma notificação</div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  `;
+
+
 
   constructor() {
     super();
-    /*
-    if(AppTemplate.get().getStorageValue('logged')){
-        console.log(`Used was logged: `, AppTemplate.get().getStorageValue('logged'));
-    }else{
-        Router.goto('init');
-    }
-    */
     //AppTemplate.showLoading();
-    this.setup({
-      includs: [
-        LineChart,
-        Calendar,
-        CardDisplay,
-        BarChart,
-        CircularAnimatedChart,
-        ProjectGrid,
-      ],
+    /* 
+      CardDisplay.cardDataSource.onChange((value) => {
+              console.log(`Home component detected changes: `,value);
+      }); 
+    */
+  }
+
+  importAssets() {
+
+    return {
       scripts: [
         "assets/js/chart.min.js",
         "assets/js/bundles/amcharts4/core.js",
@@ -54,16 +85,12 @@ class Home extends BaseComponent {
         "assets/js/bundles/amcharts4/animated.js",
         "assets/js/pages/index.js",
       ],
-    });
+    };
 
-    /* CardDisplay.cardDataSource.onChange((value) => {
-            console.log(`Home component detected changes: `,value);
-        }); */
   }
 
+
   async stAfterInit() {
-
     AppTemplate.hideLoading();
-
   }
 }

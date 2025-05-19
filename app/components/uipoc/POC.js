@@ -8,7 +8,7 @@ class POC extends ViewComponent {
     /** @type { TabulatorComponent } */
     dataTable = Proxy;
     dataTableLabels = Prop(JSON.stringify([
-        { hozAlign: "center", editRow: true, icon: "<i class='fa fa-pen'></i>", width: 20 },
+        { hozAlign: "center", editRow: true, icon: "<i class='bi bi-pencil-square'></i>", width: 20 },
         { hozAlign: "center", deleteRow: true, icon: "<i class='fa fa-trash'></i>", width: 20 },
         { title: "Tipo Cliente", field: "tipo_id", sorter: "string", width: 200 },
         { title: "Nome", field: "denominacao", sorter: "string" },

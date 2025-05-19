@@ -1,4 +1,6 @@
-class TopNavBar extends ViewComponent {
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+
+export class TopNavBar extends ViewComponent {
 
     htmlRefId = "topNavBar";
     totalNotifications = 0;
@@ -10,140 +12,61 @@ class TopNavBar extends ViewComponent {
     processoService;
 
     template = `
-    <nav class="navbar" id="topNavBar" style="position: fixed;">
-        <div class="container-fluid" style="margin-top: -7px;
-        margin-left: -13px;">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="index.html">
-                    <img 
-                        src="assets/images/julaw-logo.png" 
-                        style="width: 42px;"
-                        alt="" 
-                    />
-                    <span class="logo-name">JULAW</span>
-                </a>
-            </div>
-            <div class="collapse navbar-collapse" id="navbar-collapse" style="position: fixed; width: 100%; padding-left: 235px">
-                <ul class="nav navbar-nav navbar-left">
-                    <li>
-                        <a href="#" onClick="return false;" class="sidemenu-collapse">
-                            <i class="nav-hdr-btn ti-align-left"></i>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <!-- Full Screen Button 
-                    <li class="fullscreen">
-                        <a href="javascript:;" class="fullscreen-btn">
-                            <i class="nav-hdr-btn ti-fullscreen"></i>
-                        </a>
-                    </li>
-                    -->
-                    <!-- #END# Full Screen Button -->
-                    <!-- #START# Notifications-->
-                    <li class="dropdown">
-                        <a href="#" 
-                            onClick="return false;" 
-                            class="dropdown-toggle ring-ball-top-nav-bar" 
-                            data-toggle="dropdown"
-                            counter="@totalNotifications"
-                            data-display="none"
-                            id="toMenuBarTotalNotification"
-                            role="button">
-                            <i class="nav-hdr-btn ti-bell"></i>
-                            <span class="notify"></span>
-                            <span class="heartbeat"></span>
-                        </a>
-                        <ul class="dropdown-menu pullDown">
-                            <li class="header">NOTIFICAÇÕES</li>
-                            <li class="body" style="width: 100%;" id="toMenuBarListaNotification">
-                            </li>
-                            <li class="footer">
-                                <!-- <a href="#" (click)="gotoView('UserNotification')">Ver todas as Notificações</a> -->
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- #END# Notifications-->
-                    <li class="dropdown user_profile">
-                        <div class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="assets/images/user.jpg" alt="user">
-                        </div>
-                        <ul class="dropdown-menu pullDown">
-                            <li class="body">
-                                <ul class="user_dw_menu">
-                                    <li>
-                                        <a href="#" (click)="gotoView('UserProfile')">
-                                            <i class="material-icons">person</i>Teu Perfil
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" (click)="logout()">
-                                            <i class="material-icons">power_settings_new</i>Sair do Julaw
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- #END# Tasks -->
-                    <li class="pull-right" style="padding-right: 15px">
-                      
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+  <!-- Navbar / Header -->
+  <nav class="navbar navbar-expand-lg sticky-top shadow-sm ml-280" style="background-color:#12356f;" >
+  <div class="container-fluid">
+    <button class="btn btn-outline-secondary d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+      <i class="bi bi-list"></i>
+    </button>
+    <a class="navbar-brand" style="color: #fff" href="#">
+        <img 
+            src="assets/images/julaw-logo.png" 
+            style="width: 42px;"
+            alt="" 
+        />
+            JULAW - SOFT
+        </a>
+    <div class="ms-auto d-flex align-items-center gap-3">
     
-    <style id="thisIsMenuStyle">
-
-        :root{
-            --display: none;
-        }
-
-        .notify, .heartbeat {
-            display: var(--display);
-        }
-
-        .ring-ball-top-nav-bar::before {
-            content: attr(counter);
-            display: var(--display);
-            position: absolute;
-            margin-left: 17px;
-            margin-top: 5px;
-            background: #c859599c;
-            color: white;
-            width: 20px;
-            text-align: center;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
+    <div class="dropdown">
+        <a href="#" class="d-flex link-light align-items-left text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
+        </svg>
+        </a>
         
-        #toMenuBarListaNotification .notification-late-task {
-                background: #d011112e !important;
-                color: red !important;
-                font-weight: 600;
-        }
-
-        #toMenuBarListaNotification .task-item {
-            border-top: 1px solid #8080803d;
-            display: flex; 
-            justify-content: space-between; 
-            padding: 0 10px 0 10px; 
-        }
-        
-        #toMenuBarListaNotification .task-item:nth-child(odd) {
-            background: #8080801c;
-        }
-
-    </style>
-    
+        <ul style="left: -200px; padding:10px; width: 250px" class="dropdown-menu dropdown-menu-light text-small shadow">
+        <li class="header">NOTIFICAÇÕES</li>
+        <li class="body" style="width: 100%; margin-bottom: 20px" id="toMenuBarListaNotification">
+        </li>
+        <li class="footer">
+            <a href="#" class="link-dark" (click)="gotoView('UserNotification')">Ver todas as Notificações</a>
+        </li>
+            
+        </ul>
+    </div>
+  
+    <div class="dropdown">
+    <a href="#" class="d-flex align-items-left text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+      <img src="assets/images/user.jpg" alt="" width="32" height="32" class="rounded-circle me-2">
+    </a>
+    <ul style="left: -100px; text-aligm:center; padding-left:4px" class="dropdown-menu dropdown-menu-light text-small shadow">
+      <li>
+        <a class="dropdown-item link-dark" href="#" (click)="gotoView('UserProfile')">
+          Teu Perfil
+        </a>
+      </li>
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item link-dark"  (click)="logout()" href="#">Sair</a></li>
+    </ul>
+  </div>
+    </div>
+  </div>
+</nav>
     `;
 
 
     async stAfterInit() {
-
         this.processoService.on('load', async () => {
             const notifications = await this.processoService.getTarefaByColaboradorId();
             this.parseAndDisplayNotifications(notifications);
@@ -189,6 +112,8 @@ class TopNavBar extends ViewComponent {
             })?.join('');
 
         }
+
+        console.log("listaNotificacoes", listaNotificacoes)
 
         document
             .getElementById('toMenuBarListaNotification')

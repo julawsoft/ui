@@ -1,4 +1,7 @@
-class Menu extends ViewComponent {
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+import { Router } from "../../@still/routing/router.js";
+
+export class Menu extends ViewComponent {
   htmlRefId = "leftsidebar";
 
   userId;
@@ -34,80 +37,148 @@ class Menu extends ViewComponent {
   /** @Prop */
   canListDespesas = true;
 
+    /** @Prop */
+    canCreateHonorarios = true;
+    /** @Prop */
+    canListHonorarios = true;
+
+    /** @Prop */
+    canListTimeSheet = true;
+  /** @Prop */
+  canCreateTimeSheet = true;
+
   template = `
-  <aside id="leftsidebar" class="sidebar" style="padding: 0">
-    <ul class="menu-julaw">
-      <li>
-        <div class="sidebar-profile clearfix" 
-          style="background: #6a2021; margin: 0; width: 100%; color: #fff;">
-            <div class="profile-info">
-            <div style="display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  height: 75px;
-                  gap: 2px;">
-                <div>
-                  <i class="material-icons" style="display: flex">person</i>
-                </div>
-                <p style="color: #fff; font-size: 14px; margin-bottom: 0">@userName</p>
-              </div>
-            </div>
-        </div>
-      </li>
-        
-      <li class="menu-item-julaw" (renderIf)="self.canSeeHomePage">
-          <a href="#" class="item-menu"  (click)="gotoView('Home')"><i class="fas fa-home"></i> Início</a>
-      </li>
-      <li class="menu-item-julaw active">
-            <a class="item-menu active" href="#"><i class="fas fa-folder"></i> Processos</a>
-            <ul class="submenu">
-                <li (renderIf)="self.canCreateProcess">
-                    <a href="#" (click)="gotoView('ProcessoForm')"> Criar </a>
-                </li>
-                <li (renderIf)="self.canListProcess">
-                  <a href="#" (click)="gotoView('ProcessosGrid')"> Listar </a>
-                </li>
-                <li (renderIf)="self.canListMineProcess"><a href="#" (click)="gotoView('ColaboradorDashboard')">Meus Processos </a></li>
-            </ul>
-      </li>
-      <li class="menu-item-julaw">
-            <a href="#" class="item-menu "><i class="fas fa-users"></i> Clientes</a>
-            <ul class="submenu">
-                <li (renderIf)="self.canCreateClient">
-                  <a href="#" (click)="gotoView('ClientForm')"> Cadastrar </a>
+  <div style="position:fixed; bottom:0; top:0; margin-top:59px; width: 280px;" class="w-280 d-flex flex-column flex-shrink-0 p-3 menu-bg-color">
+  <ul class="list-unstyled ps-0">
+    <li class="mb-1">
+      <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+        Home
+      </button>
+      <div class="collapse show" id="home-collapse">
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+          <li>
+            <a href="/" class="link-dark rounded btn-menu-link">Dashboard</a>
+          </li>
+        </ul>
+      </div>
+    </li>
+    <li class="mb-1">
+      <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
+        Processos
+      </button>
+      <div class="collapse" id="dashboard-collapse">
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+          <li (renderIf)="self.canCreateProcess">
+            <a href="#" class="link-dark" (click)="gotoView('ProcessoForm')"> Criar </a>
+          </li>
+          <li (renderIf)="self.canListProcess">
+            <a href="#" class="link-dark" (click)="gotoView('ProcessosGrid')"> Listar </a>
+          </li>
+          <li (renderIf)="self.canListMineProcess">
+            <a href="#" class="link-dark" (click)="gotoView('ColaboradorDashboard')">Meus Processos </a>
+          </li>  
+        </ul>
+      </div>
+    </li>
+    <li class="mb-1">
+      <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#clientes-collapse" aria-expanded="false">
+        Clientes
+      </button>
+      <div class="collapse" id="clientes-collapse">
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+        <li (renderIf)="self.canCreateClient">
+                  <a href="#" class="link-dark" (click)="gotoView('ClientForm')"> Cadastrar </a>
                 </li>
                 <li (renderIf)="self.canListClient">
-                  <a href="#" (click)="gotoView('ClientsGrid')"> Listar</a>
+                  <a href="#" class="link-dark" (click)="gotoView('ClientsGrid')"> Listar</a>
                 </li>
-                <li (renderIf)="self.isClient"><a href="#" (click)="gotoViewClient('ClienteDetalhes')">Meus Processos </a></li>
-            </ul>
+                <li (renderIf)="self.isClient"><a href="#" class="link-dark" (click)="gotoViewClient('ClienteDetalhes')">Meus Processos </a></li>
+            
+        </ul>
+      </div>
+    </li>
+    <li class="mb-1">
+    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#colaboradores-collapse" aria-expanded="false">
+     Colaboradores
+    </button>
+    <div class="collapse" id="colaboradores-collapse">
+      <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+      <li (renderIf)="self.canCreateColaborador"><a href="#" class="link-dark" (click)="gotoView('ColaboradorForm')"> Cadastrar </a>
       </li>
-      <li class="menu-item-julaw">
-            <a href="#" class="item-menu"><i class="fas fa-user"></i> Colaboradores</a>
-            <ul class="submenu">
-                  <li (renderIf)="self.canCreateColaborador"><a href="#" (click)="gotoView('ColaboradorForm')"> Cadastrar </a>
-                  </li>
-                  <li (renderIf)="self.canListColaborador"><a href="#"  (click)="gotoView('ColaboradoresGrid')"> Listar</a>
-                  </li>
-            </ul>
+      <li (renderIf)="self.canListColaborador"><a href="#" class="link-dark" (click)="gotoView('ColaboradoresGrid')"> Listar</a>
       </li>
-      <li (renderIf)="self.devProfile" class="menu-item-julaw">
-            <a href="#" class="item-menu"><i class="fas fa-user"></i> POC</a>
-            <ul class="submenu">
-                  <li><a href="#" (click)="gotoView('POC')"> Generico </a></li>
-            </ul>
-      </li>
-      <li class="menu-item-julaw">
-            <a href="#" class="item-menu"><i class="fas fa-file-invoice"></i>  Despesas</a>
-            <ul class="submenu">
-                  <li (renderIf)="self.canCreateDespesasr"><a href="#" (click)="gotoView('DespesasForm')"> Registar </a>
-                  </li>
-                  <li (renderIf)="self.canListDespesas"><a href="#"  (click)="gotoView('Despesas')"> Listar</a>
-                  </li>
-            </ul>
-      </li>
+          
+      </ul>
+    </div>
+  </li>
+
+  <li class="mb-1">
+  <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#timesheet-collapse" aria-expanded="false">
+  TimeSheet
+  </button>
+  <div class="collapse" id="timesheet-collapse">
+    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+    <li (renderIf)="self.canCreateTimeSheet"><a href="#" class="link-dark" (click)="gotoView('TimesheetForm')"> Registar </a>
+    </li>          
+    <li (renderIf)="self.canListTimeSheet"><a href="#" class="link-dark" (click)="gotoView('TimesheetsGrid')"> Geral </a>
+    </li>
+    <li><a href="#"  (click)="gotoView('MeusTimesheetsGrid')"> Meus TimeSheets</a>
+    </li>
+        
     </ul>
-  </aside>
+  </div>
+</li>
+
+<li class="mb-1">
+<button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#honorarios-collapse" aria-expanded="false">
+Honorários
+</button>
+<div class="collapse" id="honorarios-collapse">
+  <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+  <li (renderIf)="self.canCreateHonorarios"><a href="#" class="link-dark" (click)="gotoView('HonorarioForm')"> Registar </a>
+          </li>
+          <li (renderIf)="self.canListHonorarios"><a href="#" class="link-dark" (click)="gotoView('HonorariosGrid')"> Geral </a>
+          </li>
+          <li><a href="#" class="link-dark" (click)="gotoView('MeusHonorariosGrid')"> Meus Honorários</a>
+          </li>
+  </ul>
+</div>
+</li>
+
+<li class="mb-1">
+<button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#despesas-collapse" aria-expanded="false">
+Despesas
+</button>
+<div class="collapse" id="despesas-collapse">
+  <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+  <li (renderIf)="self.canCreateDespesasr"><a href="#" class="link-dark" (click)="gotoView('DespesasForm')"> Registar </a>
+  </li>
+  <li (renderIf)="self.canListDespesas"><a href="#" class="link-dark" (click)="gotoView('Despesas')"> Listar</a>
+  </li>
+  </ul>
+</div>
+</li>
+
+    <!--
+    <li class="border-top my-3"></li>
+    <li class="mb-1">
+      <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
+        Account
+      </button>
+      <div class="collapse" id="account-collapse">
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+          <li><a href="#" class="link-dark rounded">New...</a></li>
+          <li><a href="#" class="link-dark rounded">Profile</a></li>
+          <li><a href="#" class="link-dark rounded">Settings</a></li>
+          <li><a href="#" class="link-dark rounded">Sign out</a></li>
+        </ul>
+      </div>
+    </li>
+    -->
+  </ul>
+
+</div>
+
     `;
 
   getRolesByLoggedUser() {
@@ -144,10 +215,16 @@ class Menu extends ViewComponent {
     this.canCreateColaborador = this.roles.includes('CAN_CREATE_COLABORADOR');
     this.canListColaborador = this.roles.includes('CAN_SEE_COLABORADOR_LIST');
 
-    if(this.userFuncao !== "cliente") {
+    this.canCreateHonorarios = this.roles.includes('CAN_CREATE_HONORARIOS');
+    this.canListHonorarios = this.roles.includes('CAN_LIST_HONORARIOS');
+
+    this.canListTimeSheet = this.roles.includes('CAN_LIST_TIMESHEET');
+    this.canCreateTimeSheet = this.roles.includes('CAN_CREATE_TIMESHEET');
+
+    if (this.userFuncao !== "cliente") {
       this.canSeeHomePage = true;
       this.canListMineProcess = true;
-    }else{
+    } else {
       this.isClient = true
     }
 
@@ -158,7 +235,7 @@ class Menu extends ViewComponent {
   }
 
   gotoViewClient(viewComponent) {
-    Router.goto(viewComponent, {data: this.userId.value});
+    Router.goto(viewComponent, { data: this.userId.value });
   }
 
   static propagateEventsIntoAllItemMenu() {

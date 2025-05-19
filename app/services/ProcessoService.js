@@ -183,5 +183,48 @@ class ProcessoService {
             });
         });
     }
-    
+
+
+    /** TimeSheet */
+    async getTimeSheetByColaboradorId(idColaborador) {
+        const response = await $still.HTTPClient.get(
+            `/api/v1/processo_time_sheets_all?colaboradorId=${idColaborador}`
+        );
+        return response?.data;
+    }
+    async getTimeSheets() {
+        const response = await $still.HTTPClient.get(
+            `/api/v1/processo_time_sheets_all`
+        );
+        return response?.data;
+    }
+
+    async getTimeSheetByProcessoId(id) {
+        const response = await $still.HTTPClient.get(
+            `/api/v1/processo_time_sheets/${id}`
+        );
+        return response?.data;
+    }
+   
+
+    /** Honorarios */
+    async getHonorariosByColaboradorId(idColaborador) {
+        const response = await $still.HTTPClient.get(
+            `/api/v1/processo_factura_colaborador/${idColaborador}`
+        );
+        return response?.data;
+    }
+    async getHonorarios() {
+        const response = await $still.HTTPClient.get(
+            `/api/v1/processo_factura/`
+        );
+        return response?.data;
+    }
+    async getHonorariosByProcessoId(idProcesso) {
+        const response = await $still.HTTPClient.get(
+            `/api/v1/processo_factura/${idProcesso}`
+        );
+        return response?.data;
+    }
+
 }

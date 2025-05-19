@@ -1,4 +1,6 @@
-class AppTemplate extends Template {
+import { Template } from "./@still/component/super/Template.js";
+
+export class AppTemplate extends Template {
 
     /**
      * <still-component> is the placeholder where components 
@@ -13,11 +15,14 @@ class AppTemplate extends Template {
      * e.g. <st-fixed component="AppHeader">
      */
     template = `
-        <st-fixed component="TopNavBar" />
+        <st-fixed component="TopNavBar">
         <div>
-            <st-fixed component="Menu" />
+            <st-fixed component="Menu">
         </div>
         <still-component/>
     `;
+    
 
 }
+
+window.AppTemplate = AppTemplate;

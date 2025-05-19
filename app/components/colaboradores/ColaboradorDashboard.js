@@ -1,4 +1,6 @@
-class ColaboradorDashboard extends ViewComponent {
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+
+export class ColaboradorDashboard extends ViewComponent {
   htmlRefId = "clientDataTable";
   dataSource;
   dataSourceTarefas;
@@ -34,13 +36,13 @@ class ColaboradorDashboard extends ViewComponent {
     {
       hozAlign: "center",
       editRow: true,
-      icon: "<i class='fas fa-check'></i>",
+      icon: "<i class='bi bi-check-circle'></i>",
       width: 20,
     },
     {
       hozAlign: "center",
       deleteRow: true,
-      icon: "<i class='fas fa-pencil-alt'></i>",
+      icon: "<i class='bi bi-pencil-square'></i>",
       width: 20,
     },
     { title: "Estado", field: "estado", sorter: "string", width: 100 },
@@ -56,285 +58,306 @@ class ColaboradorDashboard extends ViewComponent {
   ];
 
 
-    /** @Prop */
-    dataTableLabels = [
-      {
-        hozAlign: "center",
-        editRow: true,
-        icon: "<i class='far fa-calendar-alt'></i>",
-        width: 20,
-      },
-      {
-        hozAlign: "center",
-        deleteRow: true,
-        icon: "<i class='fas fa-file-alt'></i>",
-        width: 20,
-      },
-      { title: "Estado", field: "estado", sorter: "string", width: 100 },
-      { title: "Progresso", field: "progress", sorter: "30", hozAlign: "left", formatter: "progress" },
-      { title: "Referência", field: "ref", sorter: "string" },
-      { title: "Assunto", field: "assunto", sorter: "string" },
-      { title: "Área", field: "area", sorter: "string" },
-      { title: "Instituição", field: "instituicao", sorter: "string" },
-      { title: "Modo Facturação", field: "modo_facturacao", sorter: "string" },
-      { title: "Cliente", field: "cliente", sorter: "string" },
-      { title: "Gestor", field: "gestor", sorter: "string" },
-      { title: "Data Cadastro", field: "data_registo", sorter: "string" },
-    ];
+  /** @Prop */
+  dataTableLabels = [
+    {
+      hozAlign: "center",
+      editRow: true,
+      icon: "<i class='bi bi-calendar-week'></i>",
+      width: 20,
+    },
+    {
+      hozAlign: "center",
+      deleteRow: true,
+      icon: "<i class='bi bi-file-earmark-fill'></i>",
+      width: 20,
+    },
+    { title: "Estado", field: "estado", sorter: "string", width: 100 },
+    { title: "Progresso", field: "progress", sorter: "30", hozAlign: "left", formatter: "progress" },
+    { title: "Referência", field: "ref", sorter: "string" },
+    { title: "Assunto", field: "assunto", sorter: "string" },
+    { title: "Área", field: "area", sorter: "string" },
+    { title: "Instituição", field: "instituicao", sorter: "string" },
+    { title: "Modo Facturação", field: "modo_facturacao", sorter: "string" },
+    { title: "Cliente", field: "cliente", sorter: "string" },
+    { title: "Gestor", field: "gestor", sorter: "string" },
+    { title: "Data Cadastro", field: "data_registo", sorter: "string" },
+  ];
 
   template = `
-  <section class="content">
-  <br />
+  <section class="content p-4">
+    
+    <div class="container-fluid">
 
-  
-  <div class="col-xs-12">
-    <div class="card">
-      <div class="body">
+      <div class="d-flex flex-end">
+        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Library</li>
+          </ol>
+        </nav>  
+      </div>
+
+
+      <div class="card">
+        <div class="card-header">
+        <!-- Tab Navigation -->
+        <ul class="nav nav-underline" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Meus Processos</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Minha Agenda</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Minhas Tarefas</button>
+          </li>
+        </ul>
+    </div>
+
+    <div class="card-body">
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="myTabContent">
+
+      <!-- Meus Processos -->
+      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
           
-          <ul class="nav nav-tabs tab-nav-right" role="tablist">
-              <li role="presentation">
-                  <a href="#dashoboardMeusProcessos" data-toggle="tab" class="active show">Meus Processos</a>
-              </li>
-              <li role="presentation">
-                  <a href="#dashoboardMinhaAgenda" data-toggle="tab">Minha Agenda</a>
-              </li>
-              <li role="presentation">
-                <a href="#dashoboardMinhasTarefas" data-toggle="tab">Minhas Tarefas</a>
-              </li>
-          </ul>
-
-          <div class="tab-content colaborador-dashboard">
-
-            <div role="tabpanel" class="tab-pane fade in active show" id="dashoboardMeusProcessos">
-
-              <div class="row">
-                <div class="col-lg-3 col-sm-6">
-                  <div class="info-box7 l-bg-green order-info-box7">
-                    <div class="info-box7-block">
-                      <h4 class="m-b-20">Processos Rascunho</h4>
-                      <h2 class="text-right">
-                        <i class="fas fa-folder-open pull-left"></i><span id="processosRascunho">0</span>
-                      </h2>
-                    </div>
-                  </div>
-                </div>
-            
-                <div class="col-lg-3 col-sm-6">
-                  <div class="info-box7 l-bg-purple order-info-box7">
-                    <div class="info-box7-block">
-                      <h4 class="m-b-20">Processos Proposta</h4>
-                      <h2 class="text-right">
-                        <i class="far fa-folder-open pull-left"></i><span id="processosProposta">0</span>
-                      </h2>
-                    </div>
-                  </div>
-                </div>
-            
-                <div class="col-lg-3 col-sm-6">
-                  <div class="info-box7 l-bg-orange order-info-box7">
-                    <div class="info-box7-block">
-                      <h4 class="m-b-20">Processos Suspenso</h4>
-                      <h2 class="text-right">
-                        <i class="far fa-folder pull-left"></i><span id="processosSuspenso">0</span>
-                      </h2>
-                    </div>
-                  </div>
-                </div>
-            
-                <div class="col-lg-3 col-sm-6">
-                  <div class="info-box7 l-bg-cyan order-info-box7">
-                    <div class="info-box7-block">
-                      <h4 class="m-b-20">Processos Encerrado</h4>
-                      <h2 class="text-right">
-                        <i class="fas fa-folder pull-left"></i><span id="processosEncerrado">0</span>
-                      </h2>
-                    </div>
-                  </div>
-                </div>
+            <div class="card mb-3 p-2">
+            <div class="row">
+            <div class="col-lg-3 col-sm-6">
+            <div class="info-box7 l-bg-green order-info-box7">
+              <div class="info-box7-block">
+                <h4 class="m-b-20">Processos Rascunho</h4>
+                <h2 class="text-right">
+                <i class="bi bi-folder-plus"></i><span id="processosRascunho">0</span>
+                </h2>
               </div>
-            
-              <div class="row clearfix">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                  <div class="card">
-                    <div class="header">
-                      <h2><strong>Teus </strong>Processos</h2>
-                      <p style="font-size: 12px">Encontre aqui, os processos que foram partilhados consigo</p>
-                    </div>
-                    <div class="body table-responsive">
-            
-                      <st-element
-                        component="TabulatorComponent"
-                        proxy="dataTable"
-                        tableHeader="parent.dataTableLabels"
-                        (onEditColumn)="getTimeSheetProcesso(fieldName, data)"
-                        (onDeleteRow)="getDetailsProcesso(fieldName, data)"
-                        (onCellClick)="detalheProcesso(row, col, data)"
-                      >
-                      </st-element>
-                      
-                    </div>
-            
-                  </div>
-                </div>
+            </div>
+          </div>
+      
+          <div class="col-lg-3 col-sm-6">
+            <div class="info-box7 l-bg-purple order-info-box7">
+              <div class="info-box7-block">
+                <h4 class="m-b-20">Processos Proposta</h4>
+                <h2 class="text-right">
+                <i class="bi bi-folder-plus"></i><span id="processosProposta">0</span>
+                </h2>
               </div>
-
+            </div>
+          </div>
+      
+          <div class="col-lg-3 col-sm-6">
+            <div class="info-box7 l-bg-orange order-info-box7">
+              <div class="info-box7-block">
+                <h4 class="m-b-20">Processos Suspenso</h4>
+                <h2 class="text-right">
+               <i class="bi bi-folder-plus"></i><span id="processosSuspenso">0</span>
+                </h2>
+              </div>
+            </div>
+          </div>
+      
+          <div class="col-lg-3 col-sm-6">
+            <div class="info-box7 l-bg-cyan order-info-box7">
+              <div class="info-box7-block">
+                <h4 class="m-b-20">Processos Encerrado</h4>
+                <h2 class="text-right">
+               <i class="bi bi-folder-plus"></i><span id="processosEncerrado">0</span>
+                </h2>
+              </div>
+            </div>
+          </div>
+          </div>
             </div>
 
-            <div role="tabpanel" class="tab-pane fade in" id="dashoboardMinhaAgenda">
 
-              <div 
-                   class="dashoboardMinhaAgenda"
-                   style="background: #fff;
-                          padding: 15px;
-                          margin-left: 10px;
-                          display: flex;
-                          flex-direction: column;
-                          min-width: 750px;
-                          width: 99%;
-                          color: #555;
-                          font-size: 14px;
-                          border: 1px solid #e1e0e0;
-              ">  
-                <st-element
-                  component="TUICalendarComponent"
-                  milestoneTitle="Objectivo"
-                  proxy="agendaColaboradorProxy"
 
-                  (onEventCreate)="saveEvent()"
-                  editLabel="Editar"
-                  (onEventUpdate)="updateEvent()"
-                  (onEventDeletion)="deleteEvent()"
+            <div class="card">
+              <div class="card-header">
+              <div class="header">
+              <h2><strong>Meus </strong>Processos</h2>
+              <p style="font-size: 12px">Encontre aqui, os processos que foram partilhados consigo</p>
+            </div>
+              </div>
 
+              <div class="card-body">
+
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="card">
+              
+                <div class="table-responsive">
+        
+                  <st-element
+                    component="@tabulator/TabulatorComponent"
+                    proxy="dataTable"
+                    tableHeader="parent.dataTableLabels"
+                    (onEditColumn)="getTimeSheetProcesso(fieldName, data)"
+                    (onDeleteRow)="getDetailsProcesso(fieldName, data)"
+                    (onCellClick)="detalheProcesso(row, col, data)"
                   >
-                </st-element>
-              </div>
-
-            </div>
-
-            <div role="tabpanel" class="tab-pane fade in active" id="dashoboardMinhasTarefas">
-
-              <div 
-                  style="background: #fff;
-                  padding: 10px;">
-
-                  <div   (showIf)="self.isCreateTarefa"> 
+                  </st-element>
                   
-                      
-                    <!-- inicio form add tarefas -->
-                    <div class="form_add_resources" id="form_tab_tarefas">
-                    <form id="wizard_with_validatio" (formRef)="tarefaForm" class="" onsubmit="javascript: return false;">
-
-                      <div class="row clearfix">
-
-                          <div class="col-md-4">
-                            <div class="input-field col s12">
-                              <span class="input-group-addon">
-                                <i class="material-icons">person</i> Processos à Associar
-                              </span>
-                              <select 
-                                  (required)="true"
-                                  id="processoInput" 
-                                  (change)="updatePrecedentes($event)" 
-                                  (forEach)="listProcessos">
-                                  <option each="item" value="">Selecione uma opção</option>
-                                  <option each="item" value="{item.id}">{item.descricao}</option>
-                              </select>
-                          </div>
-                          </div>
-                          <div class="col-md-4">
-                              <div class="input-group">
-                                  <span class="input-group-addon">Descrição da Tarefa</span>
-                                  <div class="form-line">
-                                    <input 
-                                      (required)="true"
-                                      (value)="valueInputTarefa" 
-                                      placeholder="Digite uma tarefa" 
-                                      type="text" 
-                                      id="input_form_tarefa" 
-                                    />
-                                  </div>
-                              </div>
-                          </div>
-                        
-                          <div class="col-md-4">
-                          <div class="input-group">
-                              <span class="input-group-addon">Data para execução</span>
-                              <div class="form-line">
-                                  <input 
-                                    (required)="true"
-                                    type="date" 
-                                    id="valueRealizacaoTarefa" 
-                                    (change)="updateDataTarefa($event)" 
-                                    class="form-control date" 
-                                    (value)="valueRealizacaoTarefa"
-                                  >
-                              </div>
-                          </div>
-                      </div>
-
-                        </div>
-
-                      <div style="margin-top: 20px; margin-bottom: 20px;" display="flex" justify-content="space-between">
-
-                          <button 
-                            (click)="saveOrUpdateTarefas()"
-                             class="btn btn-primary m-t-15 waves-effect"
-                            >
-                            Salvar
-                          </button>
-
-                          <button 
-                            (click)="showHiddenFormTarefa()"
-                            class="btn btn-default">
-                            Cancelar
-                          </button>                        
-
-                      </div>
-                    </form>
-                  </div>
-
-                  </div>
-
-                  <div (showIf)="self.isListTarefas">
-                                    
-                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-                  <button 
-                    (click)="showHiddenFormTarefa()"
-                     class="btn btn-primary m-t-15 waves-effect">
-                      Nova Tarefa
-                  </button>
-
-                  <div class="card">
-                    <div class="header">
-                      <h2><strong>Tuas </strong>Tarefas</h2>
-                      <p style="font-size: 12px">Encontre aqui, as tarefas que foram criadas e partilhadas consigo</p>
-                    </div>
-                    <div class="body table-responsive">
-            
-                      <st-element
-                        component="TabulatorComponent"
-                        proxy="dataTableTarefas"
-                        tableHeader="parent.dataTableTarefasLabels"
-                        (onEditColumn)="aprovarTarefa(fieldName, data)"
-                        (onDeleteRow)="editarTarefa(fieldName, data)"
-                      >
-                      </st-element>
-                      
-                    </div>
-            
-                  </div>
-
-                  </div>
+                </div>
+        
+              </div>
+            </div>
+              </div>
             </div>
 
-          </div>
 
-          </div>
 
+
+
+
+
+    
+      </div>
+    <!-- #Meus Processos -->
+
+    <!-- Minha Agenda -->
+    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+       
+      <div class="p-1">  
+        <st-element
+        component="@toast-ui/calendar/TUICalendarComponent"
+        milestoneTitle="Objectivo"
+        proxy="agendaColaboradorProxy"
+
+        (onEventCreate)="saveEvent()"
+        editLabel="Editar"
+        (onEventUpdate)="updateEvent()"
+        (onEventDeletion)="deleteEvent()"
+        >  
+      </st-element>
+    </div>
+
+  </div>
+    <!-- #Minage Agenda -->
+
+
+    <!-- Minhas Tarefas -->
+    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+        
+    <div 
+    style="background: #fff;
+    padding: 10px;">
+  
+    <div class="d-none"  id="form_tab_tarefas" (showIf)="self.isCreateTarefa"> 
+    
+      <!-- inicio form add tarefas -->
+      <div class="form_add_resources">
+      <form id="wizard_with_validatio" (formRef)="tarefaForm" class="" onsubmit="javascript: return false;">
+  
+        <div class="row clearfix ">
+  
+            <div class="col-md-4">
+                <label> Processos à Associar</label>
+                <select 
+                  class="form-control"
+                    (required)="true"
+                    id="processoInput" 
+                    (change)="updatePrecedentes($event)" 
+                    (forEach)="listProcessos">
+                    <option each="item" value="">Selecione uma opção</option>
+                    <option each="item" value="{item.id}">{item.descricao}</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label> Descrição da Tarefa </label>
+                      <input 
+                        class="form-control"
+                        (required)="true"
+                        (value)="valueInputTarefa" 
+                        placeholder="Digite uma tarefa" 
+                        type="text" 
+                        id="input_form_tarefa" 
+                      />
+            </div>
+          
+            <div class="col-md-4">
+              <label> Data para execução </label>
+                    <input 
+                      class="form-control"
+                      (required)="true"
+                      type="date" 
+                      id="valueRealizacaoTarefa" 
+                      (change)="updateDataTarefa($event)" 
+                      class="form-control date" 
+                      (value)="valueRealizacaoTarefa"
+                    >
+          </div>
+  
+          </div>
+  
+          <div 
+          class="card-footer mt-4" 
+          style="display: flex;
+              justify-content: end;
+              align-items: center;"
+          >
+          <button class="btn btn-success julaw-submit-button" type="submit"   (click)="saveOrUpdateTarefas()">
+            Guardar
+            <i class="bi bi-floppy-fill"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  
+    </div>
+  
+
+    <div class="mt-4" (showIf)="self.isListTarefas">
+                      
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+  
+      <div class="card p-2 mb-2">
+        <div class="row">
+            <div class="col-md-4">
+            <button 
+              (click)="showHiddenFormTarefa()"
+              class="btn btn-primary m-t-15 waves-effect">
+              Nova Tarefa
+            </button>
+          </div>
+        </div>
+      </div>
+  
+    <div class="card">
+      <div class="card-header">
+        <h2><strong>Tuas </strong>Tarefas</h2>
+        <p style="font-size: 12px">Encontre aqui, as tarefas que foram criadas e partilhadas consigo</p>
+      </div>
+      <div class="card-body table-responsive">  
+        <st-element
+          component="@tabulator/TabulatorComponent"
+          proxy="dataTableTarefas"
+          tableHeader="parent.dataTableTarefasLabels"
+          (onEditColumn)="aprovarTarefa(fieldName, data)"
+          (onDeleteRow)="editarTarefa(fieldName, data)"
+        >
+        </st-element>
+        
       </div>
     </div>
-  <div>
+  </div>
+  
+  
+  
+    </div>
+  </div>
+
+
+    </div>
+  
+  </div>
+
+</div>
+
+    </div>
+
+    <!-- #Minhas Tarefas -->
 
   <style>
 
@@ -369,6 +392,10 @@ class ColaboradorDashboard extends ViewComponent {
     this.idTarefa = ''
     this.isCreateTarefa = !this.isCreateTarefa;
     this.isListTarefas = !this.isListTarefas;
+
+    let form = document.getElementById('form_tab_tarefas')
+    form.classList.toggle("showForm")
+
   }
 
   async saveOrUpdateTarefas() {
@@ -379,7 +406,7 @@ class ColaboradorDashboard extends ViewComponent {
 
     const userLogged = JSON.parse(localStorage.getItem("_user"));
 
-    const saveForm = 
+    const saveForm =
     {
       "processoId": processoId,
       "colaboradorId": userLogged.id,
@@ -393,32 +420,32 @@ class ColaboradorDashboard extends ViewComponent {
 
       try {
 
-        let response; 
+        let response;
         AppTemplate.showLoading();
 
-        if(this.idTarefa.value == '') {
+        if (this.idTarefa.value == '') {
           response = await this.processoService.createTarefa(saveForm)
           console.log("save tarefea response ", response);
-          
-        }else {
+
+        } else {
           response = await this.processoService.updateTarefa(this.idTarefa.value, saveForm)
           console.log("update tarefea response", response);
           this.idTarefa = ''
-        }              
-        
+        }
+
         this.getAllTarefasByColaboradorId(userLogged.id)
         this.showHiddenFormTarefa();
-        
+
         AppTemplate.hideLoading();
-        AppTemplate.toast({status: 'success', message: 'Sucesso'})
-      }catch (e) { 
+        AppTemplate.toast({ status: 'success', message: 'Sucesso' })
+      } catch (e) {
         AppTemplate.hideLoading();
         console.log("Error on saveOrUpdateTarefas", e);
-        AppTemplate.toast({status: 'warning', message: e})
+        AppTemplate.toast({ status: 'warning', message: e })
       }
-       
-    }else{
-        AppTemplate.toast({status: 'warning', message: 'Por favor, preencha os campos obrigatórios'})
+
+    } else {
+      AppTemplate.toast({ status: 'warning', message: 'Por favor, preencha os campos obrigatórios' })
     }
 
   }
@@ -478,9 +505,9 @@ class ColaboradorDashboard extends ViewComponent {
 
   }
 
-  async getAllTarefasByColaboradorId(colaboradorId) { 
-   let listTask = await this.processoService.getAllTarefasByColaboradorId(colaboradorId)
-   console.log("listTask", listTask)
+  async getAllTarefasByColaboradorId(colaboradorId) {
+    let listTask = await this.processoService.getAllTarefasByColaboradorId(colaboradorId)
+    console.log("listTask", listTask)
     this.transformDataTableTarefas(listTask);
   }
 
@@ -501,7 +528,7 @@ class ColaboradorDashboard extends ViewComponent {
 
         this.dataTable.dataSource = this.transformDataTable(processosByColaborador);
         this.populateCards(processosByColaborador);
-        
+
         const tasksData = await service.getTarefaByColaboradorId();
 
         AppTemplate.hideLoading();
@@ -516,9 +543,9 @@ class ColaboradorDashboard extends ViewComponent {
 
   transformDataTableTarefas(data) {
 
-    console.log("data >>>> " , data)
+    console.log("data >>>> ", data)
     this.dataTableTarefas.dataSource = data;
-  
+
   }
 
   pushDataToCalendar(tasksData) {
@@ -564,14 +591,14 @@ class ColaboradorDashboard extends ViewComponent {
   }
 
   getDetailsProcesso(_, record) {
-     
+
     const userLogged = JSON.parse(localStorage.getItem("_user"));
 
-    if(userLogged.auth.roles.includes('CAN_SEE_PROCESS_DETAILS')){
-        Router.goto("ProcessoDetalhes", {
-          data: record.id,
-        });
-    }else{
+    if (userLogged.auth.roles.includes('CAN_SEE_PROCESS_DETAILS')) {
+      Router.goto("ProcessoDetalhes", {
+        data: record.id,
+      });
+    } else {
       console.log("sem permissao para ver detalhes do Processo ")
     }
 
@@ -599,11 +626,11 @@ class ColaboradorDashboard extends ViewComponent {
 
     console.log("editar tarefa ", data)
 
-      if(data.estado == "Aprovada") {
-        AppTemplate.toast({ status: 'Error', message: 'Não pode alterar tarefa já Aprovada' })
-        this.idTarefa = ''
-      }else{
-        
+    if (data.estado == "Aprovada") {
+      AppTemplate.toast({ status: 'Error', message: 'Não pode alterar tarefa já Aprovada' })
+      this.idTarefa = ''
+    } else {
+
       const [dia, mes, ano] = data.data_para_realizacao.split('/')
       this.showHiddenFormTarefa()
 
@@ -611,16 +638,16 @@ class ColaboradorDashboard extends ViewComponent {
       document.getElementById('input_form_tarefa').value = data.descricao;
       document.getElementById('valueRealizacaoTarefa').value = `${ano}-${mes}-${dia}`
       this.idTarefa = data.id
-      }
+    }
 
-      console.log("this.idTarefa = " + this.idTarefa)
+    console.log("this.idTarefa = " + this.idTarefa)
 
   }
 
   aprovarTarefa(fieldName, record) {
 
     const userLogged = JSON.parse(localStorage.getItem("_user"));
-  
+
 
     if (record.estado == "Aprovada") {
       return AppTemplate.toast({ status: 'Alerta', message: 'Esta tarefa já foi aprovada' })
@@ -632,7 +659,7 @@ class ColaboradorDashboard extends ViewComponent {
     }
 
     AppTemplate.showLoading();
-    
+
     $still.HTTPClient.put(
       `/api/v1/tarefas_processo/colaborador/${record.id}`,
       JSON.stringify(payload),
@@ -649,14 +676,14 @@ class ColaboradorDashboard extends ViewComponent {
           AppTemplate.toast({ status: 'Erro', message: response.message })
 
         } else {
-          
+
           AppTemplate.toast({ status: 'Sucesso', message: 'Tarefa realizada com sucesso' })
           // this.getDetalhesProcesso(this.id.value)
 
           AppTemplate.hideLoading();
-          setTimeout(() => {            
+          setTimeout(() => {
             this.dataTableListProcessosTarefas.updateRow(
-              { 
+              {
                 ...response.data[0]
               },
               'id',
@@ -679,55 +706,55 @@ class ColaboradorDashboard extends ViewComponent {
 
   async saveEvent(data) {
 
-   /* if (this.userLoggedIn.value.id === "")
-      alert("Nenhum Colaborador definido.")
-
-    let horasCalculadas = (data.end.d.d - data.start.d.d) / 3600000
-
-    let payload = {
-      tipoEventoId: data.calendarId = 'entrevista' ? 1 : 2,
-      processoId: parseInt(this.processoId.value),
-      descricao: data.title,
-      dadosImportantes: JSON.stringify(data),
-      dataInicio: data.start.d.d,
-      dataFim: data.end.d.d,
-      horas: horasCalculadas.toFixed(2),
-      colaboradorId: this.userLoggedIn.value.id
-    };
-
-    let response = await $still.HTTPClient.post(
-      "http://localhost:3000/api/v1/processo_time_sheets",
-      JSON.stringify(payload),
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    if (response.status !== 201) {
-      return false
-    } else {
-
-      // const eventData = {
-      //   ...data,
-      //   start: data.start.d.d,
-      //   end: data.end.d.d,
-      // };
-
-      // console.log(">>>> ", this.calendarProxy)
-
-      // this.calendarProxy.on('load', () => {
-      //   this.calendarProxy.addNewEvents(eventData);
-      // });
-
-      //this.calendarProxy.addNewEvents(eventData);
-      //this.init()
-      this.updateHorasColaborador(true, horasCalculadas)
-      return true
-    }
-
-    */
+    /* if (this.userLoggedIn.value.id === "")
+       alert("Nenhum Colaborador definido.")
+ 
+     let horasCalculadas = (data.end.d.d - data.start.d.d) / 3600000
+ 
+     let payload = {
+       tipoEventoId: data.calendarId = 'entrevista' ? 1 : 2,
+       processoId: parseInt(this.processoId.value),
+       descricao: data.title,
+       dadosImportantes: JSON.stringify(data),
+       dataInicio: data.start.d.d,
+       dataFim: data.end.d.d,
+       horas: horasCalculadas.toFixed(2),
+       colaboradorId: this.userLoggedIn.value.id
+     };
+ 
+     let response = await $still.HTTPClient.post(
+       "http://localhost:3000/api/v1/processo_time_sheets",
+       JSON.stringify(payload),
+       {
+         headers: {
+           "Content-Type": "application/json",
+         },
+       }
+     );
+ 
+     if (response.status !== 201) {
+       return false
+     } else {
+ 
+       // const eventData = {
+       //   ...data,
+       //   start: data.start.d.d,
+       //   end: data.end.d.d,
+       // };
+ 
+       // console.log(">>>> ", this.calendarProxy)
+ 
+       // this.calendarProxy.on('load', () => {
+       //   this.calendarProxy.addNewEvents(eventData);
+       // });
+ 
+       //this.calendarProxy.addNewEvents(eventData);
+       //this.init()
+       this.updateHorasColaborador(true, horasCalculadas)
+       return true
+     }
+ 
+     */
 
   }
 

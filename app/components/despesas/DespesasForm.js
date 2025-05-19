@@ -1,4 +1,6 @@
-class DespesasForm extends ViewComponent {
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+
+export class DespesasForm extends ViewComponent {
 
     clientList;
     listProcesso;
@@ -8,7 +10,7 @@ class DespesasForm extends ViewComponent {
         {
             hozAlign: "center",
             deleteRow: true,
-            icon: "<i class='fas fa-file-alt'></i>",
+            icon: "<i class='bi bi-file-earmark'></i>",
             width: 20,
         },
         { title: "N. Processo", field: "numProcesso", hozAlign: "left" },
@@ -52,24 +54,27 @@ class DespesasForm extends ViewComponent {
     processoService;
 
     template = `
-    <section class="content">
-        <div class="body">
+    <section class="content p-4">
+        <div class="container-fluid">
 
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-inside-title">Cadastro de nova despesa</h2>
+            </div>
+
+        <div class="card-body">
             <form  
                 (formRef)="despesaForm" 
                 onsubmit="javascript: return false;">
                 <!-- <h3>Da</h3> -->
                 <fieldset>
-                    <h2 class="card-inside-title">Cadastro de nova despesa</h2>
-                    <div class="row clearfix">
+                  
+                    <div class="row clearfix mt-4">
 
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <div class="input-field col s12">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">person</i> Cliente
-                                    </span>
+                        <div class="col-md-4">
+                            <label class="form-label">Cliente</label>
                                     <select
+                                        class="form-control"
                                         (required)="true"
                                         (value)="nomeCliente"
                                         (change)="setNomeCliente($event)" 
@@ -77,17 +82,13 @@ class DespesasForm extends ViewComponent {
                                         <option each="item" value="">Selecione uma opção</option>
                                         <option each="item" value="{item.id}">{item.descricao}</option>
                                     </select>
-                                </div>
-                            </div>
                         </div>
 
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <div class="input-field col s12">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">folder</i> Processo
-                                    </span>
+                        <div class="col-md-4">
+                            <label class="form-label">Processo</label>
+                           
                                     <select
+                                        class="form-control"
                                         (required)="true"
                                         (value)="numeroProcesso"
                                         (change)="setNumeroProcesso($event)"
@@ -95,71 +96,57 @@ class DespesasForm extends ViewComponent {
                                         <option each="item" value="">Selecione uma opção</option>
                                         <option each="item" value="{item.id}">{item.ref}</option>
                                     </select>
-                                </div>
-                            </div>
+                               
                         </div>
 
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <div class="input-field col s12">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">vertical_align_center</i> Tipo Movimento
-                                    </span>
+                        <div class="col-md-4">
+                            <label class="form-label">Tipo Movimento</label>
                                     <select
                                         (required)="true"
+                                        class="form-control"
                                         (value)="tipoMovimento"
                                         (change)="setTipoMovimento($event)"
                                         (forEach)="tipoMovimentos"
                                     >
                                         <option each="item" value="">Selecione uma opção</option>
                                         <option each="item" value="{item.id}">{item.name}</option>
-                                    </select>
-                                </div>
-                            </div>
+                                    </select>                              
                         </div>
 
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <div class="input-field col s12">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">monetization_on</i> Valor
-                                    </span>
-                                    <input  (required)="true" type="text" (value)="valorDespesa">
-                                </div>
-                            </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Valor da Despesa</label>
+                                    <input class="form-control" (required)="true" type="text" (value)="valorDespesa">
                         </div>
 
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <div class="input-field col s12">
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">monetization_on</i> Data
-                                    </span>
+                         <div class="col-md-4">
+                            <label class="form-label">Data</label>
                                     <input 
+                                    class="form-control"
                                      (required)="true"
                                         type="date"
                                         id="dataDespesa"
                                         (value)="dataDespesa"
                                         >
-                                </div>
+                              
                             </div>
                         </div>
 
-                        <div class="col-md-3">
-                            <span class="input-group-addon">&nbsp;</span>
-                            <span class="input-group-addon">&nbsp;</span>
-                            <st-element
-                                label="Salvar"
-                                iconName="save"
-                                component="CreateButton"
-                                (onClick)="saveNewDespesa()"
-                            >
-                        </div>
-
+                        <div 
+                        class="card-footer mt-4" 
+                        style="display: flex;
+                            justify-content: end;
+                            align-items: center;"
+                    >
+                    <button class="btn btn-success julaw-submit-button" type="submit" (onClick)="saveNewDespesa()">
+                        Guardar
+                        <i class="bi bi-floppy-fill"></i>
+                    </button>
+                </div>
                     </div>
                 </fieldset>
             </form>
-
+            </div>
+            </div>
         </div>
 
     </section>
@@ -217,48 +204,48 @@ class DespesasForm extends ViewComponent {
 
         const isValidForm = this.despesaForm.validate();
 
-        if (isValidForm) { 
+        if (isValidForm) {
 
 
-        const colaboradorId = JSON.parse(localStorage._user).id;
+            const colaboradorId = JSON.parse(localStorage._user).id;
 
-        const payload = {
-            colaboradorId,
-            dataMovimento: document.getElementById('dataDespesa').value,
-            idProcesso: this.numeroProcesso.value,
-            tipoMovimento: this.tipoMovimento.value,
-            valor: this.valorDespesa.value
-        }
+            const payload = {
+                colaboradorId,
+                dataMovimento: document.getElementById('dataDespesa').value,
+                idProcesso: this.numeroProcesso.value,
+                tipoMovimento: this.tipoMovimento.value,
+                valor: this.valorDespesa.value
+            }
 
-        AppTemplate.showLoading();
-        $still.HTTPClient.post(
-            '/api/v1/processo/despesa',
-            JSON.stringify(payload),
-            {
-                headers: {
-                    'Content-Type': 'application/json'
+            AppTemplate.showLoading();
+            $still.HTTPClient.post(
+                '/api/v1/processo/despesa',
+                JSON.stringify(payload),
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 }
-            }
-        ).then((r) => {
-            AppTemplate.hideLoading();
-            if(r.status == 201) {
-                AppTemplate.toast({ status: 'Sucesso!', message: 'Despesa, registadas com sucesso!' })
+            ).then((r) => {
+                AppTemplate.hideLoading();
+                if (r.status == 201) {
+                    AppTemplate.toast({ status: 'Sucesso!', message: 'Despesa, registadas com sucesso!' })
 
-                setTimeout(() => {
-                    Router.goto("Despesas");
-                },1000)
-            }else{
-                AppTemplate.toast({ status: 'Erro!', message: r.message })
-            }
-        }).catch((err) => {
-            AppTemplate.hideLoading();
-            console.log(`Erro ao cadastrar despesa: `, err);
-        });
-
+                    setTimeout(() => {
+                        Router.goto("Despesas");
+                    }, 1000)
+                } else {
+                    AppTemplate.toast({ status: 'Erro!', message: r.message })
+                }
+            }).catch((err) => {
+                AppTemplate.hideLoading();
+                console.log(`Erro ao cadastrar despesa: `, err);
+            });
 
 
-        }else {
-                AppTemplate.toast({ status: 'Erro!', message: "Preencha os campos obrigatórios." })
+
+        } else {
+            AppTemplate.toast({ status: 'Erro!', message: "Preencha os campos obrigatórios." })
         }
 
 
@@ -295,7 +282,7 @@ class DespesasForm extends ViewComponent {
         let payload =
         {
             "cliente_id": document.getElementById('clienteId').value == "" ? 0 : document.getElementById('clienteId').value,
-            "processo_id": document.getElementById('processoId').value == "" ? 0 : document.getElementById('processoId').value 
+            "processo_id": document.getElementById('processoId').value == "" ? 0 : document.getElementById('processoId').value
         }
 
         console.log("Payload das despeas ", payload)

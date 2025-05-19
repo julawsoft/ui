@@ -1,4 +1,6 @@
-class ProcessosGrid extends ViewComponent {
+import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+
+export class ProcessosGrid extends ViewComponent {
 
   /** @Prop */
   roles;
@@ -20,35 +22,46 @@ class ProcessosGrid extends ViewComponent {
     {
       hozAlign: "center",
       editRow: true,
-      icon: "<i class='fa fa-pen'></i>",
+      icon: "<i class='bi bi-pencil-square'></i>",
       width: 20,
     },
     {
       hozAlign: "center",
       deleteRow: true,
-      icon: "<i class='fas fa-file-alt'></i>",
+      icon: "<i class='bi bi-file-earmark'></i>",
       width: 20,
     },
     { title: "Estado", field: "estado", sorter: "string", width: 100 },
     { title: "Progresso", field: "progress", sorter: "30", hozAlign: "left", formatter: "progress" },
     { title: "Referência", field: "ref", sorter: "string" },
     { title: "Assunto", field: "assunto", sorter: "string" },
-    { title: "Área", field: "area", sorter: "string" },
+    /*{ title: "Área", field: "area", sorter: "string" },*/
     { title: "Instituição", field: "instituicao", sorter: "string" },
     { title: "Modo Facturação", field: "modo_facturacao", sorter: "string" },
     { title: "Cliente", field: "cliente", sorter: "string" },
     { title: "Gestor", field: "gestor", sorter: "string" },
     { title: "Data Cadastro", field: "data_registo", sorter: "string" },
-    { title: "Data Suspensão", field: "data_suspensao", sorter: "string" },
+    /*{ title: "Data Suspensão", field: "data_suspensao", sorter: "string" },
     { title: "Data Encerramento", field: "data_encerramento", sorter: "string" },
+     */
   ];
 
 
   template = `
-  <section class="content">
+  <main class="content p-4">
+      <div class="container-fluid">
 
-  <br />
-  <div class="block-header">
+      <div class="d-flex flex-end">
+        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Library</li>
+          </ol>
+        </nav>
+      </div>
+
+
+  <div class="">
       <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <div>
@@ -60,42 +73,36 @@ class ProcessosGrid extends ViewComponent {
                        gap: 10px;
                        align-items: center;"
           >
-          <i class="material-icons">create_new_folder</i>
             Novo
           </span>
           </button>
       </span>   
-
-              <ul class="breadcrumb breadcrumb-style" style="
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 5px;">
-                  <li class="breadcrumb-item 	bcrumb-1">
-                      <a href="/">
-                          <i class="material-icons">home</i>
-                          Home</a>
-                  </li>
-                  <li class="breadcrumb-item bcrumb-1 active">Processo</li>
-                  <li class="breadcrumb-item active">Lista dos Processos</li>
-              </ul>
+           
           </div>
       </div>
   </div>
 
-  <div class="row clearfix">
+
+
+  <div class="row clearfix mt-4">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card p-2 mb-2">
+          <h6>Para os filtros</h6>    
+        </div>
+      </div>
+
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="card">
-              <div class="header">
+              <div class="card-header">
                   <h2><strong>Lista </strong>Geral dos Processos</h2>
                   <p style="font-size: 12px">Encontre aqui, todos os processos</p>
         <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">        
        
-              <div class="body">
+              <div class="card-body">
                 <div  (showIf)="self.isNotEmptyData">
                   <div class="table-responsive">
-                      <st-element component="TabulatorComponent" 
+                      <st-element component="@tabulator/TabulatorComponent" 
                           proxy="dataTableListProcessos"
                           tableHeader="parent.dataTableLabels" 
                           tableHeight="auto"
@@ -104,7 +111,7 @@ class ProcessosGrid extends ViewComponent {
                       </st-element>
                   </div>
                 </div>
-                <div  (showIf)="self.isEmptyData">
+                <div id="isEmptyDataId" (showIf)="self.isEmptyData">
                   <div class="alert alert-warning">
                     <p  style="color: #555"><strong>Atenção!</strong> Nenhum processo encontrado.</p>&nbsp;<a href="#" (click)="gotoView('ProcessoForm')">Crie aqui um</a>
                   </div>
@@ -113,7 +120,9 @@ class ProcessosGrid extends ViewComponent {
           </div>
       </div>
   </div>
-</section>
+</div>
+</div>
+</main>
     `;
 
   constructor() {
@@ -151,13 +160,14 @@ class ProcessosGrid extends ViewComponent {
           if (r.data.length === 0) {
             this.isNotEmptyData = false;
             this.isEmptyData = true;
-          }else{
+          } else {
             this.isNotEmptyData = true;
             this.isEmptyData = false;
+             document.getElementById('isEmptyDataId').style.display = 'none'
             this.dataTableListProcessos.dataSource = this.transformDataTable(r.data);
           }
           AppTemplate.hideLoading();
-        }else{
+        } else {
           AppTemplate.hideLoading();
         }
       }
@@ -208,11 +218,11 @@ class ProcessosGrid extends ViewComponent {
   detalhesProcesso(_, record) {
 
     const userLogged = JSON.parse(localStorage.getItem("_user"));
-    if(userLogged.auth.roles.includes('CAN_SEE_PROCESS_DETAILS')){
-        Router.goto("ProcessoDetalhes", {
-          data: record.id,
-        });
-    }else{
+    if (userLogged.auth.roles.includes('CAN_SEE_PROCESS_DETAILS')) {
+      Router.goto("ProcessoDetalhes", {
+        data: record.id,
+      });
+    } else {
       console.log("sem permissao para ver detalhes do Processo ")
     }
   }

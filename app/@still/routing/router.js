@@ -1,4 +1,17 @@
-class Router {
+import { StillAppSetup } from "../../app-setup.js";
+import { $stillGetRouteMap, stillRoutesMap } from "../../route.map.js";
+import { ViewComponent } from "../component/super/ViewComponent.js";
+import { Components, loadComponentFromPath } from "../setup/components.js";
+import { $stillconst } from "../setup/constants.js";
+
+export class Router {
+
+    static routeMap = {
+        ...stillRoutesMap.viewRoutes.lazyInitial,
+        ...stillRoutesMap.viewRoutes.regular
+    };
+
+    static baseUrl = window.location.href.replace('#', '');
 
     #data = {};
     static instance = null;
@@ -15,7 +28,7 @@ class Router {
     }
 
     static init() {
-        ComponentSetup.get().loadComponent();
+        StillAppSetup.get().loadComponent();
         AppTemplate.get().storageSet('stAppInitStatus', true);
         Router.initRouting = true;
         //localStorage.setItem('stAppInitStatus', true);
@@ -35,6 +48,9 @@ class Router {
      * @param {{data, path}} param1 
      */
     static goto(cmp, { data = {} } = { data: {} }) {
+
+        console.log("log do goto router.js", cmp);
+
         Router.initRouting = false;
         Components.setRemovingPartsVersionId($still.context.currentView?.versionId);
         /**
@@ -43,14 +59,14 @@ class Router {
          * page/page-component instead of being forced to go to 
          * the main/home UI after the login,  as the page is not 
          * rendered in case the app was not  
-         * loaded through ComponentSetup.get().loadComponent() 
+         * loaded through StillAppSetup.get().loadComponent() 
          */
         if (
             cmp === 'init'
             ||
-            (AppTemplate.get().isAuthN() && !ComponentSetup.get().isAppLoaded())
+            (AppTemplate.get().isAuthN() && !StillAppSetup.get().isAppLoaded())
         ) {
-            ComponentSetup.get().loadComponent();
+            StillAppSetup.get().loadComponent();
             AppTemplate.get().storageSet('stAppInitStatus', true);
             Router.initRouting = true;
             //localStorage.setItem('stAppInitStatus', true);
@@ -77,7 +93,7 @@ class Router {
         const route = routeInstance.route[cmp];
 
         const cmpRegistror = $still.context.componentRegistror.componentList;
-        const isHomeCmp = ComponentSetup.get().entryComponentName == cmp;
+        const isHomeCmp = StillAppSetup.get().entryComponentName == cmp;
         if (isHomeCmp) {
 
             if (cmp in cmpRegistror) {
@@ -105,7 +121,7 @@ class Router {
         } else {
 
             loadComponentFromPath(route, cmp)
-                .then(({ imported, isRoutable }) => {
+                .then(async ({ imported, isRoutable }) => {
                     if (!imported) {
                         if (cmp == 'init') return;
 
@@ -113,7 +129,11 @@ class Router {
                          * the bellow line clears previous component from memory
                          * @type { ViewComponent }
                          */
-                        const newInstance = eval(`new ${cmp}()`);
+                        const cmpRoute = Router.routeMap[cmp];
+                        const cmpCls = await import(`${Router.baseUrl}${cmpRoute}/${cmp}.js`);
+                        AppTemplate.get().storageSet('stAppInitStatus', true);
+                        const newInstance = eval(`new ${cmpCls[cmp]}()`);
+                        //StillAppSetup.register(cmpCls[cmp]);
 
                         if (newInstance.isPublic && !AppTemplate.get().isAuthN()) {
                             (new Components()).renderPublicComponent(newInstance);
@@ -169,7 +189,7 @@ class Router {
      * @param { ViewComponent } componentInstance
      */
     static getAndDisplayPage(componentInstance, isReRender = false, isHome = false) {
-
+        const ACTION = 'componentRoutedRender';
         const appCntrId = Router.appPlaceholder;
         const appPlaceholder = document.getElementById(appCntrId);
         const cmpId = componentInstance.getUUID();
@@ -196,6 +216,7 @@ class Router {
                     } else {
                         await Components.reloadedComponent(componentInstance, isHome);
                     }
+                    setTimeout(() => Router.callCmpAfterInit(`${cmpId}-check`), 500);
                 });
 
         } else {
@@ -214,10 +235,11 @@ class Router {
                     setTimeout(() => {
                         componentInstance.$stillLoadCounter = componentInstance.$stillLoadCounter + 1;
                     }, 100);
+                    setTimeout(() => Router.callCmpAfterInit(`${cmpId}-check`), 500);
 
                 });
         }
-        Router.callCmpAfterInit(`${cmpId}-check`);
+
     }
 
     static callCmpAfterInit(cmpId) {
@@ -234,6 +256,7 @@ class Router {
              * loaded/rendered
              */
             if (document.getElementById(cmpId)) {
+                clearTimeout(loadTImer);
                 /** @type { ViewComponent } */
                 const cmp = $still.context.currentView;
 
@@ -244,7 +267,6 @@ class Router {
                 if (!Components.checkStInit(cmp.constructor.name))
                     setTimeout(async () => await cmp.stAfterInit(), 200);
 
-                console.log(`FOUTING FLAG: `, Router.initRouting);
                 /**
                  * Load component parts or sub-components inside the main loaded component
                  * if(!Components.stAppInitStatus) is to prevent compoenent parts Parsing
@@ -256,12 +278,17 @@ class Router {
                     (!Components.stAppInitStatus
                         || AppTemplate.get().storageGet('stAppInitStatus'))
                     && !Router.initRouting
-                )
+                ) {
                     Components.handleInPlaceParts(cmp);
-                else {
+                } else if (
+                    (Components.stAppInitStatus)
+                    && StillAppSetup.get().entryComponentName != cmp?.getName()
+                ) {
+                    Components.handleInPlaceParts(cmp);
+                } else {
                     Components.stAppInitStatus = false;
                 }
-                clearTimeout(loadTImer);
+                //clearTimeout(loadTImer);
             }
 
         }, 200);
@@ -269,3 +296,4 @@ class Router {
 
     }
 }
+window.Router = Router;

@@ -1,4 +1,7 @@
-class Template {
+import { Components } from "../../setup/components.js";
+import { UUIDUtil } from "../../util/UUIDUtil.js";
+
+export class Template {
 
     static instance = {};
     static toastId = null;
@@ -182,7 +185,7 @@ class Template {
 
         const uuid = Template.getToastId();
 
-        const content = `
+       const content = `
             <div class="still-toast">
                 <div class="still-toast-content">
                     <i class="fas fa-solid fa-check check"></i>
@@ -195,7 +198,9 @@ class Template {
                 <div class="still-toast-progress"></div>
             </div>
         `;
+        
 
+       // const content = ``;
         document.body.insertAdjacentHTML('beforebegin', content);
 
     }
@@ -213,3 +218,5 @@ class Template {
 
 
 }
+
+window.Template = Template;
