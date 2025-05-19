@@ -236,8 +236,6 @@ export class ColaboradorDashboard extends ViewComponent {
     <!-- #Minage Agenda -->
 
 
-
-
     <!-- Minhas Tarefas -->
     <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
         
@@ -245,11 +243,10 @@ export class ColaboradorDashboard extends ViewComponent {
     style="background: #fff;
     padding: 10px;">
   
-    <div   (showIf)="self.isCreateTarefa"> 
+    <div class="d-none"  id="form_tab_tarefas" (showIf)="self.isCreateTarefa"> 
     
-        
       <!-- inicio form add tarefas -->
-      <div class="form_add_resources" id="form_tab_tarefas">
+      <div class="form_add_resources">
       <form id="wizard_with_validatio" (formRef)="tarefaForm" class="" onsubmit="javascript: return false;">
   
         <div class="row clearfix ">
@@ -395,6 +392,10 @@ export class ColaboradorDashboard extends ViewComponent {
     this.idTarefa = ''
     this.isCreateTarefa = !this.isCreateTarefa;
     this.isListTarefas = !this.isListTarefas;
+
+    let form = document.getElementById('form_tab_tarefas')
+    form.classList.toggle("showForm")
+
   }
 
   async saveOrUpdateTarefas() {

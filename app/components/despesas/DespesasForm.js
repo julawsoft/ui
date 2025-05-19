@@ -10,7 +10,7 @@ export class DespesasForm extends ViewComponent {
         {
             hozAlign: "center",
             deleteRow: true,
-            icon: "<i class='fas fa-file-alt'></i>",
+            icon: "<i class='bi bi-file-earmark'></i>",
             width: 20,
         },
         { title: "N. Processo", field: "numProcesso", hozAlign: "left" },

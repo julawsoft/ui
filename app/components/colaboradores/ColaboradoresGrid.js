@@ -12,7 +12,7 @@ export class ColaboradoresGrid extends ViewComponent {
 
   /** @Prop */
   dataTableLabels = [
-    { hozAlign: "center", editRow: true, icon: "<i class='fa fa-pen'></i>", width: 20 },
+    { hozAlign: "center", editRow: true, icon: "<i class='bi bi-pencil-square'></i>", width: 20 },
     { hozAlign: "center", deleteRow: false, icon: "<i class='fa fa-trash'></i>", width: 20 },
     { title: "Estado", field: "status", sorter: "string", width: 100 },
     { title: "Nome Profissional", field: "nome_profissional", sorter: "string" },

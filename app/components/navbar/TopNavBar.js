@@ -13,7 +13,7 @@ export class TopNavBar extends ViewComponent {
 
     template = `
                     <!-- Navbar / Header -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm ml-280" >
+  <nav class="navbar navbar-expand-lg sticky-top shadow-sm ml-280" style="background-color:#12356f;" >
   <div class="container-fluid">
     <button class="btn btn-outline-secondary d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
       <i class="bi bi-list"></i>

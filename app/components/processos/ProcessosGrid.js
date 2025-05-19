@@ -22,13 +22,13 @@ export class ProcessosGrid extends ViewComponent {
     {
       hozAlign: "center",
       editRow: true,
-      icon: "<i class='fa fa-pen'></i>",
+      icon: "<i class='bi bi-pencil-square'></i>",
       width: 20,
     },
     {
       hozAlign: "center",
       deleteRow: true,
-      icon: "<i class='fas fa-file-alt'></i>",
+      icon: "<i class='bi bi-file-earmark'></i>",
       width: 20,
     },
     { title: "Estado", field: "estado", sorter: "string", width: 100 },
