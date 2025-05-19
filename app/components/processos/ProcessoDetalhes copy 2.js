@@ -86,7 +86,7 @@ export class ProcessoDetalhes extends ViewComponent {
     {
       hozAlign: "center",
       deleteRow: true,
-      icon: "<i class='fas fa-trash-alt'></i>",
+      icon: "<i class='bi bi-trash3'></i>",
       width: 20,
     },
     { title: "Colaborador", field: "colaborador", sorter: "string" },
@@ -107,7 +107,7 @@ export class ProcessoDetalhes extends ViewComponent {
     {
       hozAlign: "center",
       deleteRow: true,
-      icon: "<i class='fas fa-trash-alt'></i>",
+      icon: "<i class='bi bi-trash3'></i>",
       width: 20,
     },
     { title: "Referência", field: "precedente_refencia", sorter: "string" },
@@ -126,13 +126,13 @@ export class ProcessoDetalhes extends ViewComponent {
     {
       hozAlign: "center",
       editRow: true,
-      icon: "<i class='fas fa-check'></i>",
+      icon: "<i class='bi bi-check2-circle'></i>",
       width: 20,
     },
     {
       hozAlign: "center",
       deleteRow: true,
-      icon: "<i class='fas fa-trash-alt'></i>",
+      icon: "<i class='bi bi-trash3'></i>",
       width: 20,
     },
     { title: "Estado", field: "estado", sorter: "string", width: 100 },
@@ -162,7 +162,7 @@ export class ProcessoDetalhes extends ViewComponent {
     {
       hozAlign: "center",
       deleteRow: true,
-      icon: "<i class='fas fa-trash-alt'></i>",
+      icon: "<i class='bi bi-trash3'></i>",
       width: 20,
     },
     { title: "Referência", field: "precedente_refencia", sorter: "string" },
@@ -184,7 +184,7 @@ export class ProcessoDetalhes extends ViewComponent {
     {
       hozAlign: "center",
       deleteRow: true,
-      icon: "<i class='fas fa-trash-alt'></i>",
+      icon: "<i class='bi bi-trash3'></i>",
       width: 20,
     },
     { title: "Descrição", field: "descricao", sorter: "string" },

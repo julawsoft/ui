@@ -36,7 +36,7 @@ export class ColaboradorDashboard extends ViewComponent {
     {
       hozAlign: "center",
       editRow: true,
-      icon: "<i class='fas fa-check'></i>",
+      icon: "<i class='bi bi-check2-circle'></i>",
       width: 20,
     },
     {

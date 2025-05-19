@@ -73,7 +73,6 @@ export class ProcessosGrid extends ViewComponent {
                        gap: 10px;
                        align-items: center;"
           >
-          <i class="material-icons">create_new_folder</i>
             Novo
           </span>
           </button>
