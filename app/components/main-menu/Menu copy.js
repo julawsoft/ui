@@ -48,7 +48,7 @@ export class Menu extends ViewComponent {
   canCreateTimeSheet = true;
 
   template = `
-  <div style="position:fixed; bottom:0; top:0; margin-top:59px; width: 280px;" class="w-280 d-flex flex-column flex-shrink-0 p-3 menu-bg-color">
+  <div style="position:fixed; bottom:0; top:0; margin-top:59px; width: 280px;" class="d-flex flex-column flex-shrink-0 p-3 shadow-sm menu-bg-color">
   <ul class="list-unstyled ps-0">
     <li class="mb-1">
       <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
@@ -57,7 +57,7 @@ export class Menu extends ViewComponent {
       <div class="collapse show" id="home-collapse">
         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
           <li>
-            <a href="/" class="link-dark rounded btn-menu-link">Dashboard</a>
+            <a href="/" class="link-dark rounded">Dashboard</a>
           </li>
         </ul>
       </div>
@@ -69,13 +69,13 @@ export class Menu extends ViewComponent {
       <div class="collapse" id="dashboard-collapse">
         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
           <li (renderIf)="self.canCreateProcess">
-            <a href="#" class="link-dark" (click)="gotoView('ProcessoForm')"> Criar </a>
+            <a href="#" (click)="gotoView('ProcessoForm')"> Criar </a>
           </li>
           <li (renderIf)="self.canListProcess">
-            <a href="#" class="link-dark" (click)="gotoView('ProcessosGrid')"> Listar </a>
+            <a href="#" (click)="gotoView('ProcessosGrid')"> Listar </a>
           </li>
           <li (renderIf)="self.canListMineProcess">
-            <a href="#" class="link-dark" (click)="gotoView('ColaboradorDashboard')">Meus Processos </a>
+            <a href="#" (click)="gotoView('ColaboradorDashboard')">Meus Processos </a>
           </li>  
         </ul>
       </div>
@@ -87,12 +87,12 @@ export class Menu extends ViewComponent {
       <div class="collapse" id="clientes-collapse">
         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
         <li (renderIf)="self.canCreateClient">
-                  <a href="#" class="link-dark" (click)="gotoView('ClientForm')"> Cadastrar </a>
+                  <a href="#" (click)="gotoView('ClientForm')"> Cadastrar </a>
                 </li>
                 <li (renderIf)="self.canListClient">
-                  <a href="#" class="link-dark" (click)="gotoView('ClientsGrid')"> Listar</a>
+                  <a href="#" (click)="gotoView('ClientsGrid')"> Listar</a>
                 </li>
-                <li (renderIf)="self.isClient"><a href="#" class="link-dark" (click)="gotoViewClient('ClienteDetalhes')">Meus Processos </a></li>
+                <li (renderIf)="self.isClient"><a href="#" (click)="gotoViewClient('ClienteDetalhes')">Meus Processos </a></li>
             
         </ul>
       </div>
@@ -103,9 +103,9 @@ export class Menu extends ViewComponent {
     </button>
     <div class="collapse" id="colaboradores-collapse">
       <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-      <li (renderIf)="self.canCreateColaborador"><a href="#" class="link-dark" (click)="gotoView('ColaboradorForm')"> Cadastrar </a>
+      <li (renderIf)="self.canCreateColaborador"><a href="#" (click)="gotoView('ColaboradorForm')"> Cadastrar </a>
       </li>
-      <li (renderIf)="self.canListColaborador"><a href="#" class="link-dark" (click)="gotoView('ColaboradoresGrid')"> Listar</a>
+      <li (renderIf)="self.canListColaborador"><a href="#"  (click)="gotoView('ColaboradoresGrid')"> Listar</a>
       </li>
           
       </ul>
@@ -118,9 +118,9 @@ export class Menu extends ViewComponent {
   </button>
   <div class="collapse" id="timesheet-collapse">
     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-    <li (renderIf)="self.canCreateTimeSheet"><a href="#" class="link-dark" (click)="gotoView('TimesheetForm')"> Registar </a>
+    <li (renderIf)="self.canCreateTimeSheet"><a href="#" (click)="gotoView('TimesheetForm')"> Registar </a>
     </li>          
-    <li (renderIf)="self.canListTimeSheet"><a href="#" class="link-dark" (click)="gotoView('TimesheetsGrid')"> Geral </a>
+    <li (renderIf)="self.canListTimeSheet"><a href="#"  (click)="gotoView('TimesheetsGrid')"> Geral </a>
     </li>
     <li><a href="#"  (click)="gotoView('MeusTimesheetsGrid')"> Meus TimeSheets</a>
     </li>
@@ -135,11 +135,11 @@ Honorários
 </button>
 <div class="collapse" id="honorarios-collapse">
   <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-  <li (renderIf)="self.canCreateHonorarios"><a href="#" class="link-dark" (click)="gotoView('HonorarioForm')"> Registar </a>
+  <li (renderIf)="self.canCreateHonorarios"><a href="#" (click)="gotoView('HonorarioForm')"> Registar </a>
           </li>
-          <li (renderIf)="self.canListHonorarios"><a href="#" class="link-dark" (click)="gotoView('HonorariosGrid')"> Geral </a>
+          <li (renderIf)="self.canListHonorarios"><a href="#"  (click)="gotoView('HonorariosGrid')"> Geral </a>
           </li>
-          <li><a href="#" class="link-dark" (click)="gotoView('MeusHonorariosGrid')"> Meus Honorários</a>
+          <li><a href="#"  (click)="gotoView('MeusHonorariosGrid')"> Meus Honorários</a>
           </li>
   </ul>
 </div>
@@ -151,9 +151,9 @@ Despesas
 </button>
 <div class="collapse" id="despesas-collapse">
   <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-  <li (renderIf)="self.canCreateDespesasr"><a href="#" class="link-dark" (click)="gotoView('DespesasForm')"> Registar </a>
+  <li (renderIf)="self.canCreateDespesasr"><a href="#" (click)="gotoView('DespesasForm')"> Registar </a>
   </li>
-  <li (renderIf)="self.canListDespesas"><a href="#" class="link-dark" (click)="gotoView('Despesas')"> Listar</a>
+  <li (renderIf)="self.canListDespesas"><a href="#"  (click)="gotoView('Despesas')"> Listar</a>
   </li>
   </ul>
 </div>

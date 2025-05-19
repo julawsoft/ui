@@ -317,5 +317,9 @@ END LOADING STYLE
 }
 
 .menu-bg-color {
-    background-color: #173f87;
+    background-color: #ebebeb;
+}
+
+.btn-menu-link {
+    color: #212529 !important;
 }
