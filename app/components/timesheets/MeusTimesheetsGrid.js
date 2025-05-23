@@ -1,4 +1,5 @@
 import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+import { converterHorasDecimais } from "../utils/data.js";
 
 export class MeusTimesheetsGrid extends ViewComponent {
 
@@ -23,13 +24,13 @@ export class MeusTimesheetsGrid extends ViewComponent {
   dataTableLabels = [
     {
       hozAlign: "center",
-      editRow: true,
+      editRow: false,
       icon: "<i class='bi bi-pencil-square'></i>",
       width: 20,
     },
     {
       hozAlign: "center",
-      deleteRow: true,
+      deleteRow: false,
       icon: "<i class='bi bi-file-earmark'></i>",
       width: 20,
     },
@@ -60,35 +61,11 @@ export class MeusTimesheetsGrid extends ViewComponent {
       <div class="d-flex flex-end">
         <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Library</li>
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Os meus TimeSheets</li>
           </ol>
         </nav>
       </div>
-
-    <div class="">
-      <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <div>
-          <span 
-          (renderIf)="self.canCreateTimeSheet"
-          >
-          <button (click)="gotoView('TimeSheetForm')" type="button" class="btn btn-primary m-t-15 waves-effect">
-          <span style="display: flex;
-                       gap: 10px;
-                       align-items: center;"
-          >
-          <i class="material-icons">create_new_folder</i>
-            Novo
-          </span>
-          </button>
-      </span>   
-           
-          </div>
-      </div>
-  </div>
-
-
 
   <div class="row clearfix mt-4">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -100,8 +77,8 @@ export class MeusTimesheetsGrid extends ViewComponent {
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="card">
               <div class="card-header">
-                  <h2><strong>Lista </strong>Geral dos TimeSheets</h2>
-                  <p style="font-size: 12px">Encontre aqui, todos os timesheets registados</p>
+                  <h2><strong>Lista </strong>Meus TimeSheets</h2>
+                  <p style="font-size: 12px">Encontre aqui, os seus   timesheets registados</p>
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">        
        
@@ -173,6 +150,19 @@ export class MeusTimesheetsGrid extends ViewComponent {
     this.transformDataTable(resposeData);
   }
 
+  converterHorasDecimais(horasDecimais) {
+    const horas = Math.floor(horasDecimais);
+    const minutos = Math.round((horasDecimais - horas) * 60);
+  
+    if (minutos === 0) {
+      return `${horas}h`;
+    } else if (minutos === 30) {
+      return `${horas}h e meia`;
+    } else {
+      return `${horas}h e ${minutos}min`;
+    }
+  }
+
 
   transformDataTable(data) {
     this.dataTableListTimeSheet.dataSource = data.map(item => {
@@ -180,7 +170,7 @@ export class MeusTimesheetsGrid extends ViewComponent {
         id: item.id,
         processo: item.referencia_processo,
         tipo_evento: item.tipo_evento,
-        hora: item.horas,
+        hora: this.converterHorasDecimais(item.horas),
         area: item.area,
         data_inicio: item.data_inicio ? new Date(item.data_inicio).toLocaleString("PT") : item.data_inicio,
         data_fim: item.data_fim ? new Date(item.data_fim).toLocaleString("PT") : item.data_fim,
@@ -210,6 +200,7 @@ export class MeusTimesheetsGrid extends ViewComponent {
   }
 
   cellClick(row, col, data) {
+    return 0
     Router.goto("ProcessoDetalhes", {
       data: data.id,
     });

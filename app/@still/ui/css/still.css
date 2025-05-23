@@ -302,7 +302,7 @@ END LOADING STYLE
 }
 
 .menu-bg-color {
-  background-color: #ebebeb;
+  background-color: #e3e3e3;
 }
 
 .btn-menu-link {
@@ -326,21 +326,37 @@ END LOADING STYLE
 }
 
 .task {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    margin-top: 10px;
-    background-color: #f5f5f5;
-    padding: 1px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 10px;
+  background-color: #f5f5f5;
+  padding: 1px;
 }
 .task-item {
-    display: flex;
-    padding: 5px;
-    font-size: 14px;
-    border-radius: 4px;
+  display: flex;
+  padding: 5px;
+  font-size: 14px;
+  border-radius: 4px;
 }
 
 .notification-late-task {
-    background-color: brown;
-    color: #fff;
+  background-color: brown;
+  color: #fff;
+}
+
+/* dashboard do colaborador */
+.color-white {
+  color: #fff;
+}
+
+.d-flex-presentation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+}
+
+.nav-link-color {
+  color: #323232 !important;
 }

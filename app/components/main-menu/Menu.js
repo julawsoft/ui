@@ -122,7 +122,7 @@ export class Menu extends ViewComponent {
     </li>          
     <li (renderIf)="self.canListTimeSheet"><a href="#" class="link-dark" (click)="gotoView('TimesheetsGrid')"> Geral </a>
     </li>
-    <li><a href="#"  (click)="gotoView('MeusTimesheetsGrid')"> Meus TimeSheets</a>
+    <li><a href="#" class="link-dark" (click)="gotoView('MeusTimesheetsGrid')"> Meus TimeSheets</a>
     </li>
         
     </ul>

@@ -92,8 +92,8 @@ export class ColaboradorDashboard extends ViewComponent {
       <div class="d-flex flex-end">
         <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Library</li>
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="/co">Processos Colaborador</li>
           </ol>
         </nav>  
       </div>
@@ -104,13 +104,13 @@ export class ColaboradorDashboard extends ViewComponent {
         <!-- Tab Navigation -->
         <ul class="nav nav-underline" id="myTab" role="tablist">
           <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Meus Processos</button>
+            <button class="nav-link nav-link-color active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Minha Agenda</button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Minha Agenda</button>
+            <button class="nav-link nav-link-color" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Meus Processos</button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Minhas Tarefas</button>
+            <button class="nav-link nav-link-color" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Minhas Tarefas</button>
           </li>
         </ul>
     </div>
@@ -121,15 +121,15 @@ export class ColaboradorDashboard extends ViewComponent {
     <div class="tab-content" id="myTabContent">
 
       <!-- Meus Processos -->
-      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+      <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
           
             <div class="card mb-3 p-2">
             <div class="row">
             <div class="col-lg-3 col-sm-6">
-            <div class="info-box7 l-bg-green order-info-box7">
+            <div class="info-box7 l-bg-green order-info-box7 bg-secondary bg-gradient">
               <div class="info-box7-block">
-                <h4 class="m-b-20">Processos Rascunho</h4>
-                <h2 class="text-right">
+                <h4 class="m-b-20 color-white">Processos Rascunho</h4>
+                <h2 class="text-right d-flex-presentation">
                 <i class="bi bi-folder-plus"></i><span id="processosRascunho">0</span>
                 </h2>
               </div>
@@ -137,10 +137,10 @@ export class ColaboradorDashboard extends ViewComponent {
           </div>
       
           <div class="col-lg-3 col-sm-6">
-            <div class="info-box7 l-bg-purple order-info-box7">
+            <div class="info-box7 l-bg-purple order-info-box7 bg-info bg-gradient">
               <div class="info-box7-block">
-                <h4 class="m-b-20">Processos Proposta</h4>
-                <h2 class="text-right">
+                <h4 class="m-b-20 color-white">Processos Proposta</h4>
+                <h2 class="text-right d-flex-presentation">
                 <i class="bi bi-folder-plus"></i><span id="processosProposta">0</span>
                 </h2>
               </div>
@@ -148,10 +148,10 @@ export class ColaboradorDashboard extends ViewComponent {
           </div>
       
           <div class="col-lg-3 col-sm-6">
-            <div class="info-box7 l-bg-orange order-info-box7">
+            <div class="info-box7 l-bg-orange order-info-box7 bg-danger bg-gradient">
               <div class="info-box7-block">
-                <h4 class="m-b-20">Processos Suspenso</h4>
-                <h2 class="text-right">
+                <h4 class="m-b-20 color-white">Processos Suspenso</h4>
+                <h2 class="text-right d-flex-presentation">
                <i class="bi bi-folder-plus"></i><span id="processosSuspenso">0</span>
                 </h2>
               </div>
@@ -159,19 +159,17 @@ export class ColaboradorDashboard extends ViewComponent {
           </div>
       
           <div class="col-lg-3 col-sm-6">
-            <div class="info-box7 l-bg-cyan order-info-box7">
+            <div class="info-box7 l-bg-cyan order-info-box7 bg-success bg-gradient">
               <div class="info-box7-block">
-                <h4 class="m-b-20">Processos Encerrado</h4>
-                <h2 class="text-right">
-               <i class="bi bi-folder-plus"></i><span id="processosEncerrado">0</span>
+                <h4 class="m-b-20 color-white">Processos Encerrado</h4>
+                <h2 class="text-right d-flex-presentation">
+                  <i class="bi bi-folder-plus"></i><span id="processosEncerrado">0</span>
                 </h2>
               </div>
             </div>
           </div>
           </div>
             </div>
-
-
 
             <div class="card">
               <div class="card-header">
@@ -204,44 +202,36 @@ export class ColaboradorDashboard extends ViewComponent {
             </div>
               </div>
             </div>
-
-
-
-
-
-
-
     
       </div>
     <!-- #Meus Processos -->
 
     <!-- Minha Agenda -->
-    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-       
-      <div class="p-1">  
-        <st-element
-        component="@toast-ui/calendar/TUICalendarComponent"
-        milestoneTitle="Objectivo"
-        proxy="agendaColaboradorProxy"
+    <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
-        (onEventCreate)="saveEvent()"
-        editLabel="Editar"
-        (onEventUpdate)="updateEvent()"
-        (onEventDeletion)="deleteEvent()"
-        >  
-      </st-element>
-    </div>
+      <div class="row">
+        <div class="col-12">
+              <st-element
+                component="@toast-ui/calendar/TUICalendarComponent"
+                milestoneTitle="Objectivo"
+                proxy="agendaColaboradorProxy"
+                (onEventCreate)="saveEvent()"
+                editLabel="Editar"
+                (onEventUpdate)="updateEvent()"
+                (onEventDeletion)="deleteEvent()"
+              >  
+              </st-element>
+          </div>
+        </div>
+      </div>
 
   </div>
     <!-- #Minage Agenda -->
 
-
     <!-- Minhas Tarefas -->
     <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
         
-    <div 
-    style="background: #fff;
-    padding: 10px;">
+    <div>
   
     <div class="d-none"  id="form_tab_tarefas" (showIf)="self.isCreateTarefa"> 
     

@@ -57,6 +57,16 @@ export class DespesasForm extends ViewComponent {
     <section class="content p-4">
         <div class="container-fluid">
 
+        <div class="d-flex flex-end">
+        <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Registo Nova Despesa</li>
+          </ol>
+        </nav>
+      </div>
+
+
         <div class="card">
             <div class="card-header">
                 <h2 class="card-inside-title">Cadastro de nova despesa</h2>
@@ -72,7 +82,7 @@ export class DespesasForm extends ViewComponent {
                     <div class="row clearfix mt-4">
 
                         <div class="col-md-4">
-                            <label class="form-label">Cliente</label>
+                            <label class="form-label fw-bolder">Cliente</label>
                                     <select
                                         class="form-control"
                                         (required)="true"
@@ -85,7 +95,7 @@ export class DespesasForm extends ViewComponent {
                         </div>
 
                         <div class="col-md-4">
-                            <label class="form-label">Processo</label>
+                            <label class="form-label fw-bolder">Processo</label>
                            
                                     <select
                                         class="form-control"
@@ -100,7 +110,7 @@ export class DespesasForm extends ViewComponent {
                         </div>
 
                         <div class="col-md-4">
-                            <label class="form-label">Tipo Movimento</label>
+                            <label class="form-label fw-bolder">Tipo Movimento</label>
                                     <select
                                         (required)="true"
                                         class="form-control"
@@ -114,7 +124,7 @@ export class DespesasForm extends ViewComponent {
                         </div>
 
                         <div class="col-md-4">
-                            <label class="form-label">Valor da Despesa</label>
+                            <label class="form-label fw-bolder">Valor da Despesa</label>
                                     <input class="form-control" (required)="true" type="text" (value)="valorDespesa">
                         </div>
 

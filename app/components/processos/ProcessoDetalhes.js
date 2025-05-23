@@ -286,8 +286,8 @@ export class ProcessoDetalhes extends ViewComponent {
     <div class="d-flex flex-end">
       <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Library</li>
+          <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Detalhes do Processo</li>
         </ol>
       </nav>  
     </div>
@@ -311,7 +311,7 @@ export class ProcessoDetalhes extends ViewComponent {
               style="border: none; font-size: 18px; font-weight: 600;" 
               readonly="true"></label>
               <button 
-              class="btn btn-primary btn-sm"
+              class="btn  btn-outline-dark btn-sm"
               title="Editar Processo"
               (click)="editProcesso(undefined)"
               >
@@ -395,22 +395,22 @@ export class ProcessoDetalhes extends ViewComponent {
                 
           <ul class="nav nav-underline" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="metodologias-tab" data-bs-toggle="tab" data-bs-target="#metodologias" type="button" role="tab" aria-controls="home" aria-selected="true">Metodologias</button>
+              <button class="nav-link nav-link-color active" id="metodologias-tab" data-bs-toggle="tab" data-bs-target="#metodologias" type="button" role="tab" aria-controls="home" aria-selected="true">Metodologias</button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="equipas-tab" data-bs-toggle="tab" data-bs-target="#equipas" type="button" role="tab" aria-controls="profile" aria-selected="false">Equipas</button>
+              <button class="nav-link nav-link-color" id="equipas-tab" data-bs-toggle="tab" data-bs-target="#equipas" type="button" role="tab" aria-controls="profile" aria-selected="false">Equipas</button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="tarefas-tab" data-bs-toggle="tab" data-bs-target="#tarefas" type="button" role="tab" aria-controls="contact" aria-selected="false">Tarefas</button>
+              <button class="nav-link nav-link-color" id="tarefas-tab" data-bs-toggle="tab" data-bs-target="#tarefas" type="button" role="tab" aria-controls="contact" aria-selected="false">Tarefas</button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="precedentes-tab" data-bs-toggle="tab" data-bs-target="#precedentes" type="button" role="tab" aria-controls="contact" aria-selected="false">Associados</button>
+              <button class="nav-link nav-link-color" id="precedentes-tab" data-bs-toggle="tab" data-bs-target="#precedentes" type="button" role="tab" aria-controls="contact" aria-selected="false">Associados</button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="anexos-tab" data-bs-toggle="tab" data-bs-target="#anexos" type="button" role="tab" aria-controls="contact" aria-selected="false">Anexos</button>
+              <button class="nav-link nav-link-color" id="anexos-tab" data-bs-toggle="tab" data-bs-target="#anexos" type="button" role="tab" aria-controls="contact" aria-selected="false">Anexos</button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="honorarios-tab" data-bs-toggle="tab" data-bs-target="#honorarios" type="button" role="tab" aria-controls="contact" aria-selected="false">Honorário</button>
+              <button class="nav-link nav-link-color" id="honorarios-tab" data-bs-toggle="tab" data-bs-target="#honorarios" type="button" role="tab" aria-controls="contact" aria-selected="false">Honorário</button>
             </li>
           </ul>
 
@@ -677,7 +677,7 @@ export class ProcessoDetalhes extends ViewComponent {
                   </div>
                   <div class="card-footer">
                       <button (click)="addPrecedentesProcesso('form_tab_precedentes')"
-                          class="btn btn-primary">Salvar</button>
+                          class="btn btn-success">Salvar</button>
                   </div>
               </form>
           </div>
@@ -767,11 +767,14 @@ export class ProcessoDetalhes extends ViewComponent {
                 background-color: #ffffff;
                 padding: 15px;
                 margin-top: 30px;
-                border: 0.5px solid #c3c3c3;
+                border: 1px solid #c3c3c3;
+                color: #323232;
+                text-decoration: underline;
+                ;
                 "
             >
             <h4>Parcelas pagas</h4>
-            <table class="table">
+            <table class="table ">
               <thead>
                 <tr style="text-align: center;">
                     <th>#</th>
@@ -806,7 +809,7 @@ export class ProcessoDetalhes extends ViewComponent {
         
           <div style="display: flex; justify-content: right; margin-top: 30px;">
             <!-- <span (click)="checkHonorarios()">Validar</span> -->
-            <button class="btn btn-primary julaw-submit-button" (click)="generateHonorarioModoSuccessFee()">
+            <button class="btn btn-success julaw-submit-button" (click)="generateHonorarioModoSuccessFee()">
               Gerar Recibo
             </button>
           </div>
@@ -826,7 +829,7 @@ export class ProcessoDetalhes extends ViewComponent {
         
           <div style="display: flex; justify-content: right; margin-top: 30px;">
             <!-- <span (click)="checkHonorarios()">Validar</span> -->
-            <button class="btn btn-primary julaw-submit-button" (click)="generateHonorarioModoFixo()">
+            <button class="btn btn-success julaw-submit-button" (click)="generateHonorarioModoFixo()">
               Gerar Recibo
             </button>
           </div>
@@ -869,7 +872,7 @@ export class ProcessoDetalhes extends ViewComponent {
         
           <div style="display: flex; justify-content: right; margin-top: 30px;">
             <!-- <span (click)="checkHonorarios()">Validar</span> -->
-            <button class="btn btn-primary julaw-submit-button" (click)="generateHonorario()">
+            <button class="btn btn-success julaw-submit-button" (click)="generateHonorario()">
               Gerar Honorário
             </button>
           </div>
@@ -2061,7 +2064,6 @@ export class ProcessoDetalhes extends ViewComponent {
 
   generateHonorarioModoSuccessFee() {
 
-    console.log("generateHonorarioModoSuccessFee")
 
     if (this.custoParcelaApagar.value == "" || this.custoParcelaApagar.value == 0)
       return AppTemplate.toast({ status: 'error', message: "O valor da parcela é Obrigatório!" })

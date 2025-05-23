@@ -30,7 +30,7 @@ export class Home extends BaseComponent {
               <div class="col-3">
                 <div class="card">
                   <div class="card-header">Colaboradores Activos</div>
-                  <div class="card-body">body</div>
+                  <div class="card-body">0</div>
                 </div>
               </div>
         </div>
@@ -39,14 +39,18 @@ export class Home extends BaseComponent {
               <div class="col-6">
               <div class="card">
               <div class="card-header">Processos por modo de Facturação</div>
-              <div class="card-body">0</div>
+              <div class="card-body">
+                <canvas id="myChart"></canvas>
+              </div>
               </div>
               </div>
 
               <div class="col-6">
               <div class="card">
               <div class="card-header">Tarefas e execução</div>
-              <div class="card-body">0</div>
+              <div class="card-body">
+                <canvas id="myChart"></canvas>
+              </div>
             </div>
               </div>
         </div>

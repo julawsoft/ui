@@ -1,4 +1,6 @@
 import { ViewComponent } from "../../@still/component/super/ViewComponent.js";
+import { convertToAkzCurrency } from "../utils/currency.js";
+
 
 export class Despesas extends ViewComponent {
 
@@ -61,8 +63,8 @@ export class Despesas extends ViewComponent {
         <div class="d-flex flex-end">
         <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Library</li>
+            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Lista das Despesas</li>
           </ol>
         </nav>
       </div>
@@ -81,7 +83,7 @@ export class Despesas extends ViewComponent {
 
                 <div class="row">
                     <div class="col-md-4">
-                               <label>Cliente</label>
+                               <label class="fw-bolder">Cliente</label>
                                 <select
                                     (required)="true"
                                     class="form-control"
@@ -97,7 +99,7 @@ export class Despesas extends ViewComponent {
                     </div>
 
                     <div class="col-md-3">
-                            <label>Processo</label>
+                            <label class="fw-bolder">Processo</label>
                             <select
                                 (required)="true"
                                 class="form-control"
@@ -192,7 +194,7 @@ export class Despesas extends ViewComponent {
             dataMovimento: document.getElementById('dataDespesa').value,
             idProcesso: this.numeroProcesso.value,
             tipoMovimento: this.tipoMovimento.value,
-            valor: this.valorDespesa.value
+            valor: convertToAkzCurrency(this.valorDespesa.value)
         }
 
         AppTemplate.showLoading();
@@ -230,7 +232,7 @@ export class Despesas extends ViewComponent {
             const dataSource = r.data.map(item => ({
                 numProcesso: item.numeroProcesso,
                 nomeCliente: item.nomeCliente,
-                valor: item.valor,
+                valor: convertToAkzCurrency(item.valor),
                 tipo: this.tipoMovimentosMap[item.tipoMovimento],
                 dataMovimento: item?.dataMovimento?.split('T')[0]
             }));
@@ -262,7 +264,7 @@ export class Despesas extends ViewComponent {
             const dataSource = r.data.map(item => ({
                 numProcesso: item.numeroProcesso,
                 nomeCliente: item.nomeCliente,
-                valor: item.valor,
+                valor: convertToAkzCurrency(item.valor),
                 tipo: this.tipoMovimentosMap[item.tipoMovimento],
                 dataMovimento: item?.dataMovimento?.split('T')[0]
             }));

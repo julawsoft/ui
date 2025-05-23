@@ -52,7 +52,6 @@ export class TUICalendarComponent extends ViewComponent {
 
     template = `
         <div>
-            <p>&nbsp;</p>
             <header class="header-toastui-calendar">
                 <nav class="navbar-toastui-calendar mb-3">
                     <button (click)="navigateCalendar('today')" class="btn btn-secondary button is-rounded today calendar-btn-today">Hoje</button>

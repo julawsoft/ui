@@ -29,8 +29,8 @@ export class TimesheetForm extends ViewComponent {
     <div class="d-flex flex-end">
       <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Library</li>
+          <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Novo Registo TimeSheet</li>
         </ol>
       </nav>  
     </div>
@@ -143,7 +143,6 @@ export class TimesheetForm extends ViewComponent {
     if (data) {
       this.calendarRegisterTimeSheetProxy.addNewEvents(
         data.map((item) => {
-          console.log(item);
           totalHours += parseFloat(item.horas)
           return {
             id: item.id,
@@ -241,12 +240,7 @@ export class TimesheetForm extends ViewComponent {
   async saveRegisterTimeSheetEvent(data) {
 
     if (this.userLoggedIn.value.id === "")
-      alert("Nenhum Colaborador definido.")
-
-
-    console.log(">>>> processo >>> ", parseInt(this.processoId.value))
-    console.log(">>>> cliente >>> ", parseInt(this.clienteId.value))
-
+        alert("Nenhum Colaborador definido.")
 
     let horasCalculadas = (data.end.d.d - data.start.d.d) / 3600000
 
@@ -262,7 +256,6 @@ export class TimesheetForm extends ViewComponent {
       colaboradorId: this.userLoggedIn.value.id
     };
 
-    console.log("payload a ser enviada" , payload)
     AppTemplate.showLoading();
 
     let response = await $still.HTTPClient.post(
@@ -356,13 +349,10 @@ export class TimesheetForm extends ViewComponent {
       }
     )
 
-    console.log("save response", response);
-
     if (response.status !== 200) {
       console.log(response.errors);
       return false
     } else {
-      console.log("Alterações feita com sucesso");
       //this.calendarRegisterTimeSheetProxy.clearGrid()
       //this.init()
       if (isChanged)
