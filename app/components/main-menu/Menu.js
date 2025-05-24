@@ -121,10 +121,9 @@ export class Menu extends ViewComponent {
     <li (renderIf)="self.canCreateTimeSheet"><a href="#" class="link-dark" (click)="gotoView('TimesheetForm')"> Registar </a>
     </li>          
     <li (renderIf)="self.canListTimeSheet"><a href="#" class="link-dark" (click)="gotoView('TimesheetsGrid')"> Geral </a>
+      </li>
+      <li><a href="#" class="link-dark" (click)="gotoView('MeusTimesheetsGrid')"> Meus TimeSheets</a>
     </li>
-    <li><a href="#" class="link-dark" (click)="gotoView('MeusTimesheetsGrid')"> Meus TimeSheets</a>
-    </li>
-        
     </ul>
   </div>
 </li>
@@ -135,8 +134,10 @@ Honorários
 </button>
 <div class="collapse" id="honorarios-collapse">
   <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-  <li (renderIf)="self.canCreateHonorarios"><a href="#" class="link-dark" (click)="gotoView('HonorarioForm')"> Registar </a>
-          </li>
+          <!-- 
+            <li (renderIf)="self.canCreateHonorarios"><a href="#" class="link-dark" (click)="gotoView('HonorarioForm')"> Registar </a>
+            </li> 
+          -->
           <li (renderIf)="self.canListHonorarios"><a href="#" class="link-dark" (click)="gotoView('HonorariosGrid')"> Geral </a>
           </li>
           <li><a href="#" class="link-dark" (click)="gotoView('MeusHonorariosGrid')"> Meus Honorários</a>

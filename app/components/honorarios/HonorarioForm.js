@@ -25,9 +25,10 @@ export class HonorarioForm extends ViewComponent {
     /** @Proxy @type { TBDragableGrid } */
     honorarioProxy = Proxy;
 
-
     /** @Prop */
     horarioCabecalho = [
+        { title: "Processo", field: "referencia_processo" },
+        { title: "Colaborador", field: "colaborador" },
         { title: "Designação", field: "name" },
         { title: "Início", field: "start" },
         { title: "Fim", field: "end" },
@@ -36,6 +37,8 @@ export class HonorarioForm extends ViewComponent {
 
     /** @Prop */
     horarioDestCabecalho = [
+        { title: "Processo", field: "referencia_processo" },
+        { title: "Colaborador", field: "colaborador" },
         { title: "Designação", field: "name" },
         { title: "Início", field: "start" },
         { title: "Fim", field: "end" },
@@ -67,14 +70,14 @@ export class HonorarioForm extends ViewComponent {
         <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Novo precessamento dos Honorários/li>
+            <li class="breadcrumb-item active" aria-current="page">Novo precessamento dos Honorários</li>
           </ol>
         </nav>  
       </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <h2>Registo dos Honorários</h2>
-            <p style="font-size: 12px">Cadastre aqui uma intervenções no Processo</p>
+            <p style="font-size: 12px">Registo dos Honorários ainda não processados</p>
         </div>
 
         <div class="row">
@@ -82,27 +85,42 @@ export class HonorarioForm extends ViewComponent {
                 <div class="card">
                     <div class="card-header">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <label>Processos</label>
                                         <select 
+                                            name=""
                                             class="form-control"
                                             id="processoAssociadoInput" 
-                                            (change)="updatePrecedentes($event)" 
+                                            (change)="updatePrecedentes()" 
                                             (forEach)="listPrecedentes">
                                                 <option each="item" value="">Selecione uma opção</option>
                                                 <option each="item" value="{item.id}">{item.descricao}</option>
                                         </select>
                                 </div>
-                                <div class="col-6">
-                                    <label>Clientees</label>
+                                <div class="col-4">
+                                    <label>Colaboradores</label>
                                     <select 
                                         class="form-control"
-                                        id="processoAssociadoInput" 
+                                        id="clienteInput" 
                                         (change)="updateClientes($event)" 
                                         (forEach)="listColaboradores">
                                             <option each="item" value="">Selecione uma opção</option>
                                             <option each="item" value="{item.id}">{item.descricao}</option>
                                     </select>
+                                </div>
+                                <div class="col-md-4" style="display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    margin-top: 20px;
+                                    gap:10px;">
+                                    <button class="btn btn-primary" type="submit" (click)="filterHonorariosFilter(true)">
+                                        Filtrar
+                                        <i class="bi bi-funnel"></i>
+                                    </button> 
+                                    <button class="btn btn-outline-dark" type="submit" (click)="filterHonorariosFilter(false)">
+                                    Limpar
+                                    <i class="bi bi-x-lg"></i>
+                                </button>       
                                 </div>
                             </div>
                     </div>
@@ -118,7 +136,7 @@ export class HonorarioForm extends ViewComponent {
                     </st-element>
 
                     </div>
-                    <div class="card-footer">
+                    <div class="card-footer d-flex justify-content-end">
                     <button class="btn btn-success julaw-submit-button" (click)="generateHonorario()">
                         Gerar Honorário
                     </button></div>
@@ -240,15 +258,15 @@ export class HonorarioForm extends ViewComponent {
     }
 
     stAfterInit() {
-        this.getTimeSheetNaoFacturado()
+        this.getTimeSheetNaoFacturado("", "")
         this.getListPrecedentes()
         this.getListColaboradores()
     }
 
-    getTimeSheetNaoFacturado() {
+    getTimeSheetNaoFacturado(idProcesso, idColaborador) {
 
         $still.HTTPClient.get(
-            `/api/v1/processo_time_sheets_nao_faturado`
+            `/api/v1/processo_time_sheets_nao_faturado?idProcesso=${idProcesso}&idUser=${idColaborador}`
         ).then((r) => {
             if (r.status === 200) {
                 try {
@@ -267,8 +285,10 @@ export class HonorarioForm extends ViewComponent {
 
     convertTimeSheetToGrid(r) {
 
-        console.log(">>> ", r)
-        console.log(">>> ", typeof r)
+        const referencia_processo = `${r.referencia_processo}`;
+        const colaborador = r.colaborador || 'N/A';
+        const processoId = r.processoId;
+        const clienteId = r.clienteId;
 
         const { dados_importantes, id } = r;
         const { title: name, start: Start, end: End } = JSON.parse(dados_importantes);
@@ -288,6 +308,9 @@ export class HonorarioForm extends ViewComponent {
 
         return {
             id,
+            clienteId,
+            referencia_processo,
+            colaborador,
             custo,
             name,
             start,
@@ -304,6 +327,9 @@ export class HonorarioForm extends ViewComponent {
         this.userLogged = JSON.parse(localStorage.getItem("_user"));
         const data = this.honorarioProxy.getDestData();
 
+        console.log("data", data)
+        return 0
+
         if (data.length) {
 
             const totalFactura = data
@@ -318,13 +344,9 @@ export class HonorarioForm extends ViewComponent {
                 )
                 .reduce((accum, val) => accum + val);
 
-
-            console.log("processo ... ", this.processoId)
-
-            // mexer aqui
+                // mexer aqui
             let payload = {
-                'processo_id': this.processoId.value,
-                'cliente_id': this.clienteId.value,
+                'processo_referencia': data.referencia_processo,
                 'colaborador_id': this.userLogged.value !== undefined ? this.userLogged.value.id : this.userLogged.id,
                 'horas': totalHoras,
                 'custo': totalFactura,
@@ -340,7 +362,7 @@ export class HonorarioForm extends ViewComponent {
             AppTemplate.showLoading();
 
             $still.HTTPClient.post(
-                "/api/v1/processo_factura",
+                "/api/v1/processo_factura_honorario",
                 JSON.stringify(payload),
                 {
                     headers: {
@@ -432,13 +454,17 @@ export class HonorarioForm extends ViewComponent {
         );
     }
 
+    filterHonorariosFilter(filter) {
 
-    updatePrecedentes(evt) {
-        console.log("... ", evt)
-        this.processoId = evt.target.value;
+        if(!filter)
+            return this.getTimeSheetNaoFacturado("", "")
+    
+        let processId = document.getElementById('processoAssociadoInput').value;
+        let clienteId = document.getElementById('clienteInput').value;
+        this.getTimeSheetNaoFacturado(processId, clienteId)
     }
-    updateClientes(evt) {
-        this.clienteId = evt.target.value;
-    }
+
+    updatePrecedentes(evt) {}
+    updateClientes(evt) {}
 
 }

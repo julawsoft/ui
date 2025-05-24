@@ -97,21 +97,31 @@ export class ProcessoTimeSheet extends ViewComponent {
         <div class="col-9">
           <div class="card">
             <div class="card-header"></div>
-            <div class="card-body">
-              <div style="positon: relative">
-                <st-element
-                  component="@toast-ui/calendar/TUICalendarComponent"
-                  (onEventCreate)="saveEvent()"
-                  editLabel="Editar"
-                  milestoneTitle="Objectivo"
-                  (onEventUpdate)="updateEvent()"
-                  (onEventDeletion)="deleteEvent()"
-                  proxy="calendarProxy"
-                >
-                </st-element> 
-              </div>
-            
+            <div class="card-body" id="dashoboardMinhaAgenda" style="position: relative;">
+            <div class="dashoboardMinhaAgenda"  
+            style="background: #fff;  
+            padding: 15px;
+            margin-left: 10px;
+            display: flex;
+            flex-direction: column;
+            min-width: 750px;
+            width: 99%;
+            color: #555;
+            font-size: 14px;
+            border: 1px solid #e1e0e0;">
+              <st-element
+                component="@toast-ui/calendar/TUICalendarComponent"
+                (onEventCreate)="saveEvent()"
+                editLabel="Editar"
+                milestoneTitle="Objectivo"
+                (onEventUpdate)="updateEvent()"
+                (onEventDeletion)="deleteEvent()"
+                proxy="calendarRegisterTimeSheetProxy"
+              >
+              </st-element> 
             </div>
+          
+          </div>
             <div class="card-footer">3</div>
           </div>
         </div>    
@@ -120,6 +130,27 @@ export class ProcessoTimeSheet extends ViewComponent {
     
     </div>
   </section>
+
+  <style>
+
+  #dashoboardMinhaAgenda, #dashoboardMeusProcessos {
+    background: none !important;
+  }
+
+  #dashoboardMinhaAgenda  .toastui-calendar-section-button {
+    display: none;
+  }
+
+  #dashoboardMinhaAgenda  .toastui-calendar-section-detail {
+    display: none;
+  }
+
+  .dashoboardMinhaAgenda .toastui-calendar-popup-container {
+    top: 50% !important;
+    left: 25% !important;
+  }
+
+
     `;
 
   constructor() {

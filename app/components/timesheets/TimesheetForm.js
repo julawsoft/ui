@@ -63,10 +63,10 @@ export class TimesheetForm extends ViewComponent {
                 </div>
     
                 <div style="margin-bottom: 5px">
-                  <label>Clientees</label>
+                  <label>Clientes</label>
                   <select 
                     class="form-control"
-                    id="processoAssociadoInput" 
+                    id="clienteInput" 
                     (change)="updateClientes($event)" 
                     (forEach)="listColaboradores">
                     <option each="item" value="">Selecione uma opção</option>
@@ -82,7 +82,6 @@ export class TimesheetForm extends ViewComponent {
                 <div style="font-weight: bold;">Colaborador</div>
                  <div>
                   <span id="colaboradorInputId"></span>
-                  <p style="font-size: 12px" id="colaboradorInputFuncao"></p>
                 </div>
               </div>
 
@@ -101,8 +100,18 @@ export class TimesheetForm extends ViewComponent {
         <div class="col-9">
           <div class="card">
             <div class="card-header"></div>
-            <div class="card-body">
-              <div style="positon: relative">
+            <div class="card-body" id="dashoboardMinhaAgenda" style="position: relative;">
+              <div class="dashoboardMinhaAgenda"  
+              style="background: #fff;  
+              padding: 15px;
+              margin-left: 10px;
+              display: flex;
+              flex-direction: column;
+              min-width: 750px;
+              width: 99%;
+              color: #555;
+              font-size: 14px;
+              border: 1px solid #e1e0e0;">
                 <st-element
                   component="@toast-ui/calendar/TUICalendarComponent"
                   (onEventCreate)="saveRegisterTimeSheetEvent()"
@@ -124,6 +133,29 @@ export class TimesheetForm extends ViewComponent {
     
     </div>
   </section>
+
+  <style>
+
+  #dashoboardMinhaAgenda, #dashoboardMeusProcessos {
+    background: none !important;
+  }
+
+  #dashoboardMinhaAgenda  .toastui-calendar-section-button {
+    display: none;
+  }
+
+  #dashoboardMinhaAgenda  .toastui-calendar-section-detail {
+    display: none;
+  }
+
+  .dashoboardMinhaAgenda .toastui-calendar-popup-container {
+    top: 50% !important;
+    left: 25% !important;
+  }
+
+</style>
+
+
     `;
 
   constructor() {
@@ -242,12 +274,20 @@ export class TimesheetForm extends ViewComponent {
     if (this.userLoggedIn.value.id === "")
         alert("Nenhum Colaborador definido.")
 
+    let processId = document.getElementById('processoAssociadoInput').value;
+    let clienteId = document.getElementById('clienteInput').value;
+
+    if( processId === "" || clienteId === "") {
+      AppTemplate.toast({ status: 'Erro', message: 'Processo e Cliente são obrigatórios!' })
+      return false
+    }
+
     let horasCalculadas = (data.end.d.d - data.start.d.d) / 3600000
 
     let payload = {
       tipoEventoId: data.calendarId = 'entrevista' ? 1 : 2,
-      processoId: 2  ,//parseInt(this.processoId.value),   para  testes
-      clienteId: null,
+      processoId: processId  ,//parseInt(this.processoId.value),   para  testes
+      clienteId: clienteId,
       descricao: data.title,
       dadosImportantes: JSON.stringify(data),
       dataInicio: data.start.d.d,
@@ -271,16 +311,13 @@ export class TimesheetForm extends ViewComponent {
     if (response.status !== 201) {
       return false
     } else {
-
       this.updateHorasColaborador(true, horasCalculadas)
-      setTimeout(() => {
-        
+      setTimeout(() => {        
         AppTemplate.hideLoading();
         AppTemplate.toast({ status: 'Sucesso', message: 'TimeSheet salvo com sucesso!' })
         Router.goto("MeusTimesheetsGrid", {
             data: [],
         });
-
       }, 2000)
 
       return true
@@ -425,8 +462,6 @@ export class TimesheetForm extends ViewComponent {
               descricao: `${colaborador.description} - ${colaborador.nome_completo}`,
             });
           }
-
-          console.log("colaboradorData", colaboradorData)
 
           this.listColaboradores = colaboradorData;
         }
