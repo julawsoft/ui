@@ -49,7 +49,7 @@ export class ColaboradorForm extends ViewComponent {
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <h2>Colaborador</h2>
-            <p style="font-size: 12px">Cadastre ou edite aqui os dados dos seus Colaborador</p>
+            <p style="font-size: 12px">Cadastre ou edite aqui os dados dos seu Colaborador</p>
         </div>
 
 
