@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 
 export type IUserLogged = {
+    id: number
     name: string
     roles: string[]
     groups: string

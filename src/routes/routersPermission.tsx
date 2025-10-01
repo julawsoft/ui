@@ -4,7 +4,7 @@ import { ROUTES_PATH } from './routePaths';
 
 import Home from '../pages/Home';
 import Process from '../pages/Process';
-import ProcessMine from '../pages/ProcessMine';
+import ProcessMine from '../pages/Process/MyProcess';
 import Employees from '../pages/Colaborador';
 import Client from '../pages/Client';
 import Account from '../pages/Account';

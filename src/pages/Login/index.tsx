@@ -46,7 +46,8 @@ const Login: React.FC = () => {
         console.log("here...rolesMap::  ", rolesMap)
 
         setUserLogged({
-          name: userResponse.auth.userInfo.name,
+          id: userResponse.id,
+          name: userResponse.nome_completo,
           groups: groupsMap,
           roles: [...rolesMap],
           accessToken: userResponse.auth.accessToken,

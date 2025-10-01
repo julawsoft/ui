@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import { Home, Folder } from "@mui/icons-material";
+import { Home, Folder, Assignment, Schedule, MonetizationOn, AssignmentTurnedIn, PeopleAlt, Group, AccountBalance } from "@mui/icons-material";
 import { ROUTES_PATH } from '../../routes/routePaths';
 import useAuthStore from '../../context/authStore';
 import { UserRoles } from '../../types/UserRoles';
@@ -35,17 +35,17 @@ interface IMenuItem {
 const menuItems: IMenuItem[] = [
   // MENUS DE USUÁRIO (todos podem ver)
   { text: 'Início', icon: <Home />, path: ROUTES_PATH.Home, section: "user" },
-  { text: 'Meus Processos', icon: <Folder />, path: ROUTES_PATH.ProcessMine, section: "user" },
-  { text: 'Meus TimeSheets', icon: <Folder />, path: ROUTES_PATH.MyTimeSheets, section: "user" },
-  { text: 'Meus Honorários', icon: <Folder />, path: ROUTES_PATH.MyHonorarios, section: "user" },
-  
+  { text: 'Meus Processos', icon: <Assignment />, path: ROUTES_PATH.ProcessMine, section: "user" },
+  { text: 'Meus TimeSheets', icon: <Schedule />, path: ROUTES_PATH.MyTimeSheets, section: "user" },
+  { text: 'Meus Honorários', icon: <MonetizationOn />, path: ROUTES_PATH.MyHonorarios, section: "user" },
+
   // MENUS DE ADMIN (restritos por perfil)
-  { text: 'Processos', icon: <Folder />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Process, section: "admin" },
-  { text: 'Clientes', icon: <PeopleAltIcon />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Client, section: "admin" },
-  { text: 'Colaboradores', icon: <PeopleAltIcon />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Employee, section: "admin" },
-  { text: 'TimeSheets', icon: <PeopleAltIcon />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.TimeSheet, section: "admin" },
-  { text: 'Honorários', icon: <PeopleAltIcon />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Honorario, section: "admin" },
-  { text: 'Despesas', icon: <AccountBalanceIcon />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Account, section: "admin" },
+  { text: 'Processos', icon: <AssignmentTurnedIn />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Process, section: "admin" },
+  { text: 'Clientes', icon: <PeopleAlt />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Client, section: "admin" },
+  { text: 'Colaboradores', icon: <Group />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Employee, section: "admin" },
+  { text: 'TimeSheets', icon: <Schedule />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.TimeSheet, section: "admin" },
+  { text: 'Honorários', icon: <MonetizationOn />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Honorario, section: "admin" },
+  { text: 'Despesas', icon: <AccountBalance />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Account, section: "admin" },
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, handleClick }) => {

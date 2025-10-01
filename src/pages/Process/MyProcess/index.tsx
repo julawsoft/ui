@@ -11,10 +11,10 @@ import BoxTop from '../../../components/common/BoxTop';
 import BoxCard from '../../../components/common/BoxCard';
 import StateHandler from '../../../components/common/StateHandler';
 import DataTable from '../../../components/common/DataTable';
+import { processoColumns, transformDataProcesso } from '../transformProcesso';
 import { UserPermissions } from '../../../types/UserPermissions';
-import { processoColumns, transformDataProcesso } from '../../Process/transformProcesso';
 
-const MyHonorarios: React.FC = () => {
+const MyProcess: React.FC = () => {
   const { user, saveUser, clearUser, hasAnyPermission, hasPermission } = useUserLogged();
 
   console.log("User in MyProcess: >>>> ", user?.id);
@@ -64,14 +64,14 @@ const MyHonorarios: React.FC = () => {
     <div>
       <BreadcrumbsNav
         items={[
-          { label: "Honorários", path: "/" },
-          { label: "Meus Honorários", path: "/meus-honorarios" },
-          { label: "Lista dos teus honorários" }
+          { label: "Processos", path: "/" },
+          { label: "Meus Processos", path: "/meus-processos" },
+          { label: "Lista dos Teus Processos" } // último sem path
         ]}
       />
 
       <BoxTop
-        title="Lista dos Honorários"
+        title="Lista dos Processos"
       />
       <BoxCard>
         <StateHandler
@@ -91,4 +91,4 @@ const MyHonorarios: React.FC = () => {
   );
 };
 
-export default MyHonorarios;
+export default MyProcess;
