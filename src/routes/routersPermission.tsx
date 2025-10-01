@@ -16,8 +16,11 @@ import TimeSheets from '../pages/TimeSheets';
 import MyTimeSheets from '../pages/TimeSheets/MyTimeSheets';
 import Honorarios from '../pages/Honorarios';
 import MyHonorarios from '../pages/Honorarios/MyHonorarios';
+import ViewClientTabs from '../pages/Client/ViewClientTabs';
 
 import { UserRoles } from '../types/UserRoles';
+import ViewColaboradorTabs from '../pages/Colaborador/ViewColaboradorTabs';
+// import ViewProcessoTabs from '../pages/Process/ViewProcessoTabs';
 
 interface IRoute {
   path: string;
@@ -56,12 +59,56 @@ export const routesPermissions: IRoute[] = [
       UserRoles.ADV_ESTAGIARIO,
     ],
   },
+  /*
   {
-    path: ROUTES_PATH.Employee,
+    path: `${ROUTES_PATH.NewProcesso}/view/:id`,
+    element: <ViewProcessoTabs />,
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+      UserRoles.ADV_JUNIOR,
+      UserRoles.ADV_SENIOR,
+      UserRoles.ADV_ESTAGIARIO,
+    ],
+  },
+  */
+  {
+    path: ROUTES_PATH.Colaborador,
     element: <Employees />,
     roles: [
       UserRoles.ADMINISTRATIVO,
-      UserRoles.ADV_SENIOR, // apenas admins e advogados seniors
+      UserRoles.ADV_SENIOR,
+    ],
+  },
+  // EDITAR COLABORADOR
+  {
+    path: `${ROUTES_PATH.Colaborador}/:id`,
+    element: <Employees />, // Se tiver uma página específica de edição, substituir aqui
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+      UserRoles.ADV_SENIOR,
+    ],
+  },
+  // VISUALIZAR COLABORADOR
+  {
+    path: `${ROUTES_PATH.NewColaborador}/view/:id`,
+    element: <ViewColaboradorTabs />, // Substituir por página de visualização se houver
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+      UserRoles.ADV_JUNIOR,
+      UserRoles.ADV_SENIOR,
+      UserRoles.ADV_ESTAGIARIO,
+    ],
+  },
+
+  // VISUALIZAR PROCESSO
+  {
+    path: `${ROUTES_PATH.Process}/:id`,
+    element: <Process />, // Substituir por página de detalhes do processo se houver
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+      UserRoles.ADV_JUNIOR,
+      UserRoles.ADV_SENIOR,
+      UserRoles.ADV_ESTAGIARIO,
     ],
   },
   {
@@ -84,6 +131,25 @@ export const routesPermissions: IRoute[] = [
     element: <NewClient />,
     roles: [
       UserRoles.ADMINISTRATIVO,
+    ],
+  },
+  // EDITAR CLIENTE
+  {
+    path: `${ROUTES_PATH.NewClient}/:id`,
+    element: <NewClient />,
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+    ],
+  },
+  // VISUALIZAR CLIENTE
+  {
+    path: `${ROUTES_PATH.NewClient}/view/:id`,
+    element: <ViewClientTabs />,
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+      UserRoles.ADV_JUNIOR,
+      UserRoles.ADV_SENIOR,
+      UserRoles.ADV_ESTAGIARIO,
     ],
   },
 

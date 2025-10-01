@@ -11,9 +11,18 @@ import {
   useTheme,
   useMediaQuery,
 } from '@mui/material';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import { Home, Folder, Assignment, Schedule, MonetizationOn, AssignmentTurnedIn, PeopleAlt, Group, AccountBalance } from "@mui/icons-material";
+import { useLocation } from "react-router-dom"; // 👈 importa
+import {
+  Home,
+  Folder,
+  Assignment,
+  Schedule,
+  MonetizationOn,
+  AssignmentTurnedIn,
+  PeopleAlt,
+  Group,
+  AccountBalance,
+} from "@mui/icons-material";
 import { ROUTES_PATH } from '../../routes/routePaths';
 import useAuthStore from '../../context/authStore';
 import { UserRoles } from '../../types/UserRoles';
@@ -27,22 +36,22 @@ interface SidebarProps {
 interface IMenuItem {
   text: string;
   icon: JSX.Element;
-  profiles?: UserRoles[]; // só necessário para admin
+  profiles?: UserRoles[];
   path: string;
   section: "user" | "admin";
 }
 
 const menuItems: IMenuItem[] = [
-  // MENUS DE USUÁRIO (todos podem ver)
+  // MENUS DE USUÁRIO
   { text: 'Início', icon: <Home />, path: ROUTES_PATH.Home, section: "user" },
   { text: 'Meus Processos', icon: <Assignment />, path: ROUTES_PATH.ProcessMine, section: "user" },
   { text: 'Meus TimeSheets', icon: <Schedule />, path: ROUTES_PATH.MyTimeSheets, section: "user" },
   { text: 'Meus Honorários', icon: <MonetizationOn />, path: ROUTES_PATH.MyHonorarios, section: "user" },
 
-  // MENUS DE ADMIN (restritos por perfil)
+  // MENUS DE ADMIN
   { text: 'Processos', icon: <AssignmentTurnedIn />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Process, section: "admin" },
   { text: 'Clientes', icon: <PeopleAlt />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Client, section: "admin" },
-  { text: 'Colaboradores', icon: <Group />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Employee, section: "admin" },
+  { text: 'Colaboradores', icon: <Group />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Colaborador, section: "admin" },
   { text: 'TimeSheets', icon: <Schedule />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.TimeSheet, section: "admin" },
   { text: 'Honorários', icon: <MonetizationOn />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Honorario, section: "admin" },
   { text: 'Despesas', icon: <AccountBalance />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Account, section: "admin" },
@@ -52,6 +61,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, handleClick }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const user = useAuthStore((state) => state.user);
+  const location = useLocation(); // 👈 pega rota atual
 
   const hasPermission = (itemRoles?: UserRoles[]) =>
     !itemRoles || itemRoles.some(role => user?.groups.includes(role));
@@ -73,26 +83,62 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, handleClick }) => {
       }}
     >
       <Toolbar />
-      
-      {/* MENUS DE USUÁRIO (todos têm acesso) */}
+
+      {/* MENUS DE USUÁRIO */}
       <List subheader={<ListSubheader disableSticky>Meu Espaço</ListSubheader>}>
-        {userMenus.map((item, index) => (
-          <ListItem sx={{ cursor: 'pointer' }} key={index} onClick={() => handleClick(item.path)}>
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.text} />
-          </ListItem>
-        ))}
+        {userMenus.map((item, index) => {
+          const isActive = location.pathname === item.path;
+          return (
+            <ListItem
+              key={index}
+              onClick={() => handleClick(item.path)}
+              sx={{
+                cursor: 'pointer',
+                bgcolor: isActive ? theme.palette.action.selected : 'transparent',
+                borderRadius: 2,
+              }}
+            >
+              <ListItemIcon sx={{ color: isActive ? theme.palette.primary.main : 'inherit' }}>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={item.text}
+                primaryTypographyProps={{
+                  fontWeight: isActive ? 'bold' : 'normal',
+                }}
+              />
+            </ListItem>
+          );
+        })}
       </List>
 
-      {/* MENUS ADMIN (só quem tem permissão) */}
+      {/* MENUS ADMIN */}
       {adminMenus.length > 0 && (
         <List subheader={<ListSubheader disableSticky>Administração</ListSubheader>}>
-          {adminMenus.map((item, index) => (
-            <ListItem sx={{ cursor: 'pointer' }} key={index} onClick={() => handleClick(item.path)}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItem>
-          ))}
+          {adminMenus.map((item, index) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <ListItem
+                key={index}
+                onClick={() => handleClick(item.path)}
+                sx={{
+                  cursor: 'pointer',
+                  bgcolor: isActive ? theme.palette.action.selected : 'transparent',
+                  borderRadius: 2,
+                }}
+              >
+                <ListItemIcon sx={{ color: isActive ? theme.palette.primary.main : 'inherit' }}>
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.text}
+                  primaryTypographyProps={{
+                    fontWeight: isActive ? 'bold' : 'normal',
+                  }}
+                />
+              </ListItem>
+            );
+          })}
         </List>
       )}
     </Drawer>

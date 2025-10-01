@@ -16,8 +16,12 @@ export class ClientService {
         return response?.data as IClient[]
     }
 
-    static async getById(id: number): Promise<any> {
-        return await new RequestApi().post(`logout`, { data :' ' })
+    static async getById(id: number): Promise<IClient> {
+        const response = await new RequestApi().get<IClient[]>(`cliente/${id}`)
+        if(response && response.status === 400) {
+            throw new Error('Erro ao obter os clientes')
+        }
+        return response?.data[0] as any
     }
 
     static async save(data: any): Promise<any> {

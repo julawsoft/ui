@@ -8,6 +8,7 @@ import type { IProcesso } from '../../schema/InterfaceProcess';
 import { processoColumns, transformDataProcesso } from '../Process/transformProcesso';
 import { ProcessoService } from '../../services/ProcessoService';
 import StateHandler from '../../components/common/StateHandler';
+import { ROUTES_PATH } from '../../routes/routePaths';
 
 const Processo: React.FC = () => {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ const Processo: React.FC = () => {
   };
 
   const handleView = (processo: IProcesso) => {
-    // navigate(`${ROUTES_PATH.NewProcesso}/view/${processo.id}`);
+    navigate(`${ROUTES_PATH.NewProcesso}/view/${processo.id}`);
   };
 
   return (
