@@ -8,25 +8,25 @@ import { ROUTES_PATH } from '../../routes/routePaths';
 import { setUserLogged } from '../../utils/cookies';
 import useAuthStore from '../../context/authStore';
 
-import logo from '../../assets/images/logo.png';
+import logo from '../../assets/images/julaw-logo.png';
 
 const Login: React.FC = () => {
 
   const setUser = useAuthStore((state) => state.setUser)
-  const [email, setEmail] = useState<string>('user@cetim.ms');
-  const [password, setPassword] = useState<string>('654321');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   const navigate = useNavigate()
 
   useEffect(() => {
-    setUserLogged({
+    /*setUserLogged({
       name: '',
-      groups: [],
+      groups: '',
       roles: [],
       accessToken: '',
       refreshToken: '',
       isLogged: false
-    })
+    })*/
   }, [])
 
   const handleLogin = async (event: React.FormEvent) => {
@@ -34,32 +34,35 @@ const Login: React.FC = () => {
 
     try {
 
-      const response = await LoginService.login({ email, password })
+      const response = await LoginService.login({ username: email, password })
 
-      if (response && response.response.statusCode === 200) {
-
+      if (response && response.status === 200) {
         const userResponse = response.data
-        let groupsMap =  userResponse.userInfo.groups ? userResponse.userInfo.groups.map((group: string) => group.replace('/', '')) : []
-        let rolesMap = userResponse.roles ? userResponse.roles.map((role: any) => role.name) : []
+
+        let groupsMap =  userResponse.funcao
+        let rolesMap = userResponse.auth.roles ?? []
+
+        console.log("here...groupsMap::  ", groupsMap)
+        console.log("here...rolesMap::  ", rolesMap)
 
         setUserLogged({
-          name: userResponse.userInfo.name,
-          groups: [...groupsMap],
+          name: userResponse.auth.userInfo.name,
+          groups: groupsMap,
           roles: [...rolesMap],
-          accessToken: userResponse.accessToken,
-          refreshToken: userResponse.refreshToken,
+          accessToken: userResponse.auth.accessToken,
+          refreshToken: userResponse.auth.refreshToken,
           isLogged: true
         })
 
         setUser({
-          name: userResponse.userInfo.name,
-          groups: [...groupsMap],
+          name: userResponse.auth.userInfo.name,
+          groups: groupsMap,
           roles: [...rolesMap],
-          accessToken: userResponse.accessToken,
-          refreshToken: userResponse.refreshToken,
+          accessToken: userResponse.auth.accessToken,
+          refreshToken: userResponse.auth.refreshToken,
           isLogged: true,
-          id: '',
-          email: userResponse.userInfo.email
+          id: userResponse.id,
+          email: userResponse.auth.userInfo.email
         })
 
         setTimeout(() => {
@@ -90,23 +93,28 @@ const Login: React.FC = () => {
       
         <CardMedia
           component="img"
-          height="140"
+          height="100px"
+          width={"100px"}
           image={logo}
-          alt="Logo AppSec"
+          alt="Logo Julaw"
+          sx={{
+            width: "100px", // Largura fixa de 100px
+            height: "100px", // Altura fixa para manter um formato quadrado
+            objectFit: "cover", // Evita distorção, cortando partes da imagem se necessário
+          }}
         />
 
         <Typography component="h1" variant="h5" mt={10}>
-          Login
+          JULAW
         </Typography>
         <Box component="form" onSubmit={handleLogin} sx={{ mt: 1 }}>
           <TextField
             variant="outlined"
             margin="normal"
             required
-            type='email'
             fullWidth
             id="email"
-            label="E-mail"
+            label="Usuário"
             name="email"
             autoComplete="email"
             autoFocus

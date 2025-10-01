@@ -29,10 +29,9 @@ const timeoutPromise = <T>(
 interface IGenericViewResponse<T> {
     data: T;
     time?: Date;
-    response: {
-        statusCode: number;
-        message: string;
-    };
+    status: number;
+    errors: string[];
+
 }
 
 type HttpMethods = 'PUT' | 'POST' | 'DELETE' | 'GET';
@@ -78,12 +77,11 @@ export class RequestApi {
                 signal,
             });
 
-            console.log(" repsonse do request.ts >>> ", response)
-
             const responseData: IGenericViewResponse<T> = await response.json();
 
+            /*
             if (!response.ok) {
-                if(responseData.response.message.toString().includes("Token expirado")){
+                if(responseData..message.toString().includes("Token expirado")){
                     console.log("Token expirado")
                     await logOutAppSec(responseData.response.message)
                     console.log("Token expirado depois ... ")
@@ -91,6 +89,7 @@ export class RequestApi {
                 }
                 throw new Error(responseData.response.message)
             }
+            */
         return responseData;
     }
 

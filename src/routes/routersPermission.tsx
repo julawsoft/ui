@@ -1,65 +1,136 @@
-import { ReactNode } from 'react'
-import { ROUTES_PATH } from './routePaths'
-import Home from '../pages/Home'
-import About from '../pages/About'
-import Settings from '../pages/Settings'
-import Restricted from '../pages/Restricted'
-import NotFound from '../pages/NotFound'
-import CreateDocument from '../pages/CreateDocument'
+// src/routes/routesPermissions.tsx
+import { ReactNode } from 'react';
+import { ROUTES_PATH } from './routePaths';
 
+import Home from '../pages/Home';
+import Process from '../pages/Process';
+import ProcessMine from '../pages/ProcessMine';
+import Employees from '../pages/Colaborador';
+import Client from '../pages/Client';
+import Account from '../pages/Account';
+import NewClient from '../pages/Client/newClient';
+import NotFound from '../pages/NotFound';
+
+// Novos imports
+import TimeSheets from '../pages/TimeSheets';
+import MyTimeSheets from '../pages/TimeSheets/MyTimeSheets';
+import Honorarios from '../pages/Honorarios';
+import MyHonorarios from '../pages/Honorarios/MyHonorarios';
+
+import { UserRoles } from '../types/UserRoles';
 
 interface IRoute {
-  path: string
-  element: ReactNode
-  roles?: string[]
-  subRoute?: ReactNode
+  path: string;
+  element: ReactNode;
+  roles: UserRoles[];
+  subRoute?: ReactNode;
 }
 
 export const routesPermissions: IRoute[] = [
-  { 
-    path: ROUTES_PATH.Home, 
-    element: <Home />, 
+  {
+    path: ROUTES_PATH.Home,
+    element: <Home />,
     roles: [
-        'Admin',
-        'Editor',
-        'Viewer',
+      UserRoles.ADMINISTRATIVO,
+      UserRoles.ADV_JUNIOR,
+      UserRoles.ADV_SENIOR,
+      UserRoles.ADV_ESTAGIARIO,
     ],
   },
-  { 
-    path: ROUTES_PATH.About, 
-    element: <About />, 
+  {
+    path: ROUTES_PATH.Process,
+    element: <Process />,
     roles: [
-        'Admin',
-        'Editor',
-        'Viewer',
+      UserRoles.ADMINISTRATIVO,
+      UserRoles.ADV_JUNIOR,
+      UserRoles.ADV_SENIOR,
+      UserRoles.ADV_ESTAGIARIO,
     ],
   },
-  { 
-    path: ROUTES_PATH.Restricted, 
-    element: <Restricted />, 
+  {
+    path: ROUTES_PATH.ProcessMine,
+    element: <ProcessMine />,
     roles: [
-        'Admin',
-        'Editor',
-        'Viewer',
+      UserRoles.ADV_JUNIOR,
+      UserRoles.ADV_SENIOR,
+      UserRoles.ADV_ESTAGIARIO,
     ],
   },
-  { 
-    path: ROUTES_PATH.Settings, 
-    element: <Settings />, 
+  {
+    path: ROUTES_PATH.Employee,
+    element: <Employees />,
     roles: [
-        'Admin',
-        'Editor',
-        'Viewer',
+      UserRoles.ADMINISTRATIVO,
+      UserRoles.ADV_SENIOR, // apenas admins e advogados seniors
     ],
   },
-  { 
-    path: ROUTES_PATH.CreateDocument, 
-    element: <CreateDocument />, 
-    roles: [],
+  {
+    path: ROUTES_PATH.Account,
+    element: <Account />,
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+    ],
   },
-  { 
-    path: ROUTES_PATH.NOTFOUND, 
-    element: <NotFound />, 
-    roles: [],
+  {
+    path: ROUTES_PATH.Client,
+    element: <Client />,
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+      UserRoles.ADV_SENIOR,
+    ],
   },
-]
+  {
+    path: ROUTES_PATH.NewClient,
+    element: <NewClient />,
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+    ],
+  },
+
+  // TIMESHEETS
+  {
+    path: ROUTES_PATH.TimeSheet,
+    element: <TimeSheets />,
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+    ],
+  },
+  {
+    path: ROUTES_PATH.MyTimeSheets,
+    element: <MyTimeSheets />,
+    roles: [
+      UserRoles.ADV_JUNIOR,
+      UserRoles.ADV_SENIOR,
+      UserRoles.ADV_ESTAGIARIO,
+    ],
+  },
+
+  // HONORÁRIOS
+  {
+    path: ROUTES_PATH.Honorario,
+    element: <Honorarios />,
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+    ],
+  },
+  {
+    path: ROUTES_PATH.MyHonorarios,
+    element: <MyHonorarios />,
+    roles: [
+      UserRoles.ADV_JUNIOR,
+      UserRoles.ADV_SENIOR,
+      UserRoles.ADV_ESTAGIARIO,
+    ],
+  },
+
+  {
+    path: ROUTES_PATH.NOTFOUND,
+    element: <NotFound />,
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+      UserRoles.ADV_JUNIOR,
+      UserRoles.ADV_SENIOR,
+      UserRoles.ADV_ESTAGIARIO,
+    ],
+  },
+];

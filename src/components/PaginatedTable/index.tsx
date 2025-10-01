@@ -4,12 +4,11 @@ import {
     Paper, TablePagination,
     Button
 } from '@mui/material';
-import { IDocuments } from '../../services/Documents';
 import PermissionGate from '../../utils/PermissionGate';
 import { AppRoles } from '../../routes/AppRoles';
 
-interface IPaginatedTable {
-    data: IDocuments[];
+interface IPaginatedTable<T> {
+    data: T[];
     handleEdit: (id: number | undefined) => void 
     handleDelete: (id: number | undefined) => void 
     handleView: (id: string) => void 

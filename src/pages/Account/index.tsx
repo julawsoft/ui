@@ -2,15 +2,15 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 
-const About: React.FC = () => {
+const Account: React.FC = () => {
   return (
     <div>
-      <Typography variant="h4">About Page</Typography>
+      <Typography variant="h4">Account Page</Typography>
       <Typography paragraph>
-        This is the About page.
+        This is the Account page.
       </Typography>
     </div>
   );
 };
 
-export default About;
+export default Account;

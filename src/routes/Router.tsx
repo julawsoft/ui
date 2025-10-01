@@ -12,6 +12,7 @@ export default function Router() {
 
     const setUser = useAuthStore((state) => state.setUser)
     const userLogged: IUserLogged = getUserLogged()
+    
     setUser(
         {
             ...userLogged,
@@ -34,7 +35,7 @@ export default function Router() {
 
     const hasPermission = (itemRoles: string[]) => {
         if (itemRoles)
-            return itemRoles.some(role => userLogged.groups.includes(role));
+            return itemRoles.map(role => role.includes(userLogged.groups));
         else
             return false;
     };
@@ -51,16 +52,13 @@ export default function Router() {
 
                 {routesPermissions.map((route) => {
                     if (
-                        hasPermission(userLogged.groups) ||
-                        !route.roles ||
-                        route.roles.length === 0
+                        hasPermission(route.roles)
                     )
                         return (
                             <Route key={route.path} path={route.path} element={route.element}>
                                 {route.subRoute}
                             </Route>
                         )
-
                     return (
                         <Route key={route.path} path={route.path} element={<>User Without Permission </>}>
                             {route.subRoute}

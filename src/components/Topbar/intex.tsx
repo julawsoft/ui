@@ -39,12 +39,12 @@ const TopBar: React.FC<TopBarProps> = ({ onDrawerToggle }) => {
   const handleProfileSair = async () => {
     try {
 
-      const response = await LoginService.logout()
+      // const response = await LoginService.logout()
 
-      if (response && response.response.statusCode === 200) {
+      //if (response && response.status === 200) {
         setUserLogged({
           name: '',
-          groups: [''],
+          groups: '',
           roles: [''],
           accessToken: '',
           refreshToken: '',
@@ -53,7 +53,7 @@ const TopBar: React.FC<TopBarProps> = ({ onDrawerToggle }) => {
 
         setUser({
           name: '',
-          groups: [''],
+          groups: '',
           roles: [''],
           accessToken: '',
           refreshToken: '',
@@ -64,9 +64,9 @@ const TopBar: React.FC<TopBarProps> = ({ onDrawerToggle }) => {
 
         location.href = '/login'
 
-      } else {
-        toast.error(response.response.message)
-      }
+      //} else {
+     //   toast.error(response.response.message)
+     // }
 
     } catch (err: any) {
       toast.error(err.message)
@@ -94,7 +94,7 @@ const TopBar: React.FC<TopBarProps> = ({ onDrawerToggle }) => {
 
         {/* Título do Aplicativo */}
         <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-          APP SEC
+          JULAW
         </Typography>
 
         {/* Notificações e Perfil de Usuário */}
@@ -121,8 +121,6 @@ const TopBar: React.FC<TopBarProps> = ({ onDrawerToggle }) => {
             }}
           >
             <MenuItem onClick={handleNotificationsClose}>Notification 1</MenuItem>
-            <MenuItem onClick={handleNotificationsClose}>Notification 2</MenuItem>
-            <MenuItem onClick={handleNotificationsClose}>Notification 3</MenuItem>
             <MenuItem onClick={handleNotificationsClose}>View All</MenuItem>
           </Menu>
 

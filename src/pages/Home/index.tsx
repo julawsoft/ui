@@ -1,6 +1,6 @@
 // src/pages/Home.tsx
 import React, { useEffect, useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, LinearProgress, Typography } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, LinearProgress, Stack, Typography } from '@mui/material';
 import useAuthStore from '../../context/authStore';
 import { DocumentsService, IDocuments } from '../../services/Documents';
 import { toast } from 'react-toastify';
@@ -10,6 +10,15 @@ import { AppRoles } from '../../routes/AppRoles';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES_PATH } from '../../routes/routePaths';
 import { previewAttachments } from '../../utils/preview_attach';
+import Label from '../../components/common/Label';
+import Input from '../../components/common/Input';
+import SelectBox from '../../components/common/SelectBox';
+import DataTable from '../../components/common/DataTable';
+import BoxCard from '../../components/common/BoxCard';
+import Loader from '../../components/common/Loader';
+import PrimaryButton from '../../components/common/PrimaryButton';
+import SecondaryButton from '../../components/common/SecondaryButton';
+import NormalButton from '../../components/common/NormalButton';
 
 const Home: React.FC = () => {
 
@@ -22,7 +31,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     setTimeout(async () => {
-      await getDocuments()
+      // await getDocuments()
     }, 1000)
   }, [])
 
@@ -37,12 +46,8 @@ const Home: React.FC = () => {
     }
   }
 
-  const handleCreateDocument = () => {
-    return navigate(ROUTES_PATH.CreateDocument);
-  };
-
   const handleEdit = (id: number | undefined) => {
-    console.log('handleEdit' , id)
+    console.log('handleEdit', id)
   }
   const handleDelete = (id: number | undefined) => {
     console.log('handleDelete', id)
@@ -56,68 +61,67 @@ const Home: React.FC = () => {
 
   }
 
-  const handleClose = () =>  setOpen(false);
+  const handleClose = () => setOpen(false);
+
+  const [name, setName] = useState("");
+  const [role, setRole] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const roles = [
+    { label: "Admin", value: "admin" },
+    { label: "User", value: "user" },
+  ];
+
+  const columns = [
+    { id: "id", label: "ID" },
+    { id: "name", label: "Nome" },
+    { id: "role", label: "Função" },
+  ];
+
+  const rows = [
+    { id: 1, name: "Anselmo", role: "Admin" },
+    { id: 2, name: "João", role: "User" },
+    { id: 3, name: "Maria", role: "User" },
+  ];
 
   return (
-    <><div >
-      <Typography variant="h5">{user?.name}</Typography>
-      <Typography mb={5}>
-        Welcome to the Home page!
-      </Typography>
-    </div>
-      <div>
-        <PermissionGate roles={[AppRoles.HOME.podeCadastrarDocumento]}>
-          <Button
-            type="button"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={handleCreateDocument}
-          >
-            Adicionar
-          </Button>
-        </PermissionGate>
-        {
-          isLoading ? <><LinearProgress /></> :
-            <>
-              <Typography variant="h6">Lista documentos</Typography>
-              <hr />
-              {
-                documents ?
-                  <PaginatedTable
-                  handleEdit={handleEdit}
-                  handleDelete={handleDelete}
-                  handleView={handleView}
-                  key={1} 
-                  data={documents} />
-                  : null
-              }
-            </>
-        }
-      
-      </div>
-      <Dialog open={open} onClose={handleClose}  
-       maxWidth="lg" // Define a largura máxima como 'large'
-      fullWidth
-
-      PaperProps={{
-        sx: { height: "80%" }, // Largura de 80% e altura máxima de 90%
-      }}
-       
+    <div style={{ padding: 10 }}>
+      {loading ? (
+        <Loader fullscreen />
+      ) : (
+        <BoxCard
+          title="Formulário"
+          action={<Button size="small">Ação</Button>}
+          footer={<Button variant="contained">Salvar</Button>}
         >
-        <DialogTitle>Preview do Documento Anexado</DialogTitle>
-        <DialogContent>
-          {
-            pathAttachPreview && <iframe src={pathAttachPreview} width="100%" height={'100%'} ></iframe>
-          }
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Fechar
-          </Button>
-        </DialogActions>
-      </Dialog>
-      </>
+          <Label text="Nome" />
+          <Input label="Digite seu nome" value={name} onChange={(e) => setName(e.target.value)} />
+
+          <br /><br />
+
+          <Stack spacing={2} direction="row">
+            <PrimaryButton onClick={() => alert("Primário clicado!")}>
+              Primário
+            </PrimaryButton>
+
+            <SecondaryButton onClick={() => alert("Secundário clicado!")}>
+              Secundário
+            </SecondaryButton>
+
+            <NormalButton onClick={() => alert("Normal clicado!")}>
+              Normal
+            </NormalButton>
+          </Stack>
+
+          <Label text="Função" />
+          <SelectBox label="Selecione" value={role} onChange={(e) => setRole(e.target.value)} options={roles} />
+
+          <br /><br />
+
+          <DataTable columns={columns} rows={rows} />
+        </BoxCard>
+      )}
+    </div>
   );
 };
 
