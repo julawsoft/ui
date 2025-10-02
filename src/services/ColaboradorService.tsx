@@ -25,6 +25,14 @@ export class ColaboradorService {
         return response?.data as IColaborador
     }
 
+    static async getTipoColaboradores(): Promise<any> {
+        const response = await new RequestApi().get(`colaborador/${id}`);
+        if(response && response.status === 400) {
+            throw new Error('Erro ao obter os clientes')
+        }
+        return response?.data as IColaborador
+    }
+
     static async save(data: IColaboradorInput): Promise<any> {
         const response = await new RequestApi().post(`colaborador`, { ...data });
         if(response && response.status === 400) {

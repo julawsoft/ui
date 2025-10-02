@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Ficha do Colaborador</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 20px;
+      font-size: 12px;
+      color: #333;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1565C0;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      background: #BBDEFB;
+      padding: 6px 10px;
+      font-weight: bold;
+      color: #0D47A1;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+    }
+
+    .field {
+      margin: 6px 0;
+    }
+
+    .label {
+      font-weight: bold;
+      display: inline-block;
+      width: 200px;
+      color: #333;
+    }
+
+    .line {
+      border-bottom: 1px solid #999;
+      display: inline-block;
+      width: 55%;
+      min-height: 16px;
+    }
+
+    .multi-line {
+      border: 1px solid #aaa;
+      border-radius: 4px;
+      min-height: 50px;
+      margin-top: 6px;
+      padding: 4px;
+    }
+
+    /* Footer fixado no final */
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      left: 20px;
+      right: 20px;
+      text-align: center;
+      font-size: 10px;
+      color: #555;
+      border-top: 1px solid #ccc;
+      padding-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ficha do Colaborador</h1>
+
+  <div class="section-title">IDENTIFICAÇÃO DO COLABORADOR</div>
+  <div class="field"><span class="label">ID:</span> <span class="line">{{id}}</span></div>
+  <div class="field"><span class="label">Nome Completo:</span> <span class="line">{{nome_completo}}</span></div>
+  <div class="field"><span class="label">Nome Profissional:</span> <span class="line">{{nome_profissional}}</span></div>
+  <div class="field"><span class="label">Inicial:</span> <span class="line">{{inicial}}</span></div>
+  <div class="field"><span class="label">Função:</span> <span class="line">{{funcao}}</span></div>
+  <div class="field"><span class="label">Tipo de Colaborador:</span> <span class="line">{{tipoColaborador}}</span></div>
+  <div class="field"><span class="label">Categoria:</span> <span class="line">{{categoria}}</span></div>
+  <div class="field"><span class="label">Data de Nascimento:</span> <span class="line">{{data_nascimento}}</span></div>
+  <div class="field"><span class="label">Número Identificação:</span> <span class="line">{{n_identificacao}}</span></div>
+  <div class="field"><span class="label">Nº Cédula Ordem:</span> <span class="line">{{n_cedula_ordem}}</span></div>
+
+  <div class="section-title">CONTACTOS</div>
+  <div class="field"><span class="label">Contacto Pessoal:</span> <span class="line">{{contacto_pessoal}}</span></div>
+  <div class="field"><span class="label">Contacto Emergência:</span> <span class="line">{{contacto_emergencia}}</span></div>
+  <div class="field"><span class="label">Email Pessoal:</span> <span class="line">{{email_pessoal}}</span></div>
+  <div class="field"><span class="label">Email Corporativo:</span> <span class="line">{{email_corporativo}}</span></div>
+
+  <div class="section-title">INFORMAÇÕES PROFISSIONAIS</div>
+  <div class="field"><span class="label">Taxa Horária:</span> <span class="line">{{taxa_horaria}}</span></div>
+  <div class="field"><span class="label">Status:</span> <span class="line">{{status}}</span></div>
+
+  <div class="section-title">REGISTRO</div>
+  <div class="field"><span class="label">Criado em:</span> <span class="line">{{created_at}}</span></div>
+  <div class="field"><span class="label">Atualizado em:</span> <span class="line">{{updated_at}}</span></div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Julaw Soft - Gerado em: {{generated_at}}
+  </div>
+</body>
+</html>

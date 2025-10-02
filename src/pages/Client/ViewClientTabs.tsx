@@ -12,6 +12,8 @@ import { IProcesso } from '../../schema/InterfaceProcess';
 import { processoColumns, transformDataProcesso } from '../Process/transformProcesso';
 import { toast } from 'react-toastify';
 import BreadcrumbsNav from '../../components/common/BreadcrumbsNav';
+import { generateClientPDF } from '../../utils/reports/generateClientPDF';
+import PrimaryButton from '../../components/common/PrimaryButton';
 
 const tiposCliente = [
   { label: 'Empresa', value: 1 },
@@ -98,7 +100,12 @@ const ViewClientTabs: React.FC = () => {
       />
       <BoxTop
         title={`Cliente: ${client.denominacao}`}
-        buttonText='Imprimir' />
+        actions={
+          <>
+            <PrimaryButton onClick={()=> generateClientPDF(client)}>Imprimir</PrimaryButton>
+          </>
+        }
+        />
       <Grid container spacing={2}>
         {/* Coluna esquerda: detalhes do cliente */}
         <Grid item xs={12} md={3}>

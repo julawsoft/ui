@@ -13,6 +13,8 @@ import type { IColaborador } from '../../schema/InterfaceColaboradores';
 import { IProcesso } from '../../schema/InterfaceProcess';
 import { processoColumns, transformDataProcesso } from '../Process/transformProcesso';
 import { toast } from 'react-toastify';
+import { generateColaboradorPDF } from '../../utils/reports/generateColaboradorPDF';
+import PrimaryButton from '../../components/common/PrimaryButton';
 
 const statusOptions = [
   { label: 'Ativo', value: 'active' },
@@ -87,7 +89,11 @@ const ViewColaboradorTabs: React.FC = () => {
       />
       <BoxTop
         title={`Colaborador: ${colaborador.nome_profissional || colaborador.nome_completo}`}
-        buttonText='Imprimir'
+        actions={
+          <>
+            <PrimaryButton onClick={()=> generateColaboradorPDF(colaborador)}>Imprimir</PrimaryButton>
+          </>
+        }
       />
 
       <Grid container spacing={2}>
@@ -162,7 +168,7 @@ const ViewColaboradorTabs: React.FC = () => {
               {!tabLoading && !tabError && tabIndex === 0 && processos.length > 0 && (
                 <DataTable
                   columns={processoColumns}
-                  rows={transformDataProcesso(processos, () => {}, () => {})}
+                  rows={transformDataProcesso(processos, () => { }, () => { })}
                 />
               )}
             </Box>

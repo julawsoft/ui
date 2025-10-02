@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Processos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      margin: 20px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+    }
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 6px;
+      text-align: left;
+      font-size: 11px;
+    }
+    table th {
+      background-color: #f5f5f5;
+      font-weight: bold;
+    }
+    .footer {
+      text-align: right;
+      font-size: 10px;
+      margin-top: 20px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h2>Lista de Processos</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Ref</th>
+        <th>Nº Judicial</th>
+        <th>Assunto</th>
+        <th>Área</th>
+        <th>Instituição</th>
+        <th>M. Facturação</th>
+        <th>Estado</th>
+        <th>Data Registo</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{rows}}
+    </tbody>
+  </table>
+  <div class="footer">
+    Gerado em {{generated_at}}
+  </div>
+</body>
+</html>

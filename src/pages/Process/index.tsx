@@ -9,6 +9,9 @@ import { processoColumns, transformDataProcesso } from '../Process/transformProc
 import { ProcessoService } from '../../services/ProcessoService';
 import StateHandler from '../../components/common/StateHandler';
 import { ROUTES_PATH } from '../../routes/routePaths';
+import BreadcrumbsNav from '../../components/common/BreadcrumbsNav';
+import PrimaryButton from '../../components/common/PrimaryButton';
+import { generateProcessosListPDF } from '../../utils/reports/generateListProcessPDF';
 
 const Processo: React.FC = () => {
   const navigate = useNavigate();
@@ -50,12 +53,29 @@ const Processo: React.FC = () => {
     navigate(`${ROUTES_PATH.NewProcesso}/view/${processo.id}`);
   };
 
+   const handleExportPDF = () => {
+        if (data.length > 0) {
+          generateProcessosListPDF(data);
+        }
+      };
+
   return (
     <div>
+        <BreadcrumbsNav
+        items={[
+          { label: "Início", path: "/" },
+          { label: "Processos", path: "/processos" },
+          { label: "Lista dos Processos" }
+        ]}
+      />
       <BoxTop
         title="Lista dos Processos"
-        buttonText="Novo Processo"
-        buttonProps={{ onClick: handleNovoProcesso }}
+        actions={
+          <>
+            <PrimaryButton onClick={handleNovoProcesso}>Novo Processo</PrimaryButton>
+            <PrimaryButton onClick={handleExportPDF}>Exportar PDF</PrimaryButton>
+          </>
+          }
       />
       <BoxCard>
         <StateHandler

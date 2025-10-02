@@ -13,6 +13,7 @@ import StateHandler from '../../../components/common/StateHandler';
 import DataTable from '../../../components/common/DataTable';
 import { UserPermissions } from '../../../types/UserPermissions';
 import { processoColumns, transformDataProcesso } from '../../Process/transformProcesso';
+import { HonorariosService } from '../../../services/HonorariosService';
 
 const MyHonorarios: React.FC = () => {
   const { user, saveUser, clearUser, hasAnyPermission, hasPermission } = useUserLogged();
@@ -36,7 +37,7 @@ const MyHonorarios: React.FC = () => {
 
   const getMeusProcessos = async () => {
     try {
-      const dataResponse = await ProcessoService.getByColaboradorId(Number(user?.id));
+      const dataResponse = await HonorariosService.getByColaboradorId(Number(user?.id));
       setData(dataResponse);
       setError(null);
     } catch (err: any) {
@@ -64,7 +65,7 @@ const MyHonorarios: React.FC = () => {
     <div>
       <BreadcrumbsNav
         items={[
-          { label: "Honorários", path: "/" },
+          { label: "Início", path: "/" },
           { label: "Meus Honorários", path: "/meus-honorarios" },
           { label: "Lista dos teus honorários" }
         ]}

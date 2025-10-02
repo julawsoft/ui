@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Grid, Alert } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useParams, useNavigate } from 'react-router-dom';
 import BoxCard from '../../components/common/BoxCard';
 import BoxTop from '../../components/common/BoxTop';
 import Loader from '../Loader';
@@ -12,6 +13,7 @@ import PrimaryButton from '../../components/common/PrimaryButton';
 import { toast } from 'react-toastify';
 import { ClientService } from '../../services/ClientService';
 import { clienteSchema, type ClienteFormData } from '../../validation/clienteSchema';
+import BreadcrumbsNav from '../../components/common/BreadcrumbsNav';
 
 const tiposCliente = [
   { label: 'Empresa', value: 1 },
@@ -29,11 +31,13 @@ const statusOptions = [
 ];
 
 const NewClient: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
-  const { handleSubmit, control, formState: { errors }, reset } = useForm<ClienteFormData>({
+  const { handleSubmit, control, formState: { errors }, reset, setValue } = useForm<ClienteFormData>({
     resolver: zodResolver(clienteSchema),
     defaultValues: {
       tipo_id: 1,
@@ -48,18 +52,48 @@ const NewClient: React.FC = () => {
     }
   });
 
+  // Buscar cliente para edição
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchClient = async () => {
+      setLoading(true);
+      try {
+        const client = await ClientService.getById(Number(id));
+        if (!client) throw new Error('Cliente não encontrado');
+        // Preencher formulário
+        Object.keys(client).forEach((key) => {
+          const value = client[key as keyof typeof client];
+          setValue(key as keyof ClienteFormData, value != null ? String(value) : '');
+        });
+
+      } catch (err: any) {
+        setError(err.message || 'Erro ao carregar cliente');
+        toast.error(err.message || 'Erro ao carregar cliente');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchClient();
+  }, [id, setValue]);
+
   const onSubmit = async (data: ClienteFormData) => {
-    console.log("O submit data ", data); // Aqui sim loga os valores preenchidos
-  
     setLoading(true);
     setError('');
     setSuccess(false);
-  
+
     try {
-      await ClientService.save(data);
+      if (id) {
+        await ClientService.update(Number(id), data);
+        toast.success('Cliente atualizado com sucesso!');
+      } else {
+        await ClientService.save(data);
+        toast.success('Cliente cadastrado com sucesso!');
+        reset();
+      }
       setSuccess(true);
-      reset();
-      toast.success('Cliente cadastrado com sucesso!');
+      navigate('/clientes'); // opcional: voltar para lista após salvar
     } catch (err: any) {
       setError(err.message || 'Erro desconhecido');
       toast.error(err.message || 'Erro desconhecido');
@@ -67,11 +101,17 @@ const NewClient: React.FC = () => {
       setLoading(false);
     }
   };
-  
 
   return (
     <>
-      <BoxTop title="Novo Cliente" />
+      <BreadcrumbsNav
+        items={[
+          { label: "Início", path: "/" },
+          { label: "Clientes", path: "/clientes" },
+          { label: id ? "Editar Cliente" : "Novo Cliente" } // último sem path
+        ]}
+      />
+      <BoxTop title={id ? 'Editar Cliente' : 'Novo Cliente'} />
       <BoxCard>
         {loading && <Loader />}
         {!loading && (
@@ -91,94 +131,44 @@ const NewClient: React.FC = () => {
                 />
               </Grid>
 
-              {/* Denominação */}
+              {/* Demais campos */}
               <Grid item xs={12} md={4}>
-                <Controller
-                  name="denominacao"
-                  control={control}
-                  render={({ field }) => (
-                    <Input label="Nome/Denominação" {...field} />
-                  )}
-                />
+                <Controller name="denominacao" control={control} render={({ field }) => <Input label="Nome/Denominação" {...field} />} />
                 {errors.denominacao && <Alert severity="error">{errors.denominacao.message}</Alert>}
               </Grid>
 
-              {/* NIF */}
               <Grid item xs={12} md={4}>
-                <Controller
-                  name="nif"
-                  control={control}
-                  render={({ field }) => (
-                    <Input label="NIF" {...field} />
-                  )}
-                />
+                <Controller name="nif" control={control} render={({ field }) => <Input label="NIF" {...field} />} />
                 {errors.nif && <Alert severity="error">{errors.nif.message}</Alert>}
               </Grid>
 
-              {/* Pessoa de contacto */}
               <Grid item xs={12} md={4}>
-                <Controller
-                  name="pessoa_contacto"
-                  control={control}
-                  render={({ field }) => (
-                    <Input label="Pessoa de Contacto" {...field} />
-                  )}
-                />
+                <Controller name="pessoa_contacto" control={control} render={({ field }) => <Input label="Pessoa de Contacto" {...field} />} />
                 {errors.pessoa_contacto && <Alert severity="error">{errors.pessoa_contacto.message}</Alert>}
               </Grid>
 
-              {/* Contacto cobrança */}
               <Grid item xs={12} md={4}>
-                <Controller
-                  name="contacto_cobranca"
-                  control={control}
-                  render={({ field }) => (
-                    <Input label="Contacto de Cobrança" {...field} value={field.value} />
-                  )}
-                />
+                <Controller name="contacto_cobranca" control={control} render={({ field }) => <Input label="Contacto de Cobrança" {...field} />} />
                 {errors.contacto_cobranca && <Alert severity="error">{errors.contacto_cobranca.message}</Alert>}
               </Grid>
 
-              {/* Email */}
               <Grid item xs={12} md={4}>
-                <Controller
-                  name="e_mail"
-                  control={control}
-                  render={({ field }) => (
-                    <Input label="E-mail" type="email" {...field} />
-                  )}
-                />
+                <Controller name="e_mail" control={control} render={({ field }) => <Input label="E-mail" type="email" {...field} />} />
                 {errors.e_mail && <Alert severity="error">{errors.e_mail.message}</Alert>}
               </Grid>
 
-              {/* Endereço */}
               <Grid item xs={12}>
-                <Controller
-                  name="endereco"
-                  control={control}
-                  render={({ field }) => (
-                    <Input label="Endereço" {...field} />
-                  )}
-                />
+                <Controller name="endereco" control={control} render={({ field }) => <Input label="Endereço" {...field} />} />
                 {errors.endereco && <Alert severity="error">{errors.endereco.message}</Alert>}
               </Grid>
 
-              {/* Nota */}
               <Grid item xs={12}>
-                <Controller
-                  name="nota"
-                  control={control}
-                  render={({ field }) => (
-                    <Textarea label="Nota" {...field} value={field.value || ''} />
-                  )}
-                />
+                <Controller name="nota" control={control} render={({ field }) => <Textarea label="Nota" {...field} value={field.value || ''} />} />
                 {errors.nota && <Alert severity="error">{errors.nota.message}</Alert>}
               </Grid>
 
-             
-              {/* Botão */}
               <Grid item xs={12} md={4}>
-                <PrimaryButton type="submit">Salvar Cliente</PrimaryButton>
+                <PrimaryButton type="submit">{id ? 'Atualizar Cliente' : 'Salvar Cliente'}</PrimaryButton>
               </Grid>
             </Grid>
           </Box>

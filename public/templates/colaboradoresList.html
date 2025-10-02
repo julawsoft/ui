@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Colaboradores</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      color: #333;
+      margin: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #1565C0;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      border: 1px solid #999;
+      padding: 6px;
+      text-align: left;
+    }
+    th {
+      background: #BBDEFB;
+      color: #0D47A1;
+    }
+    tfoot {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 11px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>Lista de Colaboradores</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Função</th>
+        <th>Categoria</th>
+        <th>Nº Identificação</th>
+        <th>Nº Cédula Ordem</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{rows}}
+    </tbody>
+  </table>
+  <footer>
+    <p>Julaw Soft &nbsp;—&nbsp; Gerado em: {{generated_at}}</p>
+  </footer>
+</body>
+</html>

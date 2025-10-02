@@ -64,7 +64,7 @@ const MyProcess: React.FC = () => {
     <div>
       <BreadcrumbsNav
         items={[
-          { label: "Processos", path: "/" },
+          { label: "Início", path: "/" },
           { label: "Meus Processos", path: "/meus-processos" },
           { label: "Lista dos Teus Processos" } // último sem path
         ]}

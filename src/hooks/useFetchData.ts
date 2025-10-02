@@ -28,7 +28,10 @@ export function useFetchData<T>(fetchFn: () => Promise<T[]>): UseFetchDataReturn
   }, [fetchFn]);
 
   useEffect(() => {
-    fetchData();
+    setIsLoading(true);
+    setTimeout(() => {
+      fetchData();
+    }, 1000); // Simulate delay
   }, [fetchData]);
 
   return { data, isLoading, error, fetchData };

@@ -31,5 +31,12 @@ export class ClientService {
         }
         return response?.data as IClient
     }
+    static async update(id:number, data: any): Promise<any> {
+        const response = await new RequestApi().post(`cliente`, { ...data });
+        if(response && response.status === 400) {
+            throw new Error('Erro ao salvar o cliente')
+        }
+        return response?.data as IClient
+    }
     
 }

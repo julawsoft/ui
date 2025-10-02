@@ -10,24 +10,32 @@ import { ROUTES_PATH } from '../../../routes/routePaths';
 import type { IColaborador } from '../../../schema/InterfaceColaboradores';
 import { ColaboradorService } from '../../../services/ColaboradorService';
 import StateHandler from '../../../components/common/StateHandler';
+import { TimeSheetsService } from '../../../services/TimeSheetsService';
+import type { IProcesso } from '../../../schema/InterfaceProcess';
+import { useUserLogged } from '../../../hooks/useUserLogged';
+import BreadcrumbsNav from '../../../components/common/BreadcrumbsNav';
 
 const MyTimeSheets: React.FC = () => {
+  const { user, saveUser, clearUser, hasAnyPermission, hasPermission } = useUserLogged();
+
   const navigate = useNavigate();
 
-  const [data, setData] = React.useState<IColaborador[]>([]);
+  const [data, setData] = React.useState<IProcesso[]>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | null>(null);
 
   useEffect(() => {
-    setIsLoading(true);
-    setTimeout(() =>  {
-      getAllColaboradores();
-  }, 1000)
-  }, []);
+    if (!user?.id) return;
 
-  const getAllColaboradores = async () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      getTImeSheetsByColaboradorId();
+    }, 1000)
+  }, [user?.id]);
+
+  const getTImeSheetsByColaboradorId = async () => {
     try {
-      const dataResponse = await ColaboradorService.getAll();
+      const dataResponse = await TimeSheetsService.getByColaboradorId(Number(user?.id));
       setData(dataResponse);
       setError(null);
     } catch (err: any) {
@@ -53,10 +61,15 @@ const MyTimeSheets: React.FC = () => {
 
   return (
     <div>
+      <BreadcrumbsNav
+        items={[
+          { label: "Início", path: "/" },
+          { label: "Meus TimeSheets", path: "/meus-timesheets" },
+          { label: "Lista dos teus timesheets" }
+        ]}
+      />
       <BoxTop
-        title="Lista dos Colaboradores"
-        buttonText="Novo Colaborador"
-        buttonProps={{ onClick: handleNovoColaborador }}
+        title="Lista dos TimeSheets"
       />
       <BoxCard>
         <StateHandler

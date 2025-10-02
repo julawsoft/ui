@@ -11,6 +11,8 @@ import type { IColaborador } from '../../schema/InterfaceColaboradores';
 import { ColaboradorService } from '../../services/ColaboradorService';
 import StateHandler from '../../components/common/StateHandler';
 import BreadcrumbsNav from '../../components/common/BreadcrumbsNav';
+import PrimaryButton from '../../components/common/PrimaryButton';
+import { generateColaboradoresListPDF } from '../../utils/reports/generateListColaboradoresPDF';
 
 const Colaborador: React.FC = () => {
   const navigate = useNavigate();
@@ -52,19 +54,29 @@ const Colaborador: React.FC = () => {
     navigate(`${ROUTES_PATH.NewColaborador}/view/${colaborador.id}`);
   };
 
+   const handleExportPDF = () => {
+      if (data.length > 0) {
+        generateColaboradoresListPDF(data);
+      }
+    };
+  
   return (
     <div>
        <BreadcrumbsNav
         items={[
-          { label: "Dashboard", path: "/" },
-          { label: "Configurações", path: "/settings" },
-          { label: "Colaboradores" } // último sem path
+          { label: "Início", path: "/" },
+          { label: "Colaboradores", path: "/colaboradores" },
+          { label: "Lista dos Colaboradores" } // último sem path
         ]}
       />
       <BoxTop
         title="Lista dos Colaboradores"
-        buttonText="Novo Colaborador"
-        buttonProps={{ onClick: handleNovoColaborador }}
+        actions={
+          <>
+            <PrimaryButton onClick={handleNovoColaborador}>Novo Colaborador</PrimaryButton>
+            <PrimaryButton onClick={handleExportPDF}>Exportar PDF</PrimaryButton>
+          </>
+          }
       />
       <BoxCard>
         <StateHandler
