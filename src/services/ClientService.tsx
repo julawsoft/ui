@@ -1,4 +1,5 @@
 import type { IClient } from "../schema/InterfaceClient"
+import type { IProcesso } from "../schema/InterfaceProcess";
 import { RequestApi } from "../utils/http/request"
 
 interface ILogin {
@@ -14,6 +15,13 @@ export class ClientService {
             throw new Error('Erro ao obter os clientes')
         }
         return response?.data as IClient[]
+    }
+    static async getProcessos(idClient: number): Promise<IProcesso[]> {
+        const response = await new RequestApi().get(`cliente_processos/${idClient}`);
+        if(response && response.status === 400) {
+            throw new Error('Erro ao obter os clientes')
+        }
+        return response?.data as IProcesso[]
     }
 
     static async getById(id: number): Promise<IClient> {

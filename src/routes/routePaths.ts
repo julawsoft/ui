@@ -24,7 +24,9 @@ export const ROUTES_PATH = {
   ViewColaborador: "/colaborador/view/:id",    // visualizar colaborador
 
   // DESPESAS
-  Account: '/despesas',
+  Despesas: '/despesas',
+  NewDespesas: '/despesa',
+  EditDespesas: "/despesa/:id", 
 
   // TIMESHEETS
   TimeSheet: '/timesheets',

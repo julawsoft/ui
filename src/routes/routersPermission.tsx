@@ -7,7 +7,6 @@ import Process from '../pages/Process';
 import ProcessMine from '../pages/Process/MyProcess';
 import Employees from '../pages/Colaborador';
 import Client from '../pages/Client';
-import Account from '../pages/Account';
 import NewClient from '../pages/Client/newClient';
 import NotFound from '../pages/NotFound';
 
@@ -20,6 +19,8 @@ import ViewClientTabs from '../pages/Client/ViewClientTabs';
 
 import { UserRoles } from '../types/UserRoles';
 import ViewColaboradorTabs from '../pages/Colaborador/ViewColaboradorTabs';
+import Despesas from '../pages/Despesas';
+import NewDespesas from '../pages/Despesas/newDespesas';
 // import ViewProcessoTabs from '../pages/Process/ViewProcessoTabs';
 
 interface IRoute {
@@ -112,10 +113,33 @@ export const routesPermissions: IRoute[] = [
     ],
   },
   {
-    path: ROUTES_PATH.Account,
-    element: <Account />,
+    path: ROUTES_PATH.Despesas,
+    element: <Despesas />,
     roles: [
       UserRoles.ADMINISTRATIVO,
+      UserRoles.ADV_JUNIOR,
+      UserRoles.ADV_SENIOR,
+      UserRoles.ADV_ESTAGIARIO,
+    ],
+  },
+  {
+    path: ROUTES_PATH.NewDespesas,
+    element: <NewDespesas />,
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+      UserRoles.ADV_JUNIOR,
+      UserRoles.ADV_SENIOR,
+      UserRoles.ADV_ESTAGIARIO,
+    ],
+  },
+  {
+    path: `${ROUTES_PATH.NewDespesas}/:id`,
+    element: <NewDespesas />,
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+      UserRoles.ADV_JUNIOR,
+      UserRoles.ADV_SENIOR,
+      UserRoles.ADV_ESTAGIARIO,
     ],
   },
   {

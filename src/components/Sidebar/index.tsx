@@ -54,7 +54,7 @@ const menuItems: IMenuItem[] = [
   { text: 'Colaboradores', icon: <Group />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Colaborador, section: "admin" },
   { text: 'TimeSheets', icon: <Schedule />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.TimeSheet, section: "admin" },
   { text: 'Honorários', icon: <MonetizationOn />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Honorario, section: "admin" },
-  { text: 'Despesas', icon: <AccountBalance />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Account, section: "admin" },
+  { text: 'Despesas', icon: <AccountBalance />, profiles: [UserRoles.ADMINISTRATIVO], path: ROUTES_PATH.Despesas, section: "admin" },
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, handleClick }) => {
