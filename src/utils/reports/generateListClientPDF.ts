@@ -11,7 +11,7 @@ const generateRows = (clients: IClient[]) => {
       <td>${client.nif ?? "-"}</td>
       <td>${client.pessoa_contacto ?? "-"}</td>
       <td>${client.e_mail ?? "-"}</td>
-      <td>${client.status ?? "-"}</td>
+      <td>${ new Date(client.created_at).toLocaleDateString("PT") ?? "-"}</td>
     </tr>
   `).join("");
 };

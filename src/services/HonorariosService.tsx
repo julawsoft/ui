@@ -1,23 +1,31 @@
+import type { IHonorarios } from "../schema/InterfaceHonorarios";
 import type { IProcesso, IProcessoInput } from "../schema/InterfaceProcess";
 import { RequestApi } from "../utils/http/request";
 
 export class HonorariosService {
-  static async getAll(): Promise<IProcesso[]> {
-    const response = await new RequestApi().get(`processo`);
+
+  static async getAll(): Promise<IHonorarios[]> {
+    const response = await new RequestApi().get(`honorarios`);
     if (response && response.status === 400) {
       throw new Error("Erro ao obter os processos");
     }
-    return response?.data as IProcesso[];
+    return response?.data as IHonorarios[];
   }
-  static async getByColaboradorId(id:number): Promise<IProcesso[]> {
-    return []
-    /*
-    const response = await new RequestApi().get(`processo_colaborador/${id}`);
+  static async getHorariosByColaboradorId(idColaborador: number): Promise<IHonorarios[]> {
+    const response = await new RequestApi().get(`honorarios?idColaborador=${idColaborador}`);
     if (response && response.status === 400) {
       throw new Error("Erro ao obter os processos");
     }
-    return response?.data as IProcesso[];
-    */
+    return response?.data as IHonorarios[];
+  }
+  static async getByColaboradorId(id:number): Promise<IHonorarios[]> {
+    
+    const response = await new RequestApi().get(`/processo-factura-colaborador/${id}`);
+    if (response && response.status === 400) {
+      throw new Error("Erro ao obter os processos");
+    }
+    return response?.data as IHonorarios[];
+    
   }
 
   static async getById(id: number): Promise<IProcesso> {

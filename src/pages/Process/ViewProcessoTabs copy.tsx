@@ -32,7 +32,6 @@ import { ProcessoService } from '../../services/ProcessoService';
 import { IProcesso } from '../../schema/InterfaceProcess';
 import Textarea from '../../components/common/Textarea';
 import FileUploader from '../../components/uploads/FileUploader';
-import RichTextEditor from '../../components/editor/RichTextEditor';
 
 // ===== Componente auxiliar para abas =====
 interface TabPanelProps {
@@ -57,8 +56,6 @@ interface ModalProps {
 const ViewProcessoTabs: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-
-  const [content, setContent] = useState<string>("");
 
   const [data, setData] = useState<IProcesso>();
   const [loading, setLoading] = useState(true);
@@ -492,13 +489,6 @@ const ViewProcessoTabs: React.FC = () => {
         <SimpleModal open={openModalAnexo} onClose={() => setOpenModalAnexo(false)} title="Novo Anexo">
           <TextField label="Descrição" fullWidth margin="dense" />
           <FileUploader onFilesChange={handleFilesChange} />
-
-          {/* Remover depois este componente */}
-
-          <RichTextEditor
-            initialValue="<p><strong>Olá!</strong> Comece a escrever aqui...</p>"
-            onChange={setContent}
-          />
         </SimpleModal>
       </>
     );

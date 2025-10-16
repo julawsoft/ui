@@ -43,7 +43,6 @@ const DataTable: React.FC<DataTableProps> = ({ columns, rows }) => {
         onChange={(e) => setSearch(e.target.value)}
         sx={{ m: 2 }}
       />
-
       <TableContainer>
         <Table stickyHeader>
           <TableHead>

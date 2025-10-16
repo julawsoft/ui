@@ -6,72 +6,16 @@ import { LoginService } from '../../services/Login';
 import { setUserLogged } from '../../utils/cookies';
 import { toast } from 'react-toastify';
 import useAuthStore from '../../context/authStore';
+import Chronometer from '../Chronometer';
+import ChronometerCompact from '../Chronometer/ChronometerCompact';
+import UserMenu from './UserMenu';
+import NotificationMenu from './NotificationMenu';
 
 interface TopBarProps {
   onDrawerToggle: () => void;
 }
 
 const TopBar: React.FC<TopBarProps> = ({ onDrawerToggle }) => {
-  
-  const setUser = useAuthStore((state) => state.setUser)
-  const [anchorElNotifications, setAnchorElNotifications] = useState<null | HTMLElement>(null);
-  const [anchorElProfile, setAnchorElProfile] = useState<null | HTMLElement>(null);
-
-  // Abrir e fechar o menu de notificações
-  const handleNotificationsClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNotifications(event.currentTarget);
-  };
-
-  const handleNotificationsClose = () => {
-    setAnchorElNotifications(null);
-  };
-
-  // Abrir e fechar o menu de perfil do usuário
-  const handleProfileClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElProfile(event.currentTarget);
-  };
-
-  const handleProfileClose = () => {
-    setAnchorElProfile(null);
-  };
-
-
-  const handleProfileSair = async () => {
-    try {
-
-      // const response = await LoginService.logout()
-
-      //if (response && response.status === 200) {
-        setUserLogged({
-          name: '',
-          groups: '',
-          roles: [''],
-          accessToken: '',
-          refreshToken: '',
-          isLogged: false
-        })
-
-        setUser({
-          name: '',
-          groups: '',
-          roles: [''],
-          accessToken: '',
-          refreshToken: '',
-          isLogged: false,
-          id: '',
-          email: ''
-        })
-
-        location.href = '/login'
-
-      //} else {
-     //   toast.error(response.response.message)
-     // }
-
-    } catch (err: any) {
-      toast.error(err.message)
-    }
-  }
 
   return (
     <AppBar
@@ -99,54 +43,10 @@ const TopBar: React.FC<TopBarProps> = ({ onDrawerToggle }) => {
 
         {/* Notificações e Perfil de Usuário */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          {/* Ícone de Notificações com Badge e Menu */}
-          <IconButton color="inherit" onClick={handleNotificationsClick}>
-            <Badge badgeContent={4} color="error">  {/* O número 4 pode ser dinâmico */}
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
 
-          {/* Menu dropdown para Notificações */}
-          <Menu
-            anchorEl={anchorElNotifications}
-            open={Boolean(anchorElNotifications)}
-            onClose={handleNotificationsClose}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-          >
-            <MenuItem onClick={handleNotificationsClose}>Notification 1</MenuItem>
-            <MenuItem onClick={handleNotificationsClose}>View All</MenuItem>
-          </Menu>
-
-          {/* Avatar do Perfil do Usuário com Menu */}
-          <IconButton color="inherit" onClick={handleProfileClick}>
-            <Avatar alt="User Profile" src="/path-to-profile-image.jpg" />  {/* Insira a imagem do usuário */}
-          </IconButton>
-
-          {/* Menu dropdown para Perfil do Usuário */}
-          <Menu
-            anchorEl={anchorElProfile}
-            open={Boolean(anchorElProfile)}
-            onClose={handleProfileClose}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-          >
-            <MenuItem onClick={handleProfileClose}>Profile</MenuItem>
-            <MenuItem onClick={handleProfileClose}>My Account</MenuItem>
-            <MenuItem onClick={handleProfileSair}>Sair</MenuItem>
-          </Menu>
+          <ChronometerCompact />
+          <NotificationMenu />
+          <UserMenu />
         </Box>
       </Toolbar>
     </AppBar>

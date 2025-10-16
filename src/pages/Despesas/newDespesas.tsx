@@ -57,7 +57,7 @@ const NewDespesas: React.FC = () => {
   const onSubmit = async (data: DespesasFormData) => {
     console.log('Dados do formulário:', data);
     try {
-      const dataDTO = {
+      const dataDTO:any = {
         processoId: data.processo_n,
         valor: data.valor,
         dataMovimento: new Date().toLocaleDateString("PT"),

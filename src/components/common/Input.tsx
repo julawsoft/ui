@@ -17,9 +17,8 @@ const Input: React.FC<InputProps> = ({ label, value, onChange, type = "text", fu
       value={value}
       onChange={onChange}
       type={type}
-      variant="outlined"
-      size="small"
       fullWidth={fullWidth}
+      size="small"
     />
   );
 };

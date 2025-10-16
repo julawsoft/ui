@@ -4,6 +4,7 @@ import { ROUTES_PATH } from './routePaths';
 
 import Home from '../pages/Home';
 import Process from '../pages/Process';
+import NewProcess from '../pages/Process/newProcesso';
 import ProcessMine from '../pages/Process/MyProcess';
 import Employees from '../pages/Colaborador';
 import Client from '../pages/Client';
@@ -21,6 +22,9 @@ import { UserRoles } from '../types/UserRoles';
 import ViewColaboradorTabs from '../pages/Colaborador/ViewColaboradorTabs';
 import Despesas from '../pages/Despesas';
 import NewDespesas from '../pages/Despesas/newDespesas';
+import NewColaborador from '../pages/Colaborador/newColaborador';
+import ViewProcessoTabs from '../pages/Process/ViewProcessoTabs';
+import TimeSheetsGlobal from '../pages/TimeSheets';
 // import ViewProcessoTabs from '../pages/Process/ViewProcessoTabs';
 
 interface IRoute {
@@ -60,7 +64,16 @@ export const routesPermissions: IRoute[] = [
       UserRoles.ADV_ESTAGIARIO,
     ],
   },
-  /*
+  {
+    path: `${ROUTES_PATH.NewProcesso}`,
+    element: <NewProcess />,
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+      UserRoles.ADV_JUNIOR,
+      UserRoles.ADV_SENIOR,
+      UserRoles.ADV_ESTAGIARIO,
+    ],
+  },
   {
     path: `${ROUTES_PATH.NewProcesso}/view/:id`,
     element: <ViewProcessoTabs />,
@@ -71,7 +84,16 @@ export const routesPermissions: IRoute[] = [
       UserRoles.ADV_ESTAGIARIO,
     ],
   },
-  */
+  {
+    path: `${ROUTES_PATH.NewProcesso}/:id`,
+    element: <NewProcess />,
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+      UserRoles.ADV_JUNIOR,
+      UserRoles.ADV_SENIOR,
+      UserRoles.ADV_ESTAGIARIO,
+    ],
+  },
   {
     path: ROUTES_PATH.Colaborador,
     element: <Employees />,
@@ -80,10 +102,19 @@ export const routesPermissions: IRoute[] = [
       UserRoles.ADV_SENIOR,
     ],
   },
-  // EDITAR COLABORADOR
+  // Novo COLABORADOR
   {
-    path: `${ROUTES_PATH.Colaborador}/:id`,
-    element: <Employees />, // Se tiver uma página específica de edição, substituir aqui
+    path: `${ROUTES_PATH.NewColaborador}`,
+    element: <NewColaborador />, // Se tiver uma página específica de edição, substituir aqui
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+      UserRoles.ADV_SENIOR,
+    ],
+  },
+  // Editar Colaborador
+  {
+    path: `${ROUTES_PATH.NewColaborador}/:id`,
+    element: <NewColaborador />, // Se tiver uma página específica de edição, substituir aqui
     roles: [
       UserRoles.ADMINISTRATIVO,
       UserRoles.ADV_SENIOR,
@@ -180,7 +211,7 @@ export const routesPermissions: IRoute[] = [
   // TIMESHEETS
   {
     path: ROUTES_PATH.TimeSheet,
-    element: <TimeSheets />,
+    element: <TimeSheetsGlobal />,
     roles: [
       UserRoles.ADMINISTRATIVO,
     ],

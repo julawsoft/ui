@@ -42,7 +42,7 @@ const Processo: React.FC = () => {
   };
 
   const handleNovoProcesso = () => {
-    // navigate(ROUTES_PATH.NewProcesso);
+    navigate(ROUTES_PATH.NewProcesso);
   };
 
   const handleEdit = (processo: IProcesso) => {

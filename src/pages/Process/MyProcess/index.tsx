@@ -48,16 +48,18 @@ const MyProcess: React.FC = () => {
     }
   };
 
-  const handleNovoProcesso = () => {
-    // navigate(ROUTES_PATH.NewProcesso);
-  };
+  /*
+    const handleNovoProcesso = () => {
+      // navigate(ROUTES_PATH.NewProcesso);
+    };
+  */
 
   const handleEdit = (processo: IProcesso) => {
-    navigate(`${ROUTES_PATH.NewColaborador}/${processo.id}`);
+    navigate(`${ROUTES_PATH.NewProcesso}/${processo.id}`);
   };
 
   const handleView = (processo: IProcesso) => {
-    navigate(`${ROUTES_PATH.NewColaborador}/${processo.id}`);
+    navigate(`${ROUTES_PATH.ViewProcess}/${processo.id}`);
   };
 
   return (

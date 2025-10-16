@@ -1,5 +1,3 @@
-import type Colaborador from "../pages/Colaborador";
-
 export const ROUTES_PATH = {
   Home: '/',
   Login: '/login',
@@ -9,19 +7,19 @@ export const ROUTES_PATH = {
   Process: '/processos',
   ProcessMine: '/meus-processos',
   NewProcesso: '/processo',
-  ViewProcess: '/processo/view/:id', // visualizar processo
+  ViewProcess: '/processo/view',
 
   // CLIENTES
   Client: '/clientes',
   NewClient: '/cliente',
-  EditClient: "/clients/:id",         // editar cliente
-  ViewClient: "/clients/view/:id",    // visualizar cliente
+  EditClient: "/clients/:id",     
+  ViewClient: "/clients/view/:id",    
 
   // COLABORADORES
   Colaborador: '/colaboradores',
   NewColaborador: '/colaborador',
-  EditColaborador: "/colaborador/:id",         // editar colaborador
-  ViewColaborador: "/colaborador/view/:id",    // visualizar colaborador
+  EditColaborador: "/colaborador/:id",
+  ViewColaborador: "/colaborador/view/:id",    
 
   // DESPESAS
   Despesas: '/despesas',
@@ -35,4 +33,7 @@ export const ROUTES_PATH = {
   // HONORÁRIOS
   Honorario: '/honorarios',
   MyHonorarios: '/meus-honorarios',
+  NewHonorarios: '/honorario',
+  EditHonorarios: '/honorario/:id',
+  ViewHonorarios: '/honorario/view/:id',
 };

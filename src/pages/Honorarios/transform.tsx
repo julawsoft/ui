@@ -2,70 +2,67 @@ import { IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import type { ReactNode } from "react";
-import type { IColaborador } from "../../schema/InterfaceColaboradores";
-
-
+import type { IHonorarios } from "../../schema/InterfaceHonorarios";
+import { converterHorasDecimais, convertMoeda } from "../../utils/data";
 
 export const columns = [
   { id: 'id', label: '#' },
-  { id: 'colaborador', label: 'Colaborador' },
-  { id: 'funcao', label: 'Papel' },
-  { id: 'contacto_pessoal', label: 'Contato Pessoal' },
-  { id: 'email_pessoal', label: 'E-mail Pessoal' },
-  { id: 'email_corporativo', label: 'E-mail Corporativo' },
-  { id: 'n_identificacao', label: 'Identificação' },
-  { id: 'n_cedula_ordem', label: 'Cedula Ordem' },
-  { id: 'tipoColaborador', label: 'Tipo' },
-  { id: 'categoria', label: 'Categoria' },
+  { id: 'tarefa', label: 'Tarefa' },
+  { id: 'horas', label: 'Horas' },
+  { id: 'custo', label: 'Custo' },
+  /* { id: 'data', label: 'Data' }, */
+  { id: 'cliente', label: 'Cliente' },
+  { id: 'ref', label: 'Ref. Processo' },
+  { id: 'colaborador', label: 'Colaborador'},
+ /* { id: 'status', label: 'Estado' },*/
+  { id: 'data_registo', label: 'Data Registo' },
   { id: 'actions', label: 'Acções' }
 ];
 
-export type IColaboradorRow = Pick<
-  IColaborador,
-  | "id"
-  | "funcao"
-  | "contacto_pessoal"
-  | "email_pessoal"
-  | "email_corporativo"
-  | "n_identificacao"
-  | "n_cedula_ordem"
-  | "tipoColaborador"
-  | "categoria"
-  | "status"
+export type IHonorarioRow = Pick<
+IHonorarios,
+  | "processo_factura_item_id"
+  | "tarefa"
+  | "processo_factura_item_horas"
+  | "processo_factura_item_custo"
+  | "cliente"
+  | "colaborador"
+  | "data_registo_timesheet"
+  | "processo_estado"
+  | "processo_factura_item_data_registo"
 > & {
-  colaborador: string | null;
-  actions: ReactNode;         // botões de ação
+  actions: ReactNode; 
 };
 
-export const transformDataColaborador = (
-  data: IColaborador[],
-  onEdit: (colaborador: IColaborador) => void,
-  onView: (colaborador: IColaborador) => void
-): IColaboradorRow[] => {
-  return data.map((colaborador) => ({
-    id: colaborador.id,
-    colaborador: colaborador.nome_completo,
-    funcao: colaborador.funcao,
-    contacto_pessoal: colaborador.contacto_pessoal,
-    email_pessoal: colaborador.email_pessoal,
-    email_corporativo: colaborador.email_corporativo,
-    n_identificacao: colaborador.n_identificacao,
-    n_cedula_ordem: colaborador.n_cedula_ordem,
-    tipoColaborador: colaborador.tipoColaborador ?? null,
-    categoria: colaborador.categoria ?? null,
-    status: colaborador.status,
+export const transformDataHonorarios = (
+  data: IHonorarios[],
+  onEdit: (honorario: IHonorarios) => void,
+  onView: (honorario: IHonorarios) => void
+): IHonorarioRow[] => {
+
+  return data.map((honorario, index) => ({
+    id: index + 1,
+    tarefa: honorario.tarefa,
+    horas: converterHorasDecimais(honorario.processo_factura_item_horas),
+    custo: convertMoeda(honorario.processo_factura_item_custo),
+    cliente: honorario.cliente,
+   //  data: honorario.data_registo_timesheet,
+    ref: honorario.processo_referencia,
+    colaborador: honorario.colaborador ?? null,
+    // status: honorario.processo_estado,
+    data_registo: honorario.processo_factura_item_data_registo,
     actions: (
       <>
         <IconButton
           color="primary"
-          onClick={() => onEdit(colaborador)}
+          onClick={() => onEdit(honorario)}
           size="small"
         >
           <EditIcon fontSize="inherit" />
         </IconButton>
         <IconButton
           color="secondary"
-          onClick={() => onView(colaborador)}
+          onClick={() => onView(honorario)}
           size="small"
         >
           <VisibilityIcon fontSize="inherit" />

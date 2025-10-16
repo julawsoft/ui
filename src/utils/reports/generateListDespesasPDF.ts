@@ -13,7 +13,7 @@ export const generateDespesasListPDF = async (despesas: IDespesas[]) => {
       <td>${item.nomeCliente}</td>
       <td>${item.valor}</td>
       <td>${item.tipoDespesas}</td>
-      <td>${new Date(item.criadaEm).toLocaleDateString()}</td>
+      <td>${item.criadaEm}</td>
     </tr>
   `).join("");
 
