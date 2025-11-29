@@ -19,12 +19,14 @@ export const ROUTES_PATH = {
   Colaborador: '/colaboradores',
   NewColaborador: '/colaborador',
   EditColaborador: "/colaborador/:id",
-  ViewColaborador: "/colaborador/view/:id",    
+  ViewColaborador: "/colaborador/view",    
 
   // DESPESAS
   Despesas: '/despesas',
   NewDespesas: '/despesa',
   EditDespesas: "/despesa/:id", 
+  GerarCobranca: "/despesa/cobranca", 
+  ViewCobranca: "/invoice-cobranca/:id", 
 
   // TIMESHEETS
   TimeSheet: '/timesheets',
@@ -34,6 +36,14 @@ export const ROUTES_PATH = {
   Honorario: '/honorarios',
   MyHonorarios: '/meus-honorarios',
   NewHonorarios: '/honorario',
+  InvoiceHonorarios: '/invoice-honorarios/:id',
   EditHonorarios: '/honorario/:id',
-  ViewHonorarios: '/honorario/view/:id',
+  ViewHonorarios: '/honorario/view',
+
+  // TASKS
+  Tasks: '/tarefas',
+  MyTasks: '/minhas-tarefas',
+  NewTask: '/honorario',
+  EditTask: '/honorario/:id',
+  ViewTask: '/honorario/view/:id',
 };

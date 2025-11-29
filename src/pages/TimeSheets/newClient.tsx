@@ -29,6 +29,7 @@ const statusOptions = [
 ];
 
 const NewClient: React.FC = () => {
+  
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
@@ -175,7 +176,6 @@ const NewClient: React.FC = () => {
                 {errors.nota && <Alert severity="error">{errors.nota.message}</Alert>}
               </Grid>
 
-             
               {/* Botão */}
               <Grid item xs={12} md={4}>
                 <PrimaryButton type="submit">Salvar Cliente</PrimaryButton>

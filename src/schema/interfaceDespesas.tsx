@@ -17,7 +17,9 @@ export interface ITipoDespesasInput {
 export interface IDespesas {
   id: number
   idProcesso: number
+  clienteId: number
   valor: number
+  tipoDespesaId: number,
   dataMovimento: string
   colaboradorId: number
   numeroProcesso: string
@@ -27,13 +29,14 @@ export interface IDespesas {
   tipoDespesas: string
   criadaEm: string
   tipoMovimento?: number,
+  status: string
 }
 
 export interface IDespesasInput {
   processoId: string
   valor: number
   dataMovimento: string
-  colaboradorId: number | undefined
+  colaboradorId: number
   clienteId: number
   tipoDespesaId: number
 }

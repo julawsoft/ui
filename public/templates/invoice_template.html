@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Factura / Cobrança</title>
+  <style>
+    body {
+      font-family: "Helvetica", Arial, sans-serif;
+      margin: 40px;
+      font-size: 12px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 25px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .company-info {
+      width: 48%;
+      line-height: 1.5;
+    }
+
+    .company-info h2 {
+      margin: 0;
+      color: #333;
+    }
+
+    .client-info {
+      width: 48%;
+      text-align: right;
+      line-height: 1.5;
+    }
+
+    .section-title {
+      background: #fbfafb;
+      padding: 6px 10px;
+      font-weight: bold;
+      color: #333;
+      margin-top: 25px;
+      border-radius: 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 12px;
+    }
+
+    th {
+      background-color: #fbfafb;
+      color: #333;
+      text-align: left;
+      padding: 8px;
+      border: 1px solid #999;
+    }
+
+    td {
+      border: 1px solid #999;
+      padding: 6px;
+    }
+
+    td:last-child, th:last-child {
+      text-align: right;
+    }
+
+    .total {
+      text-align: right;
+      font-size: 14px;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    .payment-info {
+      margin-top: 25px;
+      font-size: 12px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 4px;
+      background: #f8f6fc;
+    }
+
+    .payment-info h3 {
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 10px;
+      color: #555;
+      border-top: 1px solid #ccc;
+      padding-top: 5px;
+    }
+
+    .highlight {
+      color: #333;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Factura / Cobrança</h1>
+  <br>
+  <br>
+
+  <!-- Cabeçalho -->
+  <div class="header">
+    <div class="company-info">
+      <h2>{{empresa_nome}}</h2>
+      <div>{{empresa_endereco}}</div>
+      <div>NIF: {{empresa_nif}}</div>
+      <div>Telefone: {{empresa_telefone}}</div>
+      <div>Email: {{empresa_email}}</div>
+    </div>
+
+    <div class="client-info">
+      <strong>Cliente:</strong> {{cliente}} <br />
+      <strong>NIF:</strong> {{cliente_nif}} <br />
+      <strong>Contacto:</strong> {{cliente_contacto}} <br />
+    </div>
+  </div>
+
+  <br>
+
+  <!-- Tabela de Itens -->
+  <div class="section-title">Detalhes da Fatura</div>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Tipo</th>
+        <th>Descrição</th>
+        <th>Valor (AOA)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{rows}}
+    </tbody>
+  </table>
+
+  <!-- Total -->
+  <div class="total">
+    Total a Pagar: <span class="highlight">{{total}}</span> AOA
+  </div>
+
+  <br>
+  <br>
+  <br>
+
+  <!-- Informações Bancárias -->
+  <div class="payment-info">
+    <h3>Coordenadas Bancárias</h3>
+    <p>
+      <strong>Banco:</strong> {{banco_nome}} <br />
+      <strong>Conta nº:</strong> {{conta_numero}} <br />
+      <strong>IBAN:</strong> {{iban}} <br />
+    </p>
+  </div>
+
+  <!-- Rodapé -->
+  <div class="footer">
+    Documento gerado automaticamente por <strong>Julaw Soft</strong> em {{generated_at}}
+  </div>
+</body>
+</html>

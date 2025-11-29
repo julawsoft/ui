@@ -18,8 +18,8 @@ export const transforDataClient = (
   onEdit: (client: IClient) => void,
   onView: (client: IClient) => void
 ) => {
-  return data.map((client) => ({
-    id: client.id,
+  return data.map((client, index) => ({
+    id: index + 1,
     client: client.denominacao,
     nif: client.nif,
     e_mail: client.e_mail,

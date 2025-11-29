@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, Alert } from '@mui/material';
+import { Box, Grid, Alert, Stack, Button } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -14,14 +14,16 @@ import { toast } from 'react-toastify';
 import { ClientService } from '../../services/ClientService';
 import { clienteSchema, type ClienteFormData } from '../../validation/clienteSchema';
 import BreadcrumbsNav from '../../components/common/BreadcrumbsNav';
+import StateHandler from '../../components/common/StateHandler';
+import { ROUTES_PATH } from '../../routes/routePaths';
 
 const tiposCliente = [
-  { label: 'Empresa', value: 1 },
-  { label: 'Particular', value: 2 },
-  { label: 'Ministério', value: 3 },
-  { label: 'Instituto Público', value: 4 },
-  { label: 'Associação', value: 5 },
-  { label: 'Outro', value: 6 },
+  { label: 'Empresa', value: '1' },
+  { label: 'Particular', value: '2' },
+  { label: 'Ministério', value: '3' },
+  { label: 'Instituto Público', value: '4' },
+  { label: 'Associação', value: '5' },
+  { label: 'Outro', value: '6' },
 ];
 
 const statusOptions = [
@@ -40,7 +42,7 @@ const NewClient: React.FC = () => {
   const { handleSubmit, control, formState: { errors }, reset, setValue } = useForm<ClienteFormData>({
     resolver: zodResolver(clienteSchema),
     defaultValues: {
-      tipo_id: 1,
+      tipo_id: '',
       denominacao: '',
       nif: '',
       pessoa_contacto: '',
@@ -84,6 +86,7 @@ const NewClient: React.FC = () => {
     setSuccess(false);
 
     try {
+
       if (id) {
         await ClientService.update(Number(id), data);
         toast.success('Cliente atualizado com sucesso!');
@@ -102,6 +105,10 @@ const NewClient: React.FC = () => {
     }
   };
 
+  const handleClose = () => {
+        navigate(ROUTES_PATH.Client)
+  }
+
   return (
     <>
       <BreadcrumbsNav
@@ -113,7 +120,13 @@ const NewClient: React.FC = () => {
       />
       <BoxTop title={id ? 'Editar Cliente' : 'Novo Cliente'} />
       <BoxCard>
-        {loading && <Loader />}
+        {loading &&
+          <StateHandler
+            isLoading={loading}
+            error={error}
+            hasData={loading}
+          />
+        }
         {!loading && (
           <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2 }}>
             <Grid container spacing={2}>
@@ -167,8 +180,14 @@ const NewClient: React.FC = () => {
                 {errors.nota && <Alert severity="error">{errors.nota.message}</Alert>}
               </Grid>
 
-              <Grid item xs={12} md={4}>
-                <PrimaryButton type="submit">{id ? 'Atualizar Cliente' : 'Salvar Cliente'}</PrimaryButton>
+              <Grid item xs={12} md={12}>
+                <Stack width={'100%'} direction="row" justifyContent="flex-end" gap={2} mt={3}>
+                  <Button onClick={handleClose} color="inherit">
+                    Cancelar
+                  </Button>
+                  <PrimaryButton type="submit">{id ? 'Atualizar' : 'Salvar'}</PrimaryButton>
+
+                </Stack>
               </Grid>
             </Grid>
           </Box>

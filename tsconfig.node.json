@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["ES2023"],
+    "lib": ["ES2023", "DOM"],
     "module": "ESNext",
     "skipLibCheck": true,
 
@@ -16,7 +16,11 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* ✅ Adiciona estas duas linhas */
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "baseUrl": "./src"
   },
-  "include": ["vite.config.ts"]
+  "include": ["src", "vite.config.ts"]
 }

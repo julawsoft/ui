@@ -20,7 +20,7 @@ const theme = createTheme({
     body1: { fontSize: "0.95rem" },
   },
   shape: {
-    borderRadius: 4,
+    borderRadius: 2,
   },
 });
 

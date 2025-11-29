@@ -1,83 +1,138 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, Alert } from '@mui/material';
+import { Box, Grid, Alert, Stack, Button } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 import BoxCard from '../../components/common/BoxCard';
 import BoxTop from '../../components/common/BoxTop';
 import Loader from '../Loader';
 import Input from '../../components/common/Input';
 import SelectBox from '../../components/common/SelectBox';
-import PrimaryButton from '../../components/common/PrimaryButton';
-import { toast } from 'react-toastify';
+
 import { ClientService } from '../../services/ClientService';
 import { DespesasService } from '../../services/DespesasService';
-import { ProcessoService } from '../../services/ProcessoService';
-import type { ITipoDespesas } from '../../schema/interfaceDespesas';
+import { useUserLogged } from '../../hooks/useUserLogged';
+import { despesasSchema } from '../../validation/despesasSchema';
+
+import type { DespesasFormData } from '../../validation/despesasSchema';
+import type { IDespesas, ITipoDespesas } from '../../schema/interfaceDespesas';
 import type { IProcesso } from '../../schema/InterfaceProcess';
 import type { IClient } from '../../schema/InterfaceClient';
-import type { DespesasFormData } from '../../validation/despesasSchema';
-import { despesasSchema } from '../../validation/despesasSchema';
-import { useNavigate } from 'react-router-dom';
-import { useUserLogged } from '../../hooks/useUserLogged';
+import { convertMoeda, parseValorBR } from '../../utils/data';
 
 const NewDespesas: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { user } = useUserLogged()
-  const [despesas, setDespesas] = useState<ITipoDespesas[]>([]);
+  const { user } = useUserLogged();
+
+  const [tiposDespesas, setTiposDespesas] = useState<ITipoDespesas[]>([]);
   const [processos, setProcessos] = useState<IProcesso[]>([]);
   const [clientes, setClientes] = useState<IClient[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [data, setData] = useState<IDespesas | null>(null);
 
-  // React Hook Form
-  const { control, handleSubmit, formState: { errors } } = useForm<DespesasFormData>({
+  const isEdit = Boolean(id);
+
+  const { control, handleSubmit, reset, formState: { errors } } = useForm<DespesasFormData>({
     resolver: zodResolver(despesasSchema),
+    defaultValues: {
+      tipo_despesa: '',
+      processo_n: '',
+      cliente_id: '',
+      valor: '',
+    },
   });
 
-  // Funções para buscar dados
-  const fetchTiposDespesas = async () => setDespesas(await DespesasService.getAllTiposDespesas());
-  const fetchClientes = async () => setClientes(await ClientService.getAll());
-  const fetchProcessosByClientId = async (idClient: number) => setProcessos(await ClientService.getProcessos(idClient));
-
+  // Carregar listas iniciais
   useEffect(() => {
-    const fetchAll = async () => {
+    const loadInitialData = async () => {
       try {
         setIsLoading(true);
-        await Promise.all([fetchTiposDespesas(), fetchClientes()]);
-      } catch (error) {
-        console.error('Erro ao carregar dados iniciais:', error);
+        const [tipos, clients] = await Promise.all([
+          DespesasService.getAllTiposDespesas(),
+          ClientService.getAll(),
+        ]);
+        setTiposDespesas(tipos);
+        setClientes(clients);
+
+        console.log("Os clientes ", clientes)
+
+        // Se for edição, busca a despesa e preenche o form
+        if (isEdit && id) {
+
+          const despesa = await DespesasService.getById(Number(id));
+          setData(despesa);
+
+        const processosCliente = await ClientService.getProcessos(despesa.clienteId);
+        setProcessos(processosCliente);
+
+          reset({
+            tipo_despesa: String(despesa.tipoDespesaId),
+            processo_n: String(despesa.idProcesso),
+            cliente_id: String(despesa.clienteId),
+            valor:String(parseValorBR(String(despesa.valor))),
+          });
+        }
+      } catch (error: any) {
         toast.error('Erro ao carregar dados iniciais.');
+        console.error(error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchAll();
-  }, []);
+    loadInitialData();
+  }, [id, isEdit, reset]);
 
-  const onSubmit = async (data: DespesasFormData) => {
-    console.log('Dados do formulário:', data);
+  const handleFetchProcessos = async (clientId: number) => {
+    if (!clientId) return;
     try {
-      const dataDTO:any = {
-        processoId: data.processo_n,
-        valor: data.valor,
-        dataMovimento: new Date().toLocaleDateString("PT"),
-        colaboradorId: user?.id,
-        clienteId: data.cliente_id,
-        tipoDespesaId: data.tipo_despesa
-      }
-      await DespesasService.save(dataDTO);
-      toast.success('Despesa cadastrada com sucesso!');
-      navigate('/despesas'); // Redireciona após salvar
-    } catch (error: any) {
-      toast.error(error.message || 'Erro ao salvar despesa.');
+      const processos = await ClientService.getProcessos(clientId);
+      setProcessos(processos);
+    } catch (error) {
+      toast.error('Erro ao carregar processos do cliente.');
     }
   };
+
+  const onSubmit = async (formData: DespesasFormData) => {
+    setIsSubmitting(true);
+
+    const dataDTO = {
+      processoId: formData.processo_n,
+      valor: String(formData.valor),
+      dataMovimento: String(new Date().toISOString().split('T')[0]),
+      colaboradorId: Number(user?.id),
+      clienteId: formData.cliente_id,
+      tipoDespesaId: formData.tipo_despesa,
+    };
+
+
+    try {
+      if (isEdit && id) {
+        await DespesasService.update(Number(id), dataDTO);
+        toast.success('Despesa atualizada com sucesso!');
+      } else {
+        await DespesasService.save(dataDTO);
+        toast.success('Despesa cadastrada com sucesso!');
+      }
+      navigate('/despesas');
+    } catch (error: any) {
+      toast.error(error.message || 'Erro ao salvar despesa.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleCancel = () => navigate('/despesas');
 
   if (isLoading) return <Loader />;
 
   return (
     <>
-      <BoxTop title="Nova Despesa" />
+      <BoxTop title={isEdit ? 'Editar Despesa' : 'Nova Despesa'} />
       <BoxCard>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2 }}>
           <Grid container spacing={2}>
@@ -91,12 +146,12 @@ const NewDespesas: React.FC = () => {
                     <SelectBox
                       label="Cliente"
                       {...field}
-                      onChange={(selectedValue) => {
-                        console.log("selectedValue ", selectedValue)
-                        field.onChange(selectedValue);        // Atualiza o RHF
-                        fetchProcessosByClientId(selectedValue.target.value); // Busca processos do cliente
+                      onChange={(e) => {
+                        const clientId = Number(e.target.value);
+                        field.onChange(String(clientId));
+                        handleFetchProcessos(clientId);
                       }}
-                      options={clientes.map(c => ({ label: c.denominacao, value: c.id }))}
+                      options={clientes.map(c => ({ label: c.denominacao, value: String(c.id) }))}
                     />
                     {errors.cliente_id && <Alert severity="error">{errors.cliente_id.message}</Alert>}
                   </>
@@ -114,7 +169,7 @@ const NewDespesas: React.FC = () => {
                     <SelectBox
                       label="Processo"
                       {...field}
-                      options={processos.map(p => ({ label: p.ref, value: p.id }))}
+                      options={processos.map(p => ({ label: p.ref, value: String(p.id) }))}
                     />
                     {errors.processo_n && <Alert severity="error">{errors.processo_n.message}</Alert>}
                   </>
@@ -132,7 +187,7 @@ const NewDespesas: React.FC = () => {
                     <SelectBox
                       label="Tipo de Despesa"
                       {...field}
-                      options={despesas.map(d => ({ label: d.descricao, value: d.id }))}
+                      options={tiposDespesas.map(d => ({ label: d.descricao, value: String(d.id) }))}
                     />
                     {errors.tipo_despesa && <Alert severity="error">{errors.tipo_despesa.message}</Alert>}
                   </>
@@ -150,10 +205,23 @@ const NewDespesas: React.FC = () => {
               {errors.valor && <Alert severity="error">{errors.valor.message}</Alert>}
             </Grid>
 
-            {/* Botão de salvar */}
-            <Grid item xs={12} md={4}>
-              <PrimaryButton type="submit">Salvar Despesa</PrimaryButton>
-            </Grid>
+            {/* Botões */}
+            <Stack width="100%" direction="row" justifyContent="flex-end" gap={2} mt={3}>
+              <Button onClick={handleCancel} color="inherit">
+                Cancelar
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={isSubmitting}
+              >
+                {isSubmitting
+                  ? 'A guardar...'
+                  : isEdit
+                  ? 'Atualizar'
+                  : 'Guardar'}
+              </Button>
+            </Stack>
           </Grid>
         </Box>
       </BoxCard>

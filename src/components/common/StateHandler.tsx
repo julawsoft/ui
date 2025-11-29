@@ -32,7 +32,7 @@ const StateHandler: React.FC<StateHandlerProps> = ({ isLoading, error, hasData }
   if (!hasData) {
     return (
       <Box textAlign="center" p={2}>
-        <Typography>Nenhum processo encontrado</Typography>
+        <Typography>Nenhuma informação encontrada!</Typography>
       </Box>
     );
   }

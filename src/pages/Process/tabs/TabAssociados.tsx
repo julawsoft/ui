@@ -1,40 +1,136 @@
-import React, { useState } from 'react';
-import { Button, Stack, Alert } from '@mui/material';
+import React, { useEffect, useState, type ReactNode } from 'react';
+import { Button, Stack, Alert, IconButton, Grid } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import DataTable from '../../../components/common/DataTable';
 import SimpleModal from '../../../components/common/SimpleModal';
-import TextField from '@mui/material/TextField';
+import type { IProcesso, IProcessoPrecedentes, ITarefa } from '../../../schema/InterfaceProcess';
+
+//  icon de lixo
+import EditIcon from "@mui/icons-material/Edit";
+import type { IColaborador } from '../../../schema/InterfaceColaboradores';
+import SelectBox from '../../../components/common/SelectBox';
+import { ColaboradorService } from '../../../services/ColaboradorService';
+import { toast } from 'react-toastify';
+import { ProcessoService } from '../../../services/ProcessoService';
+import { Delete } from '@mui/icons-material';
 
 interface Props {
-  equipas: any[];
+  data: IProcessoPrecedentes[];
+  onDelete: (item: IProcessoPrecedentes) => void
+  idProcesso: number
+  setReloadFetch: (status: boolean) => void
 }
 
-const TabAssociados: React.FC<Props> = ({ equipas }) => {
+const TabAssociados: React.FC<Props> = ({ data, onDelete, idProcesso, setReloadFetch }) => {
+
   const [open, setOpen] = useState(false);
+  const [processos, setProcessos] = useState<IProcesso[]>([])
+  const [selectedValue, setSelectedValue] = useState<number>()
+
+  useEffect(() => {
+    const fetchAll = async () => {
+      try {
+        await Promise.all([fetchColaboradores()]);
+      } catch (error) {
+        console.error('Erro ao carregar dados iniciais:', error);
+        toast.error('Erro ao carregar dados iniciais.');
+      }
+    };
+    fetchAll();
+  }, [])
+
+  const fetchColaboradores = async () => setProcessos(await ProcessoService.getAllColaboradoresWithoutAssociadoProcesso(idProcesso));
+
+  const saveAssociados = async () => {
+    try {
+      console.log("selectValue - saveAssociados ", selectedValue)
+      await ProcessoService.addAssociadosProcesso({
+        processoId: idProcesso,
+        precedentes: [Number(selectedValue)]
+      })
+      setOpen(false)
+      setReloadFetch(true)
+    } catch (error) {
+      toast.error('Erro ao carregar dados iniciais.');
+    }
+  }
+
+  type IRow = Pick<
+  IProcessoPrecedentes,
+    | "id"
+    | "precedente_refencia"
+    | "precedente_assunto"
+  > & {
+    actions: ReactNode;
+  };
+
+  const columns = [
+    { id: 'id', label: '#' },
+    { id: 'processo', label: 'Ref. Processo' },
+    { id: 'assunto', label: 'Assunto' },
+    { id: 'actions', label: 'Opções' },
+  ]
+
+  const transformData = (
+    data: IProcessoPrecedentes[]
+  ): IRow[] => {
+    return data.map((item:IProcessoPrecedentes, index) => ({
+      id: index + 1,
+      processo: item.precedente_refencia,
+      assunto: item.precedente_assunto,
+      actions: (
+        <>
+          <IconButton
+            color="error"
+            onClick={() => onDelete(item)}
+            size="small"
+          >
+            <Delete fontSize="inherit" />
+          </IconButton>
+        </>
+      ),
+    }));
+  };
 
   return (
     <>
       <Stack direction="row" justifyContent="flex-end" mb={2}>
         <Button variant="contained" startIcon={<Add />} onClick={() => setOpen(true)}>
-          Nova Equipa
+          Associar
         </Button>
       </Stack>
-      {equipas.length > 0 ? (
+      {data.length > 0 ? (
         <DataTable
-          columns={[
-            { id: 'colaborador', label: 'Colaborador' },
-            { id: 'funcao', label: 'Função' },
-            { id: 'colaborador_tipo', label: 'Tipo' },
-          ]}
-          rows={equipas}
+          columns={columns}
+          rows={transformData(data)}
         />
       ) : (
-        <Alert severity="info">Nenhuma equipa encontrada.</Alert>
+        <Alert severity="info">Nenhuma tarefa associada.</Alert>
       )}
-
       <SimpleModal open={open} onClose={() => setOpen(false)} title="Nova Equipa">
-        <TextField label="Colaborador" fullWidth margin="dense" />
-        <TextField label="Função" fullWidth margin="dense" />
+        <Grid item xs={12} md={12}>
+          <SelectBox
+            label="Processos"
+            value={Number(selectedValue)}
+            fullWidth
+            options={
+              (processos?.map((processo: IProcesso) => ({
+                value: processo.id,
+                label: processo.ref ? `${processo.ref} | ${processo.assunto}` : ''
+              })) ?? [])
+            }
+            onChange={(selectedValue) => {
+              console.log(" selectedValue >>> ", selectedValue)
+              setSelectedValue(selectedValue.target.value)
+            }}
+          />
+        </Grid>
+
+        <Grid item xs={12} md={6} mt={2}>
+          <Button variant="contained" onClick={saveAssociados}>
+            Associar
+          </Button>
+        </Grid>
       </SimpleModal>
     </>
   );

@@ -1,5 +1,3 @@
-import type { StringValidation } from "zod/v3"
-
 export interface ITimeSheets {
   id: number
   referencia_processo: string
@@ -9,13 +7,45 @@ export interface ITimeSheets {
   data_fim: string,
   horas: string,
   descricao: string,
-  tipo_evento: string,
+  tarefa: string,
   modo_facturacao: string,
   tipo_cliente: string,
   colaborador: string
   data_registo: string
-  cliente: number,
   colaborador_id: number,
+  cliente?: number,
+  tipo_evento?: string,
+  clienteId: number,
+  processoId: number,
+  tarefaId: number
+  status: string
+  notas?: string
+  data_aprovacao?: string
+  data_submissao?: string
+  data_rejeicao?: string
+  data_facturacao?: string
+  colaborador_aprovacao?: string
+  colaborador_submissao?: string
+  colaborador_rejeicao?: string
+  colaborador_facturacao?: string
+  colaboradorTaxa?: string | ''
+}
+
+export interface ITimeSheetsForm {
+  processoId?:  number,
+  descricao:  string,
+  dataInicio: string,
+  dataFim:  string,
+  horas:  string,
+  tarefaId:  number
+  colaboradorId:  number,
+  clienteId?:  number,
+  tipoEventoId?:  number,
+  modoFacturacao?:  null,
+  taxaProcesso?:  null,
+  taxaColaborador?:  null,
+  dadosImportantes?:  string,
+  id?:  number,
 }
 
 

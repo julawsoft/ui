@@ -8,6 +8,7 @@ interface UseFetchDataReturn<T> {
   setIsLoading: (loading: boolean) => void;
   setError: (erro: string| null) => void
   fetchData: () => Promise<void>;
+  setData: (clientes: T[]) => Promise<void>;
 }
 
 export function useFetchData<T>(fetchFn: () => Promise<T[]>): UseFetchDataReturn<T> {
@@ -36,5 +37,5 @@ export function useFetchData<T>(fetchFn: () => Promise<T[]>): UseFetchDataReturn
     }, 1000); // Simulate delay
   }, [fetchData]);
 
-  return { data, isLoading, error, fetchData, setIsLoading, setError };
+  return { data, isLoading, error, fetchData, setIsLoading, setError, setData };
 }

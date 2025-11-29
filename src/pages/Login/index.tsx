@@ -15,6 +15,7 @@ const Login: React.FC = () => {
   const setUser = useAuthStore((state) => state.setUser)
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const navigate = useNavigate()
 
@@ -34,16 +35,25 @@ const Login: React.FC = () => {
 
     try {
 
+      setIsLoading(true)
+
       const response = await LoginService.login({ username: email, password })
 
-      if (response && response.status === 200) {
+      console.log('response', response)
+
+      if(response && response.status === 401) 
+          return toast.error(response.errors || 'Usuário ou senha inválidos')
+      
+      if(response && response.status === 400) 
+        return toast.error(response.errors || 'Usuário desabilitado')
+
+      if(response && response.status === 500) 
+        return toast.error(response.errors || 'Servidor de autenticação não disponível')
+
         const userResponse = response.data
 
         let groupsMap =  userResponse.funcao
         let rolesMap = userResponse.auth.roles ?? []
-
-        console.log("here...groupsMap::  ", groupsMap)
-        console.log("here...rolesMap::  ", rolesMap)
 
         setUserLogged({
           id: userResponse.id,
@@ -70,12 +80,9 @@ const Login: React.FC = () => {
           navigate(ROUTES_PATH.Home)
         }, 1000)
 
-      } else {
-        toast.error(response.response.message)
-      }
-
     } catch (err: any) {
       toast.error(err.message)
+      setIsLoading(true)
     }
 
   };
@@ -140,6 +147,7 @@ const Login: React.FC = () => {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            loading={isLoading}
           >
             Entrar
           </Button>

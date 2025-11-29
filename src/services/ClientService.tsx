@@ -9,8 +9,8 @@ interface ILogin {
 
 export class ClientService {
 
-    static async getAll(): Promise<any[]> {
-        const response = await new RequestApi().get(`cliente`);
+    static async getAll(tipoCliente = 'undefined'): Promise<any[]> {
+        const response = await new RequestApi().get(`cliente?tipoClienteId=${tipoCliente}`);
         if(response && response.status === 400) {
             throw new Error('Erro ao obter os clientes')
         }
@@ -32,17 +32,18 @@ export class ClientService {
         return response?.data[0] as any
     }
 
-    static async save(data: any): Promise<any> {
+    static async save(data: any): Promise<IClient> {
         const response = await new RequestApi().post(`cliente`, { ...data });
         if(response && response.status === 400) {
-            throw new Error('Erro ao salvar o cliente')
+            throw new Error(response.message ?? 'Erro ao salvar o cliente')
         }
         return response?.data as IClient
     }
-    static async update(id:number, data: any): Promise<any> {
-        const response = await new RequestApi().post(`cliente`, { ...data });
+    
+    static async update(id:number, data: any): Promise<IClient> {
+        const response = await new RequestApi().put(`cliente/${id}`, { ...data });
         if(response && response.status === 400) {
-            throw new Error('Erro ao salvar o cliente')
+            throw new Error(response.message ?? 'Erro ao actualizar dados do Cliente')
         }
         return response?.data as IClient
     }

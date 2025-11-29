@@ -11,6 +11,8 @@ import {
 import { Logout, Settings, Person } from "@mui/icons-material";
 import useAuthStore from "../../context/authStore";
 import { setUserLogged } from "../../utils/cookies";
+import { LoginService } from "../../services/Login";
+import { toast } from "react-toastify";
 
 const UserMenu: React.FC = () => {
   const setUser = useAuthStore((state) => state.setUser)
@@ -26,13 +28,12 @@ const UserMenu: React.FC = () => {
 
   const handleProfileSair = async () => {
 
-    return 0
     try {
 
-      // const response = await LoginService.logout()
-
+      //const response = await LoginService.logout()
       //if (response && response.status === 200) {
         setUserLogged({
+          id: 0,
           name: '',
           groups: '',
           roles: [''],
@@ -54,8 +55,8 @@ const UserMenu: React.FC = () => {
 
         location.href = '/login'
 
-      //} else {
-     //   toast.error(response.response.message)
+     // } else {
+      //  toast.error(response.response.message)
      // }
 
     } catch (err: any) {

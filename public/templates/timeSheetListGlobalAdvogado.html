@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lista dos TimeSheets</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        margin: 20px;
+      }
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+      }
+      table th,
+      table td {
+        border: 1px solid #ddd;
+        padding: 6px;
+        text-align: left;
+        font-size: 11px;
+      }
+      table th {
+        background-color: #f5f5f5;
+        font-weight: bold;
+      }
+      .footer {
+        text-align: right;
+        font-size: 10px;
+        margin-top: 20px;
+        color: #666;
+      }
+      .section_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Lista dos TimeSheets</h2>
+    <div class="section_header">
+      <h4>De {{dataInicio}} A {{dataFim}}</h4>
+      <span>Total de horas: {{totalHoras}}</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Tarefas</th>
+          <th>Total Horas</th>
+          <th>Colaborador</th>
+          <th>Clientes</th>
+          <th>Ref. Processos</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{rows}}
+      </tbody>
+    </table>
+    <div class="footer">Julaw Soft - Gerado em: {{generated_at}}</div>
+  </body>
+</html>

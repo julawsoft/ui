@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import BoxCard from '../../components/common/BoxCard';
 import DataTable from '../../components/common/DataTable';
-import { columns, transformDataHonorarios } from './transform';
+import { columns, transformDataHonorarios } from './transformGlobal';
 import BoxTop from '../../components/common/BoxTop';
 import { ROUTES_PATH } from '../../routes/routePaths';
 import StateHandler from '../../components/common/StateHandler';
@@ -29,6 +29,10 @@ import SelectBox from '../../components/common/SelectBox';
 import NormalModal from '../../components/common/NormalModal';
 import type { IHonorarios } from '../../schema/InterfaceHonorarios';
 import { HonorariosService } from '../../services/HonorariosService';
+import FiltroHonorariosGlobal from './FiltroHonorariosGlobal';
+import dayjs from 'dayjs';
+import { ColaboradorService } from '../../services/ColaboradorService';
+import { IColaborador } from '../../schema/InterfaceColaboradores';
 
 
 interface TabPanelProps {
@@ -45,7 +49,6 @@ const TabPanel: React.FC<TabPanelProps> = ({ children, value, index }) => (
 
 
 const TimeSheetsGlobal: React.FC = () => {
-  const { user, saveUser, clearUser, hasAnyPermission, hasPermission } = useUserLogged();
 
   const navigate = useNavigate();
 
@@ -54,17 +57,49 @@ const TimeSheetsGlobal: React.FC = () => {
   const [isLoadingModal, setIsLoadingModal] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | null>(null);
 
+  const hoje = dayjs();
+  const duasSemanasAtras = hoje.subtract(2, "months");
+  const amanha = hoje.add(1, "day");
+
+  const [dataInicio, setDataInicio] = useState(
+    duasSemanasAtras.format("YYYY-MM-DD")
+  );
+
+  const [dataFim, setDataFim] = useState(
+    amanha.format("YYYY-MM-DD")
+  );
+
+  const [estados, setEstados] = useState<any[]>([])
+  const [estado, setEstado] = useState()
+
+  const [colaboradores, setColaboradores] = useState<IColaborador[]>([])
+  const [colaborador, setColaborador] = useState<string>('')
+
+  const [clientes, setClientes] = useState<IClient[]>([])
+  const [cliente, setCliente] = useState<number>()
+
+  const [processo, setProcesso] = useState<number>()
+
   useEffect(() => {
-    if (!user?.id) return;
     setIsLoading(true);
-    setTimeout(() => {
+    setTimeout(async () => {
       getAllHonorarios();
+      await Promise.all([fetchEstadosHonorarios(), fetchColaboradores(), fetchClientes()]);
     }, 1000)
-  }, [user?.id]);
+  }, []);
+
+  const fetchEstadosHonorarios = async () => setEstados(await HonorariosService.getEstados())
+  const fetchColaboradores = async () => setColaboradores(await ColaboradorService.getAll())
 
   const getAllHonorarios = async () => {
     try {
-      const dataResponse = await HonorariosService.getAll();
+      const dataResponse = await HonorariosService.getAll(
+        {
+          statusId: estado,
+          dataInicio,
+          dataFim
+        }
+      );
       setData(dataResponse);
       setError(null);
     } catch (err: any) {
@@ -81,11 +116,12 @@ const TimeSheetsGlobal: React.FC = () => {
   };
 
   const handleEdit = (honorario: IHonorarios) => {
-    navigate(`${ROUTES_PATH.NewHonorarios}/${honorario.processo_factura_item_id}`);
+    navigate(`${ROUTES_PATH.NewHonorarios}/${honorario.processo_factura_id}`);
   };
 
   const handleView = (honorario: IHonorarios) => {
-    navigate(`${ROUTES_PATH.NewHonorarios}/view/${honorario.processo_factura_item_id}`);
+    console.log("honorarios ", honorario)
+    navigate(`${ROUTES_PATH.NewHonorarios}/view/${honorario.processo_factura_id}`);
   };
 
   const handleExportPDF = () => {
@@ -114,14 +150,12 @@ const TimeSheetsGlobal: React.FC = () => {
   /** novo registo modal  */
   const [tipoTarefas, setTipoTarefas] = useState<ITipoTarefas[]>([]);
   const [processos, setProcessos] = useState<IProcesso[]>([]);
-  const [clientes, setClientes] = useState<IClient[]>([]);
-
-
+  
   const fnModalHonorario = async (isOpen: boolean) => {
     if (isOpen) {
       try {
         setIsLoadingModal(true);
-        await Promise.all([fetchTipoTarefas(), fetchClientes()]);
+        await Promise.all([fetchClientes()]);
         setIsLoadingModal(false);
       } catch (error) {
         console.error('Erro ao carregar dados iniciais:', error);
@@ -131,14 +165,14 @@ const TimeSheetsGlobal: React.FC = () => {
         setIsLoadingModal(false);
       }
       console.log("Carregar os dados...")
-    }else{
+    } else {
       reset()
     }
     setOpenModalTimeSheet(isOpen)
   }
 
-  const fetchClientes = async () => setTipoTarefas(await TimeSheetsService.getTipoTarefas());
-  const fetchTipoTarefas = async () => setClientes(await ClientService.getAll());
+  // const fetchClientes = async () => setTipoTarefas(await TimeSheetsService.getTipoTarefas());
+  const fetchClientes = async () => setClientes(await ClientService.getAll());
   const fetchProcessosByClientId = async (idClient: number) => setProcessos(await ClientService.getProcessos(idClient));
 
   // React Hook Form
@@ -146,34 +180,17 @@ const TimeSheetsGlobal: React.FC = () => {
     resolver: zodResolver(timeSheetSchema),
   });
 
+   const handleChangeCliente = (e: React.ChangeEvent<{ value: unknown }>) => {
+      const id = e.target.value as number;
+      console.log("id do cliente", id)
+      setCliente(id);
+      fetchProcessosByClientId(id);
+    };
 
-  const onSubmit = async (data: TimeSheetFormData) => {
-    try {
 
-      console.log("dados a salvar ... ", data)
-
-      /*
-      const dataDTO: any = {
-     tipoEventoId: z.number().int().positive("O despesa deve ser um número positivo"),
-       processoId: z.number(),
-       clienteId: z.number(),
-       descricao: z.string(),
-       dadosImportantes: z.string(),
-       dataInicio: z.string(),
-       dataFim: z.string(),
-       horas: z.string(),
-      }
-      await TimeSheetsService.save(dataDTO);
-      */
-      toast.success('TimeSheet cadastrado com sucesso!');
-      setOpenModalTimeSheet(false); // Redireciona após salvar
-      setTimeout(() => {
-        getAllHonorarios();
-      }, 1000)
-    } catch (error: any) {
-      toast.error(error.message || 'Erro ao salvar despesa.');
-    }
-  };
+  const handleBuscar = () => {
+      getAllHonorarios()
+  }
 
 
   return (
@@ -181,13 +198,45 @@ const TimeSheetsGlobal: React.FC = () => {
       <BreadcrumbsNav
         items={[
           { label: "Início", path: "/" },
-          { label: "Meus TimeSheets", path: "/meus-timesheets" },
-          { label: "Lista dos teus timesheets" }
+          { label: "Lista dos honorarios" }
         ]}
       />
       <BoxTop
-        title="Lista dos TimeSheets"
+        title="Lista geral dos Honorarios"
+        actions={
+          <Stack direction="row" justifyContent="flex-end" gap={1}>
+            <Button
+              variant="contained"
+              startIcon={<Add />}
+              onClick={() => handleNovoHonorario()}
+            >
+              Novo Registo
+            </Button>
+            <PrimaryButton onClick={handleExportPDF}>Exportar PDF</PrimaryButton>
+          </Stack>
+        }
       />
+
+      <FiltroHonorariosGlobal
+        processo={processo}
+        processos={processos}
+        handleChangeCliente={handleChangeCliente}
+        cliente={cliente}
+        clientes={clientes}
+        colaboradores={colaboradores}
+        colaborador={colaborador}
+        dataInicio={dataInicio}
+        dataFim={dataFim}
+        estados={estados}
+        estado={estado}
+        handleChangeProcesso={(e: any) => setProcesso(e.target.value)}
+        handleChangeColaborador={(e: any) => setColaborador(e.target.value)}
+        handleChangeDataInicio={(e: any) => setDataInicio(e.target.value)}
+        handleChangeDataFim={(e: any) => setDataFim(e.target.value)}
+        handleChangeEstado={(e: any) => setEstado(e.target.value)}
+        handleBuscar={handleBuscar}
+      />
+
       <Grid item xs={12} md={12}>
         <BoxCard>
           <Tabs value={tabIndex} onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
@@ -198,19 +247,13 @@ const TimeSheetsGlobal: React.FC = () => {
           {/* =================== Registo =================== */}
           <TabPanel value={tabIndex} index={0}>
             <>
-              <Stack mb={3} justifyContent={'space-between'} direction={'row'} bgcolor={'red'} alignContent={'center'} justifyItems={'center'} alignItems={'center'} >
-                <Stack>Filtros</Stack>
-                <Stack direction="row" justifyContent="flex-end" gap={1}>
-                  <Button
-                    variant="contained"
-                    startIcon={<Add />}
-                    onClick={() => fnModalHonorario(true)}
-                  >
-                    Novo Registo
-                  </Button>
-                  <PrimaryButton onClick={handleExportPDF}>Exportar PDF</PrimaryButton>
+              {
+                /*          
+                <Stack mb={3} justifyContent={'space-between'} direction={'row'} bgcolor={'red'} alignContent={'center'} justifyItems={'center'} alignItems={'center'} >
+                  <Stack>Filtros</Stack>              
                 </Stack>
-              </Stack>
+                */
+              }
 
               <StateHandler
                 isLoading={isLoading}
@@ -221,7 +264,7 @@ const TimeSheetsGlobal: React.FC = () => {
               {!isLoading && !error && data.length > 0 && (
                 <DataTable
                   columns={columns}
-                  rows={transformDataHonorarios(data, handleEdit, handleView)}
+                  rows={transformDataHonorarios(data, handleView)}
                 />
               )}
             </>
@@ -267,109 +310,6 @@ const TimeSheetsGlobal: React.FC = () => {
 
         </BoxCard>
       </Grid>
-
-
-      {/* ========== MODAIS ========== */}
-      <NormalModal open={openModalTimeSheet} onClose={() => fnModalHonorario(false)} title="Novo TimeSheet">
-          <StateHandler
-            isLoading={isLoadingModal}
-            error={error}
-            hasData={data.length > 0}
-          />
-
-          {!isLoadingModal && (
-
-            <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2 }}>
-              <Grid container spacing={2}>
-                {/* Cliente */}
-                <Grid item xs={12} md={6}>
-                  <Controller
-                    name="clienteId"
-                    control={control}
-                    render={({ field }) => (
-                      <>
-                        <SelectBox
-                          label="Cliente"
-                          {...field}
-                          onChange={(selectedValue) => {
-                            console.log("selectedValue ", selectedValue)
-                            field.onChange(selectedValue);        // Atualiza o RHF
-                            fetchProcessosByClientId(selectedValue.target.value); // Busca processos do cliente
-                          }}
-                          options={clientes.map(c => ({ label: c.denominacao, value: c.id }))}
-                        />
-                        {errors.clienteId && <Alert severity="error">{errors.clienteId.message}</Alert>}
-                      </>
-                    )}
-                  />
-                </Grid>
-
-                {/* Processo */}
-                <Grid item xs={12} md={6}>
-                  <Controller
-                    name="processoId"
-                    control={control}
-                    render={({ field }) => (
-                      <>
-                        <SelectBox
-                          label="Processo"
-                          {...field}
-                          options={processos.map(p => ({ label: p.ref, value: p.id }))}
-                        />
-                        {errors.processoId && <Alert severity="error">{errors.processoId.message}</Alert>}
-                      </>
-                    )}
-                  />
-                </Grid>
-
-                {/* Tipo de Despesa */}
-                <Grid item xs={12} md={6}>
-                  <Controller
-                    name="tipoEventoId"
-                    control={control}
-                    render={({ field }) => (
-                      <>
-                        <SelectBox
-                          label="Tipo de Tarefa"
-                          {...field}
-                          options={tipoTarefas.map(d => ({ label: d.descricao, value: d.id }))}
-                        />
-                        {errors.tipoEventoId && <Alert severity="error">{errors.tipoEventoId.message}</Alert>}
-                      </>
-                    )}
-                  />
-                </Grid>
-
-                {/* Valor */}
-                <Grid item xs={12} md={3}>
-                  <Controller
-                    name="dataInicio"
-                    control={control}
-                    render={({ field }) => <Input label="Data" type="date" {...field} />}
-                  />
-                  {errors.dataInicio && <Alert severity="error">{errors.dataInicio.message}</Alert>}
-                </Grid>
-
-                {/* Valor */}
-                <Grid item xs={12} md={3}>
-                  <Controller
-                    name="horas"
-                    control={control}
-                    render={({ field }) => <Input label="Horas/Min" type="time" {...field} />}
-                  />
-                  {errors.horas && <Alert severity="error">{errors.horas.message}</Alert>}
-                </Grid>
-
-                {/* Botão de salvar */}
-                <Grid item xs={12} md={4}>
-                  <PrimaryButton type="submit">Salvar</PrimaryButton>
-                </Grid>
-              </Grid>
-            </Box>
-
-          )}
-
-      </NormalModal>
 
     </div>
   );

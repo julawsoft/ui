@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, Alert } from '@mui/material';
+import { Box, Grid, Alert, Stack, Button } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -19,6 +19,8 @@ import type { IClient } from '../../schema/InterfaceClient';
 import type { IColaborador } from '../../schema/InterfaceColaboradores';
 import type { IProcessStatus } from '../../schema/InterfacePrecedentes';
 import type { ProcessoFormData } from '../../validation/processoSchema';
+import BreadcrumbsNav from '../../components/common/BreadcrumbsNav';
+import { ROUTES_PATH } from '../../routes/routePaths';
 
 const NewProcesso: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -30,32 +32,33 @@ const NewProcesso: React.FC = () => {
   const [gestores, setGestores] = useState<IColaborador[]>([]);
   const [statusOptions, setStatusOptions] = useState<IProcessoStatus[]>([]);
   const [modosFacturacao, setModosFacturacao] = useState<IProcessoModoFacturacao[]>([]);
+  const [isDisableValor, setIsDisabledValor] = useState<boolean>(false)
 
   const fases = [
-      {
-        id: 'Judicial', 
-        label:'Judicial'
-      }, 
-      {
-        id: 'Extrajudicial', 
-        label: 'Extrajudicial'
-      }
+    {
+      id: 'Judicial',
+      label: 'Judicial'
+    },
+    {
+      id: 'Extrajudicial',
+      label: 'Extrajudicial'
+    }
   ]
 
-    const fetchGestores = async () =>
-      setGestores(await ColaboradorService.getAll());
-    const fetchClientes = async () =>
-      setClientes(await ClientService.getAll());
+  const fetchGestores = async () =>
+    setGestores(await ColaboradorService.getAll());
+  const fetchClientes = async () =>
+    setClientes(await ClientService.getAll());
 
-    const fetchInstituicaoes = async () =>
-      setInstituicoes(await ProcessoService.listInstituicoes());
+  const fetchInstituicaoes = async () =>
+    setInstituicoes(await ProcessoService.listInstituicoes());
 
-    const fetchModoFacturacao = async () =>
-      setModosFacturacao(await ProcessoService.listModoFacturacao());
+  const fetchModoFacturacao = async () =>
+    setModosFacturacao(await ProcessoService.listModoFacturacao());
 
-    const fetchStatus = async () =>
-      setStatusOptions(await ProcessoService.listStatus());
-  
+  const fetchStatus = async () =>
+    setStatusOptions(await ProcessoService.listStatus());
+
 
   const {
     handleSubmit,
@@ -89,9 +92,25 @@ const NewProcesso: React.FC = () => {
         await Promise.all([fetchGestores(), fetchClientes(), fetchInstituicaoes(), fetchModoFacturacao(), fetchStatus()]);
         if (id) {
           const processo = await ProcessoService.getById(Number(id));
-          Object.keys(processo).forEach((key) => {
-            const value = processo[key as keyof typeof processo];
-            setValue(key as keyof ProcessoFormData, String(value) ?? '');
+
+          const processoAdapter = {
+              assunto: processo.assunto,
+              area: processo.area,
+              fase: processo.fase,
+              instituicaoId: processo.instituicao_id,
+              modoFacturacaoId: processo.modo_facturacao_id,
+              gestorId: processo.gestor_id,
+              clienteId: processo.cliente_id,
+              contraParte: processo.contra_parte,
+              dataRegisto: processo.data_registo.substring(0,10),
+              estadoId: processo.status_id, 
+              horasMes: processo.horas_mes,
+              nProcessoJudicial: processo.n_processo_judicial,
+              valorTotal: processo.valor_total ?? 0
+          }
+          Object.keys(processoAdapter).forEach((key) => {
+            const value = processoAdapter[key as keyof typeof processoAdapter];
+            setValue(key as keyof ProcessoFormData, value != null ? String(value) : '');
           });
         }
       } catch (e: any) {
@@ -107,7 +126,7 @@ const NewProcesso: React.FC = () => {
     try {
       setIsLoading(true);
 
-      const dataToSave:IProcessoInput = {
+      const dataToSave: IProcessoInput = {
         "assunto": data.assunto,
         "area": data.area,
         "fase": data.fase,
@@ -118,7 +137,7 @@ const NewProcesso: React.FC = () => {
         "contraParte": data.contraParte ?? '',
         "dataRegisto": data.dataRegisto,
         "statusId": data.statusId,
-        "horasMes": data.horasMes, 
+        "horasMes": data.horasMes,
         "valorTotal": data.valorTotal,
         "nProcessoJudicial": data.nProcessoJudicial ?? ''
       }
@@ -138,19 +157,35 @@ const NewProcesso: React.FC = () => {
     }
   };
 
+  const handleClose = () => {
+    navigate(ROUTES_PATH.Process)
+  }
+
+  const handleChangeModoFacturacao = (value: any, field: any) => {
+    let index = Number(value.target.value)
+    field.onChange(index)
+    index === 1 ? setIsDisabledValor(false) : setIsDisabledValor(true)
+  }
+
   return (
     <>
+      <BreadcrumbsNav
+        items={[
+          { label: "Início", path: "/" },
+          { label: "Lista dos Processos ", path: "/processos" },
+          { label: id ? "Editar Processo" : "Novo Processo" }
+        ]}
+      />
       <BoxTop title={id ? 'Editar Processo' : 'Novo Processo'} />
       <BoxCard>
         {isLoading && <Loader />}
         {!isLoading && (
           <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2 }}>
             <Grid container spacing={2}>
-
               {/* Referência */}
               <Grid item xs={12} md={3}>
                 <Controller
-                  name="n_processo_judicial"
+                  name="nProcessoJudicial"
                   control={control}
                   render={({ field }) => (
                     <Input label="N.º Processo Judicial" {...field} value={field.value ?? ''} />
@@ -160,14 +195,13 @@ const NewProcesso: React.FC = () => {
               {/* Referência */}
               <Grid item xs={12} md={3}>
                 <Controller
-                  name="contra_parte"
+                  name="contraParte"
                   control={control}
                   render={({ field }) => (
                     <Input label="Contra Parte" {...field} value={field.value ?? ''} />
                   )}
                 />
               </Grid>
-
               {/* Assunto */}
               <Grid item xs={12} md={6}>
                 <Controller
@@ -208,20 +242,10 @@ const NewProcesso: React.FC = () => {
                 />
               </Grid>
 
-              <Grid item xs={12} md={6}>
-                <Controller
-                  name="fase"
-                  control={control}
-                  render={({ field }) => (
-                    <Input label="Fase" {...field} value={field.value ?? ''} />
-                  )}
-                />
-              </Grid>
-
               {/* Cliente */}
               <Grid item xs={12} md={6}>
                 <Controller
-                  name="cliente_id"
+                  name="clienteId"
                   control={control}
                   render={({ field }) => (
                     <SelectBox
@@ -259,7 +283,7 @@ const NewProcesso: React.FC = () => {
               {/* Gestor e Modo de Facturação */}
               <Grid item xs={12} md={6}>
                 <Controller
-                  name="gestor_id"
+                  name="gestorId"
                   control={control}
                   render={({ field }) => (
                     <SelectBox
@@ -283,7 +307,7 @@ const NewProcesso: React.FC = () => {
                     <SelectBox
                       label="Modo de Facturação"
                       value={field.value ?? ''}
-                      onChange={(e) => field.onChange(e.target.value)}
+                      onChange={(e: any) => handleChangeModoFacturacao(e, field)}
                       options={modosFacturacao.map((m) => ({
                         label: String(m.descricao),
                         value: String(m.id),
@@ -293,37 +317,38 @@ const NewProcesso: React.FC = () => {
                 />
               </Grid>
 
-              {/* Valor total */}
-              <Grid item xs={12} md={4}>
-                <Controller
-                  name="valorTotal"
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      label="Valor Total (AOA)"
-                      type="number"
-                      {...field}
-                      value={String(field.value)}
-                    />
-                  )}
-                />
-              </Grid>
+              {
+                isDisableValor ? (<Grid item xs={12} md={4}>
+                  <Controller
+                    name="valorTotal"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        label="Valor Total (AOA)"
+                        type="number"
 
-              {/* Horas por mês */}
-              <Grid item xs={12} md={4}>
-                <Controller
-                  name="horasMes"
-                  control={control}
-                  render={({ field }) => (
-                    <Input
-                      label="Horas/mês"
-                      type="number"
-                      {...field}
-                      value={field.value ?? ''}
-                    />
-                  )}
-                />
-              </Grid>
+                        {...field}
+                        value={String(field.value)}
+                      />
+                    )}
+                  />
+                </Grid>
+                ) : (<Grid item xs={12} md={4}>
+                  <Controller
+                    name="horasMes"
+                    control={control}
+                    render={({ field }) => (
+                      <Input
+                        label="Horas / Mês"
+                        type="number"
+                        {...field}
+                        value={String(field.value)}
+                      />
+                    )}
+                  />
+                </Grid>)
+              }
+              {/* Valor total */}
 
               <Grid item xs={12} md={4}>
                 <Controller
@@ -342,7 +367,7 @@ const NewProcesso: React.FC = () => {
 
               {/* Estado */}
               <Grid item xs={12} md={4}>
-              <Controller
+                <Controller
                   name="statusId"
                   control={control}
                   render={({ field }) => (
@@ -359,15 +384,16 @@ const NewProcesso: React.FC = () => {
                 />
               </Grid>
 
-      
+
               {/* Botões */}
-              <Grid item xs={12} display="flex" justifyContent="flex-end" gap={2}>
-                <SecondaryButton onClick={() => navigate('/processos')}>
-                  Voltar
-                </SecondaryButton>
-                <PrimaryButton type="submit">
-                  Salvar
-                </PrimaryButton>
+              <Grid item xs={12} md={12}>
+                <Stack width={'100%'} direction="row" justifyContent="flex-end" gap={2} mt={3}>
+                  <Button onClick={handleClose} color="inherit">
+                    Cancelar
+                  </Button>
+                  <PrimaryButton type="submit">{id ? 'Atualizar' : 'Salvar'}</PrimaryButton>
+
+                </Stack>
               </Grid>
             </Grid>
           </Box>

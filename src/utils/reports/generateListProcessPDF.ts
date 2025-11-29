@@ -13,6 +13,7 @@ export const generateProcessosListPDF = async (processos: IProcesso[]) => {
       <td>${proc.assunto}</td>
       <td>${proc.area}</td>
       <td>${proc.instituicao}</td>
+      <td>${proc.cliente}</td>
       <td>${proc.modo_facturacao ?? "-"}</td>
       <td>${proc.estado}</td>
       <td>${new Date(proc.data_registo).toLocaleDateString()}</td>

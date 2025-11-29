@@ -9,12 +9,8 @@ import type { IColaborador } from "../../schema/InterfaceColaboradores";
 export const columns = [
   { id: 'id', label: '#' },
   { id: 'colaborador', label: 'Colaborador' },
-  { id: 'funcao', label: 'Papel' },
   { id: 'contacto_pessoal', label: 'Contato Pessoal' },
-  { id: 'email_pessoal', label: 'E-mail Pessoal' },
   { id: 'email_corporativo', label: 'E-mail Corporativo' },
-  { id: 'n_identificacao', label: 'Identificação' },
-  { id: 'n_cedula_ordem', label: 'Cedula Ordem' },
   { id: 'tipoColaborador', label: 'Tipo' },
   { id: 'categoria', label: 'Categoria' },
   { id: 'actions', label: 'Acções' }

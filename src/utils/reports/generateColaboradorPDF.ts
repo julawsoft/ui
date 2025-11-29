@@ -2,6 +2,8 @@ import html2pdf from "html2pdf.js";
 import type { IColaborador } from "../../schema/InterfaceColaboradores";
 
 export const generateColaboradorPDF = async (colaborador: IColaborador) => {
+
+  console.log("os dados ", colaborador)
   const response = await fetch("/templates/colaboradorFicha.html");
   let templateHtml = await response.text();
 

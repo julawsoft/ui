@@ -9,8 +9,16 @@ interface ILogin {
 
 export class ColaboradorService {
 
-    static async getAll(): Promise<any[]> {
+    static async getAllColaboradoresWithoutEquipaProcesso(idProcesso:number): Promise<any[]> {
         const response = await new RequestApi().get(`colaborador`);
+        if(response && response.status === 400) {
+            throw new Error('Erro ao obter os clientes')
+        }
+        return response?.data as IColaborador[]
+    }
+
+    static async getAll(tipo?:string, categoria?:string): Promise<any[]> {
+        const response = await new RequestApi().get(`colaborador?tipo=${tipo}&categoria=${categoria}`);
         if(response && response.status === 400) {
             throw new Error('Erro ao obter os clientes')
         }

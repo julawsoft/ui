@@ -8,15 +8,15 @@ export const generateColaboradoresListPDF = async (colaboradores: IColaborador[]
   let templateHtml = await response.text();
 
   // monta as linhas da tabela
+  let rowIndex = 1
   const rows = colaboradores.map(emp => `
     <tr>
-      <td>${emp.id}</td>
+      <td style="text-align='center'">${rowIndex ++}</td>
       <td>${emp.nome_completo}</td>
-      <td>${emp.funcao}</td>
+      <td>${emp.tipoColaborador}</td>
       <td>${emp.categoria ?? "-"}</td>
       <td>${emp.n_identificacao ?? "-"}</td>
       <td>${emp.n_cedula_ordem ?? "-"}</td>
-      <td>${emp.status}</td>
     </tr>
   `).join("");
 

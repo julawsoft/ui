@@ -10,8 +10,8 @@ import {
 } from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { toast } from "react-toastify";
 
-// Interface para representar o ficheiro com Base64
 interface FileWithBase64 {
   name: string;
   size: number;
@@ -20,14 +20,15 @@ interface FileWithBase64 {
 }
 
 interface FileUploaderProps {
-  onFilesChange?: (files: FileWithBase64[]) => void; // Evento emitido quando há mudanças
+  onFilesChange?: (files: FileWithBase64[]) => void;
 }
 
 const FileUploader: React.FC<FileUploaderProps> = ({ onFilesChange }) => {
   const [files, setFiles] = useState<FileWithBase64[]>([]);
   const [isDragging, setIsDragging] = useState(false);
 
-  // Converte ficheiro para base64
+  const MAX_SIZE_MB = 2; // limite de 2 MB
+
   const toBase64 = (file: File): Promise<string> =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -36,10 +37,17 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFilesChange }) => {
       reader.onerror = (error) => reject(error);
     });
 
-  // Adiciona ficheiros novos
   const addFiles = async (selectedFiles: File[]) => {
     const newFiles: FileWithBase64[] = [];
+
     for (const file of selectedFiles) {
+      const fileSizeMB = file.size / (1024 * 1024);
+
+      if (fileSizeMB > MAX_SIZE_MB) {
+        toast.error(`O ficheiro "${file.name}" ultrapassa o limite de ${MAX_SIZE_MB} MB.`);
+        continue; 
+      }
+
       const base64 = await toBase64(file);
       newFiles.push({
         name: file.name,
@@ -48,9 +56,10 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFilesChange }) => {
         base64,
       });
     }
+
     const updated = [...files, ...newFiles];
     setFiles(updated);
-    onFilesChange?.(updated); // dispara evento
+    onFilesChange?.(updated);
   };
 
   const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
@@ -58,9 +67,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFilesChange }) => {
     setIsDragging(true);
   };
 
-  const handleDragLeave = () => {
-    setIsDragging(false);
-  };
+  const handleDragLeave = () => setIsDragging(false);
 
   const handleDrop = async (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -106,7 +113,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFilesChange }) => {
       >
         <UploadFileIcon sx={{ fontSize: 50, color: "primary.main" }} />
         <Typography variant="body1" sx={{ mt: 2 }}>
-          Arraste os ficheiros aqui ou <b>clique para selecionar</b>
+          Arraste os ficheiros aqui ou <b>clique para selecionar</b> (máx. {MAX_SIZE_MB} MB)
         </Typography>
         <input
           id="fileInput"

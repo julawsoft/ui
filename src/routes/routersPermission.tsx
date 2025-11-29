@@ -11,8 +11,6 @@ import Client from '../pages/Client';
 import NewClient from '../pages/Client/newClient';
 import NotFound from '../pages/NotFound';
 
-// Novos imports
-import TimeSheets from '../pages/TimeSheets';
 import MyTimeSheets from '../pages/TimeSheets/MyTimeSheets';
 import Honorarios from '../pages/Honorarios';
 import MyHonorarios from '../pages/Honorarios/MyHonorarios';
@@ -25,7 +23,13 @@ import NewDespesas from '../pages/Despesas/newDespesas';
 import NewColaborador from '../pages/Colaborador/newColaborador';
 import ViewProcessoTabs from '../pages/Process/ViewProcessoTabs';
 import TimeSheetsGlobal from '../pages/TimeSheets';
-// import ViewProcessoTabs from '../pages/Process/ViewProcessoTabs';
+import MyTasks from '../pages/Tasks/MyTasks';
+import TasksGlobal from '../pages/Tasks';
+import NewHonorario from '../pages/Honorarios/newHonorario';
+import InvoiceHonorario from '../pages/Honorarios/viewHonorarios';
+import GerarCobranca from '../pages/Despesas/gerarCobranca';
+import InvoiceCobranca from '../pages/Despesas/invoiceCobranca';
+import ViewHonorario from '../pages/Honorarios/viewHonorarios';
 
 interface IRoute {
   path: string;
@@ -40,9 +44,9 @@ export const routesPermissions: IRoute[] = [
     element: <Home />,
     roles: [
       UserRoles.ADMINISTRATIVO,
-      UserRoles.ADV_JUNIOR,
-      UserRoles.ADV_SENIOR,
-      UserRoles.ADV_ESTAGIARIO,
+      UserRoles.ADVOGADO,
+      UserRoles.ESTAGIARIO,
+      UserRoles.CONSULTOR,
     ],
   },
   {
@@ -50,18 +54,18 @@ export const routesPermissions: IRoute[] = [
     element: <Process />,
     roles: [
       UserRoles.ADMINISTRATIVO,
-      UserRoles.ADV_JUNIOR,
-      UserRoles.ADV_SENIOR,
-      UserRoles.ADV_ESTAGIARIO,
+      UserRoles.ADVOGADO,
+      UserRoles.ESTAGIARIO,
+      UserRoles.CONSULTOR,
     ],
   },
   {
     path: ROUTES_PATH.ProcessMine,
     element: <ProcessMine />,
     roles: [
-      UserRoles.ADV_JUNIOR,
-      UserRoles.ADV_SENIOR,
-      UserRoles.ADV_ESTAGIARIO,
+      UserRoles.ADVOGADO,
+      UserRoles.ESTAGIARIO,
+      UserRoles.CONSULTOR,
     ],
   },
   {
@@ -69,9 +73,9 @@ export const routesPermissions: IRoute[] = [
     element: <NewProcess />,
     roles: [
       UserRoles.ADMINISTRATIVO,
-      UserRoles.ADV_JUNIOR,
-      UserRoles.ADV_SENIOR,
-      UserRoles.ADV_ESTAGIARIO,
+      UserRoles.ADVOGADO,
+      UserRoles.ESTAGIARIO,
+      UserRoles.CONSULTOR,
     ],
   },
   {
@@ -79,9 +83,9 @@ export const routesPermissions: IRoute[] = [
     element: <ViewProcessoTabs />,
     roles: [
       UserRoles.ADMINISTRATIVO,
-      UserRoles.ADV_JUNIOR,
-      UserRoles.ADV_SENIOR,
-      UserRoles.ADV_ESTAGIARIO,
+      UserRoles.ADVOGADO,
+      UserRoles.ESTAGIARIO,
+      UserRoles.CONSULTOR,
     ],
   },
   {
@@ -89,9 +93,9 @@ export const routesPermissions: IRoute[] = [
     element: <NewProcess />,
     roles: [
       UserRoles.ADMINISTRATIVO,
-      UserRoles.ADV_JUNIOR,
-      UserRoles.ADV_SENIOR,
-      UserRoles.ADV_ESTAGIARIO,
+      UserRoles.ADVOGADO,
+      UserRoles.ESTAGIARIO,
+      UserRoles.CONSULTOR,
     ],
   },
   {
@@ -99,7 +103,7 @@ export const routesPermissions: IRoute[] = [
     element: <Employees />,
     roles: [
       UserRoles.ADMINISTRATIVO,
-      UserRoles.ADV_SENIOR,
+      UserRoles.ADVOGADO,
     ],
   },
   // Novo COLABORADOR
@@ -108,7 +112,7 @@ export const routesPermissions: IRoute[] = [
     element: <NewColaborador />, // Se tiver uma página específica de edição, substituir aqui
     roles: [
       UserRoles.ADMINISTRATIVO,
-      UserRoles.ADV_SENIOR,
+      UserRoles.ADVOGADO,
     ],
   },
   // Editar Colaborador
@@ -117,7 +121,7 @@ export const routesPermissions: IRoute[] = [
     element: <NewColaborador />, // Se tiver uma página específica de edição, substituir aqui
     roles: [
       UserRoles.ADMINISTRATIVO,
-      UserRoles.ADV_SENIOR,
+      UserRoles.ADVOGADO,
     ],
   },
   // VISUALIZAR COLABORADOR
@@ -126,9 +130,9 @@ export const routesPermissions: IRoute[] = [
     element: <ViewColaboradorTabs />, // Substituir por página de visualização se houver
     roles: [
       UserRoles.ADMINISTRATIVO,
-      UserRoles.ADV_JUNIOR,
-      UserRoles.ADV_SENIOR,
-      UserRoles.ADV_ESTAGIARIO,
+      UserRoles.ADVOGADO,
+      UserRoles.ESTAGIARIO,
+      UserRoles.CONSULTOR,
     ],
   },
 
@@ -138,9 +142,9 @@ export const routesPermissions: IRoute[] = [
     element: <Process />, // Substituir por página de detalhes do processo se houver
     roles: [
       UserRoles.ADMINISTRATIVO,
-      UserRoles.ADV_JUNIOR,
-      UserRoles.ADV_SENIOR,
-      UserRoles.ADV_ESTAGIARIO,
+      UserRoles.ADVOGADO,
+      UserRoles.ESTAGIARIO,
+      UserRoles.CONSULTOR,
     ],
   },
   {
@@ -148,9 +152,9 @@ export const routesPermissions: IRoute[] = [
     element: <Despesas />,
     roles: [
       UserRoles.ADMINISTRATIVO,
-      UserRoles.ADV_JUNIOR,
-      UserRoles.ADV_SENIOR,
-      UserRoles.ADV_ESTAGIARIO,
+      UserRoles.ADVOGADO,
+      UserRoles.ESTAGIARIO,
+      UserRoles.CONSULTOR,
     ],
   },
   {
@@ -158,9 +162,9 @@ export const routesPermissions: IRoute[] = [
     element: <NewDespesas />,
     roles: [
       UserRoles.ADMINISTRATIVO,
-      UserRoles.ADV_JUNIOR,
-      UserRoles.ADV_SENIOR,
-      UserRoles.ADV_ESTAGIARIO,
+      UserRoles.ADVOGADO,
+      UserRoles.ESTAGIARIO,
+      UserRoles.CONSULTOR,
     ],
   },
   {
@@ -168,9 +172,25 @@ export const routesPermissions: IRoute[] = [
     element: <NewDespesas />,
     roles: [
       UserRoles.ADMINISTRATIVO,
-      UserRoles.ADV_JUNIOR,
-      UserRoles.ADV_SENIOR,
-      UserRoles.ADV_ESTAGIARIO,
+      UserRoles.ADVOGADO,
+      UserRoles.ESTAGIARIO,
+      UserRoles.CONSULTOR,
+    ],
+  },
+  {
+    path: `${ROUTES_PATH.GerarCobranca}`,
+    element: <GerarCobranca />,
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+      UserRoles.ADVOGADO,
+    ],
+  },
+  {
+    path: `${ROUTES_PATH.ViewCobranca}`,
+    element: <InvoiceCobranca />,
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+      UserRoles.ADVOGADO,
     ],
   },
   {
@@ -178,7 +198,7 @@ export const routesPermissions: IRoute[] = [
     element: <Client />,
     roles: [
       UserRoles.ADMINISTRATIVO,
-      UserRoles.ADV_SENIOR,
+      UserRoles.ADVOGADO,
     ],
   },
   {
@@ -202,9 +222,27 @@ export const routesPermissions: IRoute[] = [
     element: <ViewClientTabs />,
     roles: [
       UserRoles.ADMINISTRATIVO,
-      UserRoles.ADV_JUNIOR,
-      UserRoles.ADV_SENIOR,
-      UserRoles.ADV_ESTAGIARIO,
+      UserRoles.ADVOGADO,
+      UserRoles.ESTAGIARIO,
+      UserRoles.CONSULTOR,
+    ],
+  },
+
+   // TASKs
+   {
+    path: ROUTES_PATH.Tasks,
+    element: <TasksGlobal />,
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+    ],
+  },
+  {
+    path: ROUTES_PATH.MyTasks,
+    element: <MyTasks />,
+    roles: [
+      UserRoles.ADVOGADO,
+      UserRoles.ESTAGIARIO,
+      UserRoles.CONSULTOR,
     ],
   },
 
@@ -220,9 +258,9 @@ export const routesPermissions: IRoute[] = [
     path: ROUTES_PATH.MyTimeSheets,
     element: <MyTimeSheets />,
     roles: [
-      UserRoles.ADV_JUNIOR,
-      UserRoles.ADV_SENIOR,
-      UserRoles.ADV_ESTAGIARIO,
+      UserRoles.ADVOGADO,
+      UserRoles.ESTAGIARIO,
+      UserRoles.CONSULTOR,
     ],
   },
 
@@ -235,12 +273,33 @@ export const routesPermissions: IRoute[] = [
     ],
   },
   {
+    path: ROUTES_PATH.NewHonorarios,
+    element: <NewHonorario />,
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+    ],
+  },
+  {
+    path: `${ROUTES_PATH.ViewHonorarios}/:id`,
+    element: <ViewHonorario />,
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+    ],
+  },
+  {
+    path: `${ROUTES_PATH.InvoiceHonorarios}`,
+    element: <InvoiceHonorario />,
+    roles: [
+      UserRoles.ADMINISTRATIVO,
+    ],
+  },
+  {
     path: ROUTES_PATH.MyHonorarios,
     element: <MyHonorarios />,
     roles: [
-      UserRoles.ADV_JUNIOR,
-      UserRoles.ADV_SENIOR,
-      UserRoles.ADV_ESTAGIARIO,
+      UserRoles.ADVOGADO,
+      UserRoles.ESTAGIARIO,
+      UserRoles.CONSULTOR,
     ],
   },
 
@@ -249,9 +308,9 @@ export const routesPermissions: IRoute[] = [
     element: <NotFound />,
     roles: [
       UserRoles.ADMINISTRATIVO,
-      UserRoles.ADV_JUNIOR,
-      UserRoles.ADV_SENIOR,
-      UserRoles.ADV_ESTAGIARIO,
+      UserRoles.ADVOGADO,
+      UserRoles.ESTAGIARIO,
+      UserRoles.CONSULTOR,
     ],
   },
 ];

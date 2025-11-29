@@ -16,41 +16,41 @@ export const processoSchema = z.object({
     .min(2, "Fase deve ter ao menos 2 caracteres")
     .max(100, "Fase deve ter no máximo 100 caracteres"),
 
-  instituicao_id: z
+  instituicaoId: z
     .string()
     .min(1, "Instituição é obrigatória"),
 
-  modo_facturacao: z
+  modoFacturacao: z
     .string()
     .min(1, "Modo de facturação é obrigatório"),
 
-  gestor_id: z
+  gestorId: z
     .string()
     .min(1, "Gestor é obrigatório"),
 
-  cliente_id: z
+  clienteId: z
     .string()
     .min(1, "Cliente é obrigatório"),
 
-  contra_parte: z
+  contraParte: z
     .string(),
-  data_registo: z
+  dataRegisto: z
     .string()
     .min(1, "Data de registo é obrigatória"),
 
-    estado_id: z
+    estadoId: z
     .string(),
-  horas_mes: z
+  horasMes: z
     .string()
     .nullable()
     .optional(),
 
-    n_processo_judicial: z
+    nProcessoJudicial: z
     .string()
     .nullable()
     .optional(),
 
-  valor_total: z
+  valorTotal: z
     .union([z.number(), z.string()])
     .transform((val) => (val === "" ? null : Number(val)))
     .nullable()

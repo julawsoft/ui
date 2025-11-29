@@ -44,7 +44,10 @@ const TopBar: React.FC<TopBarProps> = ({ onDrawerToggle }) => {
         {/* Notificações e Perfil de Usuário */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
 
+          {/**
+           * 
           <ChronometerCompact />
+           */}
           <NotificationMenu />
           <UserMenu />
         </Box>

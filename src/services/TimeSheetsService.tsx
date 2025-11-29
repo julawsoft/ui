@@ -1,24 +1,37 @@
 import type { IProcesso, IProcessoInput } from "../schema/InterfaceProcess";
-import type { ITimeSheets, ITipoTarefas, ITotalProjects, ITotalTasks } from "../schema/InterfaceTimeSheets";
+import type { ITimeSheets, ITimeSheetsForm, ITipoTarefas, ITotalProjects, ITotalTasks } from "../schema/InterfaceTimeSheets";
 import { RequestApi } from "../utils/http/request";
+
+type StatusType = 'rascunho'|'submetido'|'aprovado'|'rejeitado'|'faturado'
+
+interface filterTimeSheets {
+  colaboradorId?: number | string,
+  processoId?: number | string,
+  clienteId?: number,
+  tarefaId?: number,
+  statusId?: StatusType | string,
+  dataInicio?: string,
+  dataFim?: string,
+}
 
 export class TimeSheetsService {
 
-  static async getAll(): Promise<ITimeSheets[]> {
-    const response = await new RequestApi().get(`timesheets`);
+  static async getAll(filter: filterTimeSheets): Promise<ITimeSheets[]> {
+    const response = await new RequestApi().get(`timesheets?${new URLSearchParams(filter as Record<string, string>).toString()}`);
     if (response && response.status === 400) {
       throw new Error("Erro ao obter os timesheets");
     }
     return response?.data as ITimeSheets[];
   }
-  static async getByColaboradorId(id:number): Promise<ITimeSheets[]> {
-    
-    const response = await new RequestApi().get(`/timesheets-colaborador/${id}`);
+  
+  static async getByColaboradorId(id: number): Promise<ITimeSheets[]> {
+
+    const response = await new RequestApi().get(`timesheets?colaboradorId=${id}`);
     if (response && response.status === 400) {
       throw new Error("Erro ao obter os timesheets do colaborador");
     }
     return response?.data as ITimeSheets[];
-    
+
   }
 
   static async getById(id: number): Promise<IProcesso> {
@@ -36,12 +49,19 @@ export class TimeSheetsService {
     return response?.data as ITipoTarefas[];
   }
 
-  static async save(data: IProcessoInput): Promise<IProcesso> {
-    const response = await new RequestApi().post(`processo`, { ...data });
+  static async save(data: ITimeSheetsForm): Promise<ITimeSheets> {
+    const response = await new RequestApi().post(`processo_time_sheets`, { ...data });
     if (response && response.status === 400) {
-      throw new Error("Erro ao salvar o processo");
+      throw new Error("Erro ao salvar o processo_time_sheets");
     }
-    return response?.data as IProcesso;
+    return response?.data as ITimeSheets;
+  }
+  static async update(idTimeSheet: number, data: ITimeSheetsForm): Promise<ITimeSheets> {
+    const response = await new RequestApi().put(`processo_time_sheets/${idTimeSheet}`, { ...data });
+    if (response && response.status === 400) {
+      throw new Error("Erro ao salvar o processo_time_sheets");
+    }
+    return response?.data as ITimeSheets;
   }
 
   static async getAllTarefas(year?: number, idUser?: string): Promise<ITotalTasks[]> {
@@ -76,6 +96,12 @@ export class TimeSheetsService {
     return response?.data as ITotalProjects[];
   }
 
+  static async submeter(idTimeSheet: number, stutus: string): Promise<ITotalProjects[]> {
+    const response = await new RequestApi().patch(`timesheets-change-status?idTimeSheet=${idTimeSheet}&status=${stutus}`, {});
+    if (response && response.status === 400) {
+      throw new Error(response.message || "Erro ao submeter o timesheet");
+    }
+    return response?.data as ITotalProjects[];
+  }
 
-  
 }

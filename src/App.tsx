@@ -12,12 +12,12 @@ function App() {
 
   return (
     <ThemeProvider theme={themeJulaw}>
-    <BrowserRouter>
-      <ToastNotification />
-      <Suspense fallback={<Loader />}>
-        <Router />
-      </Suspense>
-    </BrowserRouter>
+      <BrowserRouter>
+        <ToastNotification />
+        <Suspense fallback={<Loader />}>
+          <Router />
+        </Suspense>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }

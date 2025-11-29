@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, Alert } from '@mui/material';
+import { Box, Grid, Alert, Stack, Button } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import BoxCard from '../../components/common/BoxCard';
@@ -20,6 +20,8 @@ import type {
   IColaboradorInput,
   ITipoColaborador,
 } from '../../schema/InterfaceColaboradores';
+import BreadcrumbsNav from '../../components/common/BreadcrumbsNav';
+import { ROUTES_PATH } from '../../routes/routePaths';
 
 const statusOptions = [
   { label: 'Ativo', value: 'active' },
@@ -164,8 +166,19 @@ const NewColaborador: React.FC = () => {
     }
   };
 
+  const handleClose = () => {
+      navigate(ROUTES_PATH.Colaborador)
+  }
+
   return (
     <>
+     <BreadcrumbsNav
+        items={[
+          { label: "Home", path: "/" },
+          { label: "Lista dos Colaboradores", path: "/colaboradores" },
+          { label: "Formulário do colaborador" }
+        ]}
+      />
       <BoxTop title={id ? 'Alterar Colaborador' :'Novo Colaborador'} />
       <BoxCard>
         {isLoading && <Loader />}
@@ -457,10 +470,17 @@ const NewColaborador: React.FC = () => {
               </Grid>
 
               {/* Botão */}
-              <Grid item xs={12}>
-                <PrimaryButton type="submit">
-                  Salvar Colaborador</PrimaryButton>
+              <Grid item xs={12} md={12}>
+                <Stack width={'100%'} direction="row" justifyContent="flex-end" gap={2} mt={3}>
+                  <Button onClick={handleClose} color="inherit">
+                    Cancelar
+                  </Button>
+                  <PrimaryButton type="submit">{id ? 'Atualizar' : 'Salvar'}</PrimaryButton>
+
+                </Stack>
               </Grid>
+
+              
             </Grid>
           </Box>
         )}

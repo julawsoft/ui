@@ -12,7 +12,6 @@ const fillTemplate = (template: string, client: IClient) => {
     .replace("{{pessoa_contacto}}", String(client.pessoa_contacto) ?? "-")
     .replace("{{contacto_cobranca}}", client.contacto_cobranca?.toString() ?? "-")
     .replace("{{e_mail}}", client.e_mail ?? "-")
-    .replace("{{status}}", client.status ?? "-")
     .replace("{{nota}}", client.nota ?? "-")
     .replace("{{created_at}}", new Date(client.created_at).toLocaleDateString())
     .replace("{{updated_at}}", new Date(client.updated_at).toLocaleDateString())

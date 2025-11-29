@@ -29,12 +29,13 @@ const timeoutPromise = <T>(
 interface IGenericViewResponse<T> {
     data: T;
     time?: Date;
+    message: string;
     status: number;
     errors: string[];
 
 }
 
-type HttpMethods = 'PUT' | 'POST' | 'DELETE' | 'GET';
+type HttpMethods = 'PUT' | 'POST' | 'DELETE' | 'GET' | 'PATCH';
 
 const getToken = async (): Promise<string> => {
     const {accessToken} = getUserLogged()
@@ -127,6 +128,15 @@ export class RequestApi {
         headers?: Record<string, string>,
     ): Promise<IGenericViewResponse<T> | null> {
         return RequestApi.fetchWithTimeout<T>('POST', path, data, withRefreshToken, headers);
+    }
+
+    async patch<T>(
+        path: string,
+        data: Record<string, unknown>,
+        withRefreshToken = false,
+        headers?: Record<string, string>,
+    ): Promise<IGenericViewResponse<T> | null> {
+        return RequestApi.fetchWithTimeout<T>('PATCH', path, data, withRefreshToken, headers);
     }
 
     async put<T>(

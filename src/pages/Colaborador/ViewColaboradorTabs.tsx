@@ -83,7 +83,8 @@ const ViewColaboradorTabs: React.FC = () => {
     <>
       <BreadcrumbsNav
         items={[
-          { label: "Colaboradores", path: "/colaboradores" },
+          { label: "Home", path: "/" },
+          { label: "Lista dos Colaboradores", path: "/colaboradores" },
           { label: "Detalhes do colaborador" }
         ]}
       />
