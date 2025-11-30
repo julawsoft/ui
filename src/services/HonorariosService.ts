@@ -1,5 +1,5 @@
 import type { HonorarioInput, IFatura, IHonorarioInvoice, IHonorarios } from "../schema/InterfaceHonorarios";
-import type { IProcesso, IProcessoInput } from "../schema/InterfaceProcess";
+import type { IProcesso } from "../schema/InterfaceProcess";
 import { RequestApi } from "../utils/http/request";
 
 type StatusType = 'pendente'|'pago'

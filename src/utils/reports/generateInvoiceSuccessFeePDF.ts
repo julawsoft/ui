@@ -3,8 +3,7 @@ import html2pdf from "html2pdf.js";
 import type { IProcesso } from "../../schema/InterfaceProcess";
 import { formatMoedaAOA } from "../moeda";
 
-// Função para preencher placeholders do template
-const fillTemplate = (template: string, processoSelected: IProcesso, cliente: IClient, processo: IProcesso, total: number) => {
+const fillTemplate = (template: string, cliente: IClient, processo: IProcesso, total: number) => {
 
   return template
     .replace("{{empresa_nome}}", String("Nome da Empresa"))
@@ -12,7 +11,6 @@ const fillTemplate = (template: string, processoSelected: IProcesso, cliente: IC
     .replace("{{empresa_nif}}", String("NIF da Empresa"))
     .replace("{{empresa_telefone}}", String("Telefone da Empresa"))
     .replace("{{empresa_email}}", String("E-mail da Empresa"))
-    // Dados do cliente
     .replace("{{cliente}}", cliente.denominacao ?? "-")
     .replace("{{cliente_nif}}", String(cliente.nif) ?? "-")
     .replace("{{cliente_contacto}}", String(cliente.contacto_cobranca) ?? "-")
@@ -31,20 +29,16 @@ const fillTemplate = (template: string, processoSelected: IProcesso, cliente: IC
     .replace("{{valor}}", formatMoedaAOA(processo.valor_total))
 
     .replace("{{total}}", formatMoedaAOA(total) ?? "0.00")
-    // Observações e geração
     .replace("{{generated_at}}", new Date().toLocaleString());
 };
 
 
-export const generateInvoiceSuccessFeePDF = async (processoSelected: IProcesso, cliente: IClient, processo: IProcesso, total: number) => {
-  // carregar template do public
+export const generateInvoiceSuccessFeePDF = async (cliente: IClient, processo: IProcesso, total: number) => {
   const response = await fetch("/templates/invoice_template_hororarios_success_fee.html");
   const templateHtml = await response.text();
 
-  // preencher placeholders
-  const filledHtml = fillTemplate(templateHtml, processoSelected, cliente, processo, total);
+  const filledHtml = fillTemplate(templateHtml, cliente, processo, total);
 
-  // criar container temporário no DOM
   const container = document.createElement("div");
   container.innerHTML = filledHtml;
   document.body.appendChild(container);

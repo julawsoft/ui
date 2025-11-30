@@ -22,22 +22,15 @@ const tiposCliente = [
   { label: 'Outro', value: 6 },
 ];
 
-const statusOptions = [
-  { label: 'Pending', value: 'pending' },
-  { label: 'Active', value: 'active' },
-  { label: 'Inactive', value: 'inactive' },
-];
-
 const NewClient: React.FC = () => {
   
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
+  const [, setSuccess] = useState(false);
 
   const { handleSubmit, control, formState: { errors }, reset } = useForm<ClienteFormData>({
     resolver: zodResolver(clienteSchema),
     defaultValues: {
-      tipo_id: 1,
+      tipo_id: '',
       denominacao: '',
       nif: '',
       pessoa_contacto: '',
@@ -50,10 +43,8 @@ const NewClient: React.FC = () => {
   });
 
   const onSubmit = async (data: ClienteFormData) => {
-    console.log("O submit data ", data); // Aqui sim loga os valores preenchidos
   
     setLoading(true);
-    setError('');
     setSuccess(false);
   
     try {
@@ -62,7 +53,6 @@ const NewClient: React.FC = () => {
       reset();
       toast.success('Cliente cadastrado com sucesso!');
     } catch (err: any) {
-      setError(err.message || 'Erro desconhecido');
       toast.error(err.message || 'Erro desconhecido');
     } finally {
       setLoading(false);
@@ -78,7 +68,6 @@ const NewClient: React.FC = () => {
         {!loading && (
           <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2 }}>
             <Grid container spacing={2}>
-              {/* Tipo */}
               <Grid container item xs={12} md={4}>
                 <Controller
                   name="tipo_id"
@@ -92,7 +81,6 @@ const NewClient: React.FC = () => {
                 />
               </Grid>
 
-              {/* Denominação */}
               <Grid item xs={12} md={4}>
                 <Controller
                   name="denominacao"
@@ -104,7 +92,6 @@ const NewClient: React.FC = () => {
                 {errors.denominacao && <Alert severity="error">{errors.denominacao.message}</Alert>}
               </Grid>
 
-              {/* NIF */}
               <Grid item xs={12} md={4}>
                 <Controller
                   name="nif"
@@ -116,7 +103,6 @@ const NewClient: React.FC = () => {
                 {errors.nif && <Alert severity="error">{errors.nif.message}</Alert>}
               </Grid>
 
-              {/* Pessoa de contacto */}
               <Grid item xs={12} md={4}>
                 <Controller
                   name="pessoa_contacto"
@@ -128,7 +114,6 @@ const NewClient: React.FC = () => {
                 {errors.pessoa_contacto && <Alert severity="error">{errors.pessoa_contacto.message}</Alert>}
               </Grid>
 
-              {/* Contacto cobrança */}
               <Grid item xs={12} md={4}>
                 <Controller
                   name="contacto_cobranca"
@@ -140,7 +125,6 @@ const NewClient: React.FC = () => {
                 {errors.contacto_cobranca && <Alert severity="error">{errors.contacto_cobranca.message}</Alert>}
               </Grid>
 
-              {/* Email */}
               <Grid item xs={12} md={4}>
                 <Controller
                   name="e_mail"
@@ -152,7 +136,6 @@ const NewClient: React.FC = () => {
                 {errors.e_mail && <Alert severity="error">{errors.e_mail.message}</Alert>}
               </Grid>
 
-              {/* Endereço */}
               <Grid item xs={12}>
                 <Controller
                   name="endereco"
@@ -164,7 +147,6 @@ const NewClient: React.FC = () => {
                 {errors.endereco && <Alert severity="error">{errors.endereco.message}</Alert>}
               </Grid>
 
-              {/* Nota */}
               <Grid item xs={12}>
                 <Controller
                   name="nota"
@@ -176,7 +158,6 @@ const NewClient: React.FC = () => {
                 {errors.nota && <Alert severity="error">{errors.nota.message}</Alert>}
               </Grid>
 
-              {/* Botão */}
               <Grid item xs={12} md={4}>
                 <PrimaryButton type="submit">Salvar Cliente</PrimaryButton>
               </Grid>

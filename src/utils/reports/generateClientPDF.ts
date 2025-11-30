@@ -1,7 +1,6 @@
 import type { IClient } from "../../schema/InterfaceClient";
 import html2pdf from "html2pdf.js";
 
-// Função para preencher placeholders do template
 const fillTemplate = (template: string, client: IClient) => {
   return template
     .replace("{{id}}", String(client.id))
@@ -19,30 +18,24 @@ const fillTemplate = (template: string, client: IClient) => {
 };
 
 export const generateClientPDF = async (client: IClient) => {
-  // carregar template do public
   const response = await fetch("/templates/clientFicha.html");
   const templateHtml = await response.text();
 
-  // preencher placeholders
   const filledHtml = fillTemplate(templateHtml, client);
 
-  // criar container temporário no DOM
   const container = document.createElement("div");
   container.innerHTML = filledHtml;
   document.body.appendChild(container);
 
-  // opções do html2pdf
   const opt:any = {
-    margin:       [10, 10, 20, 10], // top, right, bottom, left
+    margin:       [10, 10, 20, 10],
     filename:     `Ficha_Cliente_${client.denominacao.replace(/\s+/g, "_")}.pdf`,
     image:        { type: "jpeg", quality: 0.98 },
     html2canvas:  { scale: 2, useCORS: true },
     jsPDF:        { unit: "mm", format: "a4", orientation: "portrait" }
   };
 
-  // gerar PDF
   await html2pdf().set(opt).from(container).save();
 
-  // remover container temporário
   document.body.removeChild(container);
 };

@@ -1,15 +1,9 @@
-import type { IClient } from "../schema/InterfaceClient"
 import type { ICategoriaColaborador, IColaborador, IColaboradorInput, ITipoColaborador } from "../schema/InterfaceColaboradores";
 import { RequestApi } from "../utils/http/request"
 
-interface ILogin {
-  username: string
-  password: string
-}
-
 export class ColaboradorService {
 
-    static async getAllColaboradoresWithoutEquipaProcesso(idProcesso:number): Promise<any[]> {
+    static async getAllColaboradoresWithoutEquipaProcesso(): Promise<any[]> {
         const response = await new RequestApi().get(`colaborador`);
         if(response && response.status === 400) {
             throw new Error('Erro ao obter os clientes')

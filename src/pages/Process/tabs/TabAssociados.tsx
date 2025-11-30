@@ -5,11 +5,7 @@ import DataTable from '../../../components/common/DataTable';
 import SimpleModal from '../../../components/common/SimpleModal';
 import type { IProcesso, IProcessoPrecedentes, ITarefa } from '../../../schema/InterfaceProcess';
 
-//  icon de lixo
-import EditIcon from "@mui/icons-material/Edit";
-import type { IColaborador } from '../../../schema/InterfaceColaboradores';
 import SelectBox from '../../../components/common/SelectBox';
-import { ColaboradorService } from '../../../services/ColaboradorService';
 import { toast } from 'react-toastify';
 import { ProcessoService } from '../../../services/ProcessoService';
 import { Delete } from '@mui/icons-material';
@@ -32,18 +28,16 @@ const TabAssociados: React.FC<Props> = ({ data, onDelete, idProcesso, setReloadF
       try {
         await Promise.all([fetchColaboradores()]);
       } catch (error) {
-        console.error('Erro ao carregar dados iniciais:', error);
         toast.error('Erro ao carregar dados iniciais.');
       }
     };
     fetchAll();
   }, [])
 
-  const fetchColaboradores = async () => setProcessos(await ProcessoService.getAllColaboradoresWithoutAssociadoProcesso(idProcesso));
+  const fetchColaboradores = async () => setProcessos(await ProcessoService.getAllColaboradoresWithoutAssociadoProcesso());
 
   const saveAssociados = async () => {
     try {
-      console.log("selectValue - saveAssociados ", selectedValue)
       await ProcessoService.addAssociadosProcesso({
         processoId: idProcesso,
         precedentes: [Number(selectedValue)]
@@ -55,6 +49,7 @@ const TabAssociados: React.FC<Props> = ({ data, onDelete, idProcesso, setReloadF
     }
   }
 
+  /*
   type IRow = Pick<
   IProcessoPrecedentes,
     | "id"
@@ -63,6 +58,7 @@ const TabAssociados: React.FC<Props> = ({ data, onDelete, idProcesso, setReloadF
   > & {
     actions: ReactNode;
   };
+  */
 
   const columns = [
     { id: 'id', label: '#' },
@@ -73,7 +69,7 @@ const TabAssociados: React.FC<Props> = ({ data, onDelete, idProcesso, setReloadF
 
   const transformData = (
     data: IProcessoPrecedentes[]
-  ): IRow[] => {
+  ): any[] => {
     return data.map((item:IProcessoPrecedentes, index) => ({
       id: index + 1,
       processo: item.precedente_refencia,

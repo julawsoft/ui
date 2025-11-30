@@ -3,11 +3,9 @@ import html2pdf from "html2pdf.js";
 import type { IColaborador } from "../../schema/InterfaceColaboradores";
 
 export const generateColaboradoresListPDF = async (colaboradores: IColaborador[]) => {
-  // carrega o template HTML
   const response = await fetch("/templates/colaboradoresList.html");
   let templateHtml = await response.text();
 
-  // monta as linhas da tabela
   let rowIndex = 1
   const rows = colaboradores.map(emp => `
     <tr>
@@ -20,16 +18,13 @@ export const generateColaboradoresListPDF = async (colaboradores: IColaborador[]
     </tr>
   `).join("");
 
-  // substitui placeholders no template
   const filledHtml = templateHtml
     .replace("{{rows}}", rows)
     .replace("{{generated_at}}", new Date().toLocaleString());
 
-  // cria container temporário no DOM
   const container = document.createElement("div");
   container.innerHTML = filledHtml;
 
-  // gera PDF com html2pdf
   const opt:any = {
     margin:       10,
     filename:     "Lista_Colaboradores.pdf",

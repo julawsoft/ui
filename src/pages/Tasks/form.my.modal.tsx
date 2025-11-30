@@ -36,28 +36,22 @@ const estadoOptions = [
 
 const TasksMyAgendaForm: React.FC<TasksAgendaFormProps> = ({
   tasks,
-  userId,
   handleSaveOrUpdate,
   handleClose,
   isClose,
 }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [, setSuccess] = useState(false);
 
   const [clientes, setClientes] = useState<Partial<IClient>[]>([]);
   const [processos, setProcessos] = useState<Partial<IProcesso>[]>([]);
-  const [colaboradores, setColaboradores] = useState<Partial<IColaborador>[]>([]);
-  const [gestores, setGestores] = useState<Partial<IColaborador>[]>([]);
+  const [, setColaboradores] = useState<Partial<IColaborador>[]>([]);
+  const [, setGestores] = useState<Partial<IColaborador>[]>([]);
   const [tipoTarefas, setTipoTarefas] = useState<Partial<ITipoTarefas>[]>([]);
 
-  /**
-   * Função para converter datas no formato dd/MM/yyyy HH:mm:ss
-   * para objeto Date válido
-   */
   function parseDateString(dateStr?: string | null): Date | null {
     if (!dateStr) return null;
-    // Detecta formato dd/MM/yyyy HH:mm:ss
     const regex = /^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2}):(\d{2}))?$/;
     const match = dateStr.match(regex);
     if (match) {

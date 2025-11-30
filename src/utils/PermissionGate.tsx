@@ -17,7 +17,7 @@ function PermissionGate({ children, roles }: IPermissionGate) {
     }
     return null
   }
-  return <>{permissionGate()}</>
+  return (<>{permissionGate()}</>)
 }
 
 export default PermissionGate

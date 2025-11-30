@@ -1,44 +1,31 @@
-// src/pages/Colaborador.tsx
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 import BoxCard from '../../components/common/BoxCard';
 import DataTable from '../../components/common/DataTable';
 import { columns, columnsProjectos, columnsTarefas, transformDataTimeSheet, transformDataTimeSheetProjectos, transformDataTimeSheetTarefas } from './transformGlobal';
-import BoxTop from '../../components/common/BoxTop';
-import { ROUTES_PATH } from '../../routes/routePaths';
 import StateHandler from '../../components/common/StateHandler';
 import { TimeSheetsService } from '../../services/TimeSheetsService';
-import type { ITimeSheets, ITimeSheetsForm, ITipoTarefas, ITotalProjects, ITotalTasks } from '../../schema/InterfaceTimeSheets';
+import type { ITimeSheets, ITimeSheetsForm, ITotalProjects, ITotalTasks } from '../../schema/InterfaceTimeSheets';
 import { useUserLogged } from '../../hooks/useUserLogged';
 import BreadcrumbsNav from '../../components/common/BreadcrumbsNav';
-import PrimaryButton from '../../components/common/PrimaryButton';
-import { Alert, Box, Button, Grid, Menu, MenuItem, Select, Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
-import { Add, ExpandMore, Home, Info, Settings } from '@mui/icons-material';
-import NormalModal from '../../components/common/NormalModal';
-import VerticalTabBar from '../../components/common/VerticalTabBar';
-import HorizontalTabBar from '../../components/common/HorizontalTabBar';
+import { Box, Button, Grid, Menu, MenuItem, Stack, Tab, Tabs, Typography } from '@mui/material';
+import { ExpandMore } from '@mui/icons-material';
 import type { IProcesso } from '../../schema/InterfaceProcess';
 import type { IClient } from '../../schema/InterfaceClient';
 import { ClientService } from '../../services/ClientService';
 import { timeSheetSchema, type TimeSheetFormData } from '../../validation/timeSheetSchema';
-import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import SelectBox from '../../components/common/SelectBox';
 import ConfirmDialog from '../../components/common/ConfirmDialog';
-import SimpleModal from '../../components/common/SimpleModal';
 import type { ITasks } from '../../schema/InterfaceTarefa';
 import { TasksService } from '../../services/TasksService';
 import { formatDateInput } from '../../utils/data';
-import TimesheetEntryBox from '../../components/Chronometer/TimesheetEntryBox';
-import TimesheetTable from '../../components/common/TimesheetTable';
 import FiltroTimeSheetsGlobal from './FiltroTimeSheetsGlobal';
 import { ProcessoService } from '../../services/ProcessoService';
 import dayjs from 'dayjs';
-import { generateTimeSheetListAVDPDF } from '../../utils/reports/generateListTimeSheetADVPDF';
 import type { IColaborador } from '../../schema/InterfaceColaboradores';
 import { ColaboradorService } from '../../services/ColaboradorService';
 import { generateTimeSheetListGlobalAVDPDF } from '../../utils/reports/generateListTimeSheetGlobalADVPDF';
+import { useForm } from 'react-hook-form';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -68,7 +55,6 @@ const estados = [
   },
 ]
 
-
 const TabPanel: React.FC<TabPanelProps> = ({ children, value, index }) => (
   <div role="tabpanel" hidden={value !== index}>
     {value === index && <Box sx={{ pt: 2 }}>{children}</Box>}
@@ -77,19 +63,16 @@ const TabPanel: React.FC<TabPanelProps> = ({ children, value, index }) => (
 
 const MineTimeSheets: React.FC = () => {
   const { user } = useUserLogged();
-  const navigate = useNavigate();
 
   const [data, setData] = useState<ITimeSheets[]>([]);
   const [dataTarefas, setDataTarefas] = useState<ITotalTasks[]>([]);
   const [dataProjectos, setDataProjectos] = useState<ITotalProjects[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingModal, setIsLoadingModal] = useState(false);
+  const [,setIsLoadingModal] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const [tabIndex, setTabIndex] = useState(0);
-  const [verticalValue, setVerticalValue] = useState("home");
-  const [horizontalValue, setHorizontalValue] = useState("home");
-  const [openModalTimeSheet, setOpenModalTimeSheet] = useState(false);
+  const [,setOpenModalTimeSheet] = useState(false);
 
   const [openConfirm, setOpenConfirm] = useState(false);
 
@@ -119,9 +102,7 @@ const MineTimeSheets: React.FC = () => {
   const [colaboradores, setColaboradores] = useState<IColaborador[]>([]);
   const [colaborador, setColaborador] = useState("");
 
-
-  // Hooks
-  const { control, handleSubmit, formState: { errors }, reset, watch } = useForm<TimeSheetFormData>({
+  const { reset } = useForm<TimeSheetFormData>({
     resolver: zodResolver(timeSheetSchema),
   });
 
@@ -179,6 +160,7 @@ const MineTimeSheets: React.FC = () => {
     }
   };
 
+  /*
   const fnModalTimeSheet = async (isOpen: boolean) => {
     if (isOpen) {
       try {
@@ -194,12 +176,14 @@ const MineTimeSheets: React.FC = () => {
     }
     setOpenModalTimeSheet(isOpen);
   };
+  */
 
   const fetchClientes = async () => setClientes(await ClientService.getAll());
   const fetchTarefas = async (idProcesso: number) => setTarefas(await TasksService.getTasksByProcesso(idProcesso));
   const fetchProcessosByClientId = async (idClient: number) =>
     setProcessos(await ClientService.getProcessos(idClient));
 
+  /*
   const onSubmit = async (formData: TimeSheetFormData) => {
 
     try {
@@ -243,6 +227,8 @@ const MineTimeSheets: React.FC = () => {
     }
   };
 
+  */
+
   // === Editar um registro existente ===
   const handleEdit = async (timeSheet: ITimeSheets) => {
     try {
@@ -277,87 +263,19 @@ const MineTimeSheets: React.FC = () => {
     }
   };
 
-  const handleView = (timeSheet: ITimeSheets) => {
-    // setForm(task);
-    console.log("handleRemove", timeSheet)
-    // setOpenDialog(true);
-  };
-
-  const handleRemove = (timeSheet: ITimeSheets) => {
-    console.log("handleRemove", timeSheet)
-    // setForm(task);
-    setOpenConfirm(true);
-  };
-
-
-  const handleConfirmDelete = async () => {
-    try {
-      /* 
-      const response = await TasksService.deleteTask(form.id!);
-        console.log("Resposta apos eliminar a tarefa ", response)
-        if(response){
-          toast.success('Tarefa eliminada com sucesso!');
-          setOpenConfirm(false);
-          handleCloseModal();
-          setTimeout(() => {
-            getMyTasks();
-          }, 1000)
-        }
-      */
-
-    } catch (error: any) {
-      toast.error(error.message || 'Erro ao eliminar tarefa.');
-    }
-  }
-
-  const handleChangeStatus = async (timeSheets: ITimeSheets) => {
-    try {
-      
-        const response = await TimeSheetsService.submeter(timeSheets.id, 'aprovado');
-        console.log("Resposta atualizada a tarefa ", response)
-        if(response){
-          toast.success('TimeSheet submetido com sucesso!');
-          setOpenConfirm(false);
-          handleCloseModal();
-          setTimeout(() => {
-            getAllTimeSheets()
-          }, 1000)
-        }
-        
-    } catch (error: any) {
-      toast.error(error.message || 'Erro ao alterar o estado da tarefa.');
-    }
-  }
-
-  const handleCloseModal = () => {
-    fnModalTimeSheet(false),
-      reset()
-  }
-  const handleOpenModal = () => {
-    fnModalTimeSheet(true),
-      reset()
-  }
-
-  const handleChangeCliente = (e: React.ChangeEvent<{ value: unknown }>) => {
-    const id = e.target.value as number;
-    setCliente(id);
-    fetchProcessosByClientId(id);
-  };
-
   const handleBuscar = () => {
     console.log("Buscar com filtros:", estado)
     getAllTimeSheets()
   }
 
   const totalDuration = (): string => {
-    const totalSeconds = data.reduce((acc, t) => {
-      if (!t.horas) return acc; // ignora se não houver valor
+    const totalSeconds = data.reduce((acc:any, t:any) => {
+      if (!t.horas) return acc; 
 
-      // Garante formato HH:MM:SS mesmo que venha só HH:MM
       const parts = t.horas.split(":").map(Number);
       const [h = 0, m = 0, s = 0] = parts;
 
-      if (isNaN(h) || isNaN(m) || isNaN(s)) return acc; // ignora valores inválidos
+      if (isNaN(h) || isNaN(m) || isNaN(s)) return acc;
 
       return acc + h * 3600 + m * 60 + s;
     }, 0);
@@ -375,8 +293,6 @@ const MineTimeSheets: React.FC = () => {
     return `${h}:${m}:${s}`;
   };
 
-
-
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -385,45 +301,13 @@ const MineTimeSheets: React.FC = () => {
   };
   const handleMenuClose = () => setAnchorEl(null);
 
-  const handleExport = (type: string) => {
+  const handleExport = () => {
     if(data)
       generateTimeSheetListGlobalAVDPDF(data, dataInicio, dataFim)
     handleMenuClose();
   };
 
-  const handleSaveTimeSheet = async (data: any) => {
-      console.log("data >>> ", data)
-
-
-
-      const dataToSave = {
-        colaboradorId: Number(user?.id),
-        //clienteId: number;
-        //processoId: number;
-        descricao: data.descricao,
-        dataInicio: data.data,
-        dataFim: data.data,
-        horas: data.horasTrabalhadas,
-        tarefaId: data.tarefaId
-      }
-      
-
-     // if (formData.timeSheetId) {
-     //   const response = await TimeSheetsService.update(formData.timeSheetId, dataToSave)
-     //   if (response)
-      //    toast.success('TimeSheet atualizado com sucesso!');
-     // } else {
-      const response = await TimeSheetsService.save(dataToSave)
-      if (response) {
-        toast.success('TimeSheet cadastrado com sucesso!');
-        getAllTimeSheets()
-      }
-     // }
-
-
-
-  }
-
+  const handleConfirmDelete = () => console.log("handleConfirmDelete")
 
   return (
     <div>
@@ -433,38 +317,6 @@ const MineTimeSheets: React.FC = () => {
           { label: "Lista dos timesheets" }
         ]}
       />
-
-      {/*
-      <BoxTop title="Lista meus dos TimeSheets" actions={
-          <Stack direction="row" gap={1}>
-
-          <Button
-            variant="contained"
-            startIcon={<Add />}
-            onClick={handleOpenModal}
-          >
-            Novo Registo
-          </Button>
-          
-          <PrimaryButton onClick={() => toast.info("Exportar PDF")}>Exportar PDF</PrimaryButton>
-        </Stack>
-      }/>
-
-      */}
-
-
-      {/**
-       * 
-       * 
-      <TimesheetEntryBox
-           tarefas={tarefas}
-           handleSaveTimeSheet={handleSaveTimeSheet}
-      />
-
-       */}
-      {/*
-        <TimesheetTable />
-        */}
 
       <FiltroTimeSheetsGlobal
         clientes={clientes}
@@ -545,14 +397,14 @@ const MineTimeSheets: React.FC = () => {
                         Exportar
                       </Button>
                       <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
-                        <MenuItem onClick={() => handleExport("PDF")}>PDF</MenuItem>
-                        <MenuItem onClick={() => handleExport("excel")}>Excel</MenuItem>
+                        <MenuItem onClick={() => handleExport()}>PDF</MenuItem>
+                        <MenuItem onClick={() => handleExport()}>Excel</MenuItem>
                       </Menu>
                     </Box>
                   </Box>
                   <DataTable
                     columns={columns}
-                    rows={transformDataTimeSheet(data, handleEdit, handleRemove, handleView, handleChangeStatus)}
+                    rows={transformDataTimeSheet(data, handleEdit)}
                   />
                 </>
               )}
@@ -562,25 +414,9 @@ const MineTimeSheets: React.FC = () => {
           {/*  TAREFAS  */}
           <TabPanel value={tabIndex} index={1}>
             <>
-              {/*
-              <Stack mb={3} direction="row" justifyContent="space-between" alignItems="center">
-                <Typography>Filtros</Typography>
-                <Stack direction="row" gap={1}>
-                  <Button
-                    variant="contained"
-                    startIcon={<Add />}
-                    onClick={() => fnModalTimeSheet(true)}
-                  >
-                    Novo Registo
-                  </Button>
-                  <PrimaryButton onClick={() => toast.info("Exportar PDF")}>Exportar PDF</PrimaryButton>
-                </Stack>
-              </Stack>
-
-              */}
               <DataTable
                 columns={columnsTarefas}
-                rows={transformDataTimeSheetTarefas(dataTarefas, () => { }, () => { })}
+                rows={transformDataTimeSheetTarefas(dataTarefas)}
               />
             </>
           </TabPanel>
@@ -588,25 +424,9 @@ const MineTimeSheets: React.FC = () => {
           {/*  PROJECTOS  */}
           <TabPanel value={tabIndex} index={2}>
             <>
-              {/*
-              <Stack mb={3} direction="row" justifyContent="space-between" alignItems="center">
-                <Typography>Filtros</Typography>
-                <Stack direction="row" gap={1}>
-                  <Button
-                    variant="contained"
-                    startIcon={<Add />}
-                    onClick={() => fnModalTimeSheet(true)}
-                  >
-                    Novo Registo
-                  </Button>
-                  <PrimaryButton onClick={() => toast.info("Exportar PDF")}>Exportar PDF</PrimaryButton>
-                </Stack>
-              </Stack>
-
-              */}
               <DataTable
                 columns={columnsProjectos}
-                rows={transformDataTimeSheetProjectos(dataProjectos, () => { }, () => { })}
+                rows={transformDataTimeSheetProjectos(dataProjectos)}
               />
             </>
           </TabPanel>

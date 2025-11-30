@@ -1,3 +1,4 @@
+/*
 import React, { useEffect, useState } from "react";
 import {
   Button,
@@ -19,6 +20,8 @@ import { ColaboradorService } from "../../../services/ColaboradorService";
 import { toast } from "react-toastify";
 import { ProcessoService } from "../../../services/ProcessoService";
 import { useUserLogged } from "../../../hooks/useUserLogged";
+import { TasksService } from "../../../services/TasksService";
+import type { ITasksInput } from "../../../schema/InterfaceTarefa";
 
 interface Props {
   tarefas: ITarefa[];
@@ -43,12 +46,9 @@ const TabTarefas: React.FC<Props> = ({ tarefas, onDelete, idProcesso }) => {
 
   const fetchColaboradores = async () => {
     try {
-      const res = await ColaboradorService.getAllColaboradoresWithoutEquipaProcesso(
-        idProcesso
-      );
+      const res = await ColaboradorService.getAllColaboradoresWithoutEquipaProcesso();
       setColaboradores(res);
     } catch (error) {
-      console.error("Erro ao carregar colaboradores:", error);
       toast.error("Erro ao carregar colaboradores.");
     }
   };
@@ -61,15 +61,15 @@ const TabTarefas: React.FC<Props> = ({ tarefas, onDelete, idProcesso }) => {
 
     setSaving(true);
     try {
-      const dataToSave: ITarefaInput = {
-        processoId: idProcesso,
+      const dataToSave: ITasksInput = {
+        processoId: Number(idProcesso),
         descricao,
-        colaborador_id: responsavelId,
-        gestor_id: supervisorId,
-        data_para_realizacao: dataPrevista,
+        colaboradorId: responsavelId,
+        gestorId: supervisorId,
+        dataParaRealizacao: dataPrevista,
       };
 
-      await ProcessoService.createTarefa(dataToSave);
+      await TasksService.saveTask(dataToSave);
       toast.success("Tarefa adicionada com sucesso!");
       setOpen(false);
       setDescricao("");
@@ -259,3 +259,4 @@ const TabTarefas: React.FC<Props> = ({ tarefas, onDelete, idProcesso }) => {
 };
 
 export default TabTarefas;
+*/

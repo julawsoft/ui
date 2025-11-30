@@ -1,4 +1,4 @@
-import type { IProcesso, IProcessoInput } from "../schema/InterfaceProcess";
+import type { IProcesso } from "../schema/InterfaceProcess";
 import type { ITimeSheets, ITimeSheetsForm, ITipoTarefas, ITotalProjects, ITotalTasks } from "../schema/InterfaceTimeSheets";
 import { RequestApi } from "../utils/http/request";
 
@@ -64,7 +64,8 @@ export class TimeSheetsService {
     return response?.data as ITimeSheets;
   }
 
-  static async getAllTarefas(year?: number, idUser?: string): Promise<ITotalTasks[]> {
+  // static async getAllTarefas(year?: number, idUser?: string): Promise<ITotalTasks[]> {
+  static async getAllTarefas(): Promise<ITotalTasks[]> {
     const response = await new RequestApi().get(`timesheets-total-taferas`);
     if (response && response.status === 400) {
       throw new Error("Erro ao obter o ITotalTasks");
@@ -72,7 +73,8 @@ export class TimeSheetsService {
     return response?.data as ITotalTasks[];
   }
 
-  static async getAllProjectos(year?: number, idUser?: string): Promise<ITotalProjects[]> {
+  // static async getAllProjectos(year?: number, idUser?: string): Promise<ITotalProjects[]> {
+  static async getAllProjectos(): Promise<ITotalProjects[]> {
     const response = await new RequestApi().get(`timesheets-total-projectos`);
     if (response && response.status === 400) {
       throw new Error("Erro ao obter o ITotalProjects");

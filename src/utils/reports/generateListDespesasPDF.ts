@@ -5,7 +5,6 @@ export const generateDespesasListPDF = async (despesas: IDespesas[]) => {
   const response = await fetch("/templates/despesasList.html");
   let templateHtml = await response.text();
 
-  // gerar as linhas da tabela
   const rows = despesas.map(item => `
     <tr>
       <td>${item.id}</td>
@@ -21,7 +20,6 @@ export const generateDespesasListPDF = async (despesas: IDespesas[]) => {
     .replace("{{rows}}", rows)
     .replace("{{generated_at}}", new Date().toLocaleString());
 
-  // usar html2pdf.js
   const opt:any = {
     margin: 0.5,
     filename: `Lista_Despesas.pdf`,

@@ -1,10 +1,8 @@
 import { ITimeSheets } from '../../schema/InterfaceTimeSheets';
-import { ITasks } from '../../schema/InterfaceTarefa';
 import html2pdf from "html2pdf.js";
-import type { IProcesso } from "../../schema/InterfaceProcess";
 
 const totalDuration = (data:any): string => {
-  const totalSeconds = data.reduce((acc, t) => {
+  const totalSeconds = data.reduce((acc:any, t:any) => {
     if (!t.horas) return acc; // ignora se não houver valor
 
     // Garante formato HH:MM:SS mesmo que venha só HH:MM

@@ -19,7 +19,6 @@ export default function FiltroTask({
   dataInicio,
   dataFim,
   handleChangeCliente,
-  handleChangeTipoTarefas,
   handleChangeProcesso,
   handleChangeEstado,
   handleChangeDataInicio,

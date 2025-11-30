@@ -5,7 +5,6 @@ export const generateProcessosListPDF = async (processos: IProcesso[]) => {
   const response = await fetch("/templates/processosList.html");
   let templateHtml = await response.text();
 
-  // gerar as linhas da tabela
   const rows = processos.map(proc => `
     <tr>
       <td>${proc.ref}</td>
@@ -24,7 +23,6 @@ export const generateProcessosListPDF = async (processos: IProcesso[]) => {
     .replace("{{rows}}", rows)
     .replace("{{generated_at}}", new Date().toLocaleString());
 
-  // usar html2pdf.js
   const opt:any = {
     margin: 0.5,
     filename: `Lista_Processos.pdf`,

@@ -1,5 +1,5 @@
-// src/pages/TabsExample.tsx
-import React, { useState } from "react";
+/*
+import { useState } from "react";
 import VerticalTabBar from "../components/common/VerticalTabBar";
 import HorizontalTabBar from "../components/common/HorizontalTabBar";
 import { Box, Typography } from "@mui/material";
@@ -17,7 +17,6 @@ const TabsExample = () => {
 
   return (
     <Box sx={{ display: "flex", gap: 4, p: 3 }}>
-      {/* Vertical Tabs */}
       <Box sx={{ width: 250 }}>
         <VerticalTabBar
           tabs={tabs}
@@ -31,7 +30,6 @@ const TabsExample = () => {
         </Box>
       </Box>
 
-      {/* Horizontal Tabs */}
       <Box sx={{ flexGrow: 1 }}>
         <HorizontalTabBar
           tabs={tabs}
@@ -50,3 +48,5 @@ const TabsExample = () => {
 };
 
 export default TabsExample;
+
+*/

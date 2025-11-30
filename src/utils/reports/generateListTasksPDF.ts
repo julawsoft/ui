@@ -1,6 +1,5 @@
 import { ITasks } from './../../schema/InterfaceTarefa';
 import html2pdf from "html2pdf.js";
-import type { IProcesso } from "../../schema/InterfaceProcess";
 
 export const generateTasksListPDF = async (tasks: ITasks[], dataInicio: string,dataFim: string) => {
   const response = await fetch("/templates/tasksList.html");
@@ -26,7 +25,6 @@ export const generateTasksListPDF = async (tasks: ITasks[], dataInicio: string,d
     .replace("{{rows}}", rows)
     .replace("{{generated_at}}", new Date().toLocaleString());
 
-  // usar html2pdf.js
   const opt:any = {
     margin: 0.5,
     filename: `Lista_tarefas.pdf`,

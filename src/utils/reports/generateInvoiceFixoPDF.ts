@@ -3,7 +3,6 @@ import html2pdf from "html2pdf.js";
 import type { IProcesso } from "../../schema/InterfaceProcess";
 import { formatMoedaAOA } from "../moeda";
 
-// Função para preencher placeholders do template
 const fillTemplate = (template: string, processoSelected: IProcesso, cliente: IClient, processo: IProcesso, total: number) => {
 
   return template
@@ -31,20 +30,16 @@ const fillTemplate = (template: string, processoSelected: IProcesso, cliente: IC
     .replace("{{valor}}", formatMoedaAOA(processoSelected.valor_total))
 
     .replace("{{total}}", formatMoedaAOA(total) ?? "0.00")
-    // Observações e geração
     .replace("{{generated_at}}", new Date().toLocaleString());
 };
 
 
 export const generateInvoiceFixoPDF = async (processoSelected: IProcesso, cliente: IClient, processo: IProcesso, total: number) => {
-  // carregar template do public
   const response = await fetch("/templates/invoice_template_hororarios_fixo.html");
   const templateHtml = await response.text();
 
-  // preencher placeholders
   const filledHtml = fillTemplate(templateHtml, processoSelected, cliente, processo, total);
 
-  // criar container temporário no DOM
   const container = document.createElement("div");
   container.innerHTML = filledHtml;
   document.body.appendChild(container);

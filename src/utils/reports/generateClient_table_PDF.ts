@@ -5,22 +5,13 @@ import type { IClient } from '../../schema/InterfaceClient';
 
 export const generateClientPDF = (client: IClient) => {
   const doc = new jsPDF() as any;
-
-  // =========================
-  // 🔹 Cabeçalho
-  // =========================
   const pageWidth = doc.internal.pageSize.getWidth();
   doc.setFontSize(14);
   doc.setFont('helvetica', 'bold');
   doc.text('FICHA DO CLIENTE', pageWidth / 2, 15, { align: 'center' });
 
-  // Linha abaixo do cabeçalho
   doc.setLineWidth(0.3);
   doc.line(14, 20, pageWidth - 14, 20);
-
-  // =========================
-  // 🔹 Dados principais
-  // =========================
   const formatValue = (val: any) => (val !== null && val !== undefined && val !== '' ? String(val) : '-');
 
   const rows = [
@@ -51,9 +42,6 @@ export const generateClientPDF = (client: IClient) => {
     },
   });
 
-  // =========================
-  // 🔹 Rodapé
-  // =========================
   const pageCount = doc.internal.getNumberOfPages();
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
@@ -65,9 +53,6 @@ export const generateClientPDF = (client: IClient) => {
     });
   }
 
-  // =========================
-  // 🔹 Salvar
-  // =========================
   const fileName = `Ficha_Cliente_${client.denominacao.replace(/\s+/g, '_')}.pdf`;
   doc.save(fileName);
 };

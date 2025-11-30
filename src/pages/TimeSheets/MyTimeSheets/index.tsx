@@ -1,23 +1,15 @@
-// src/pages/Colaborador.tsx
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 import BoxCard from '../../../components/common/BoxCard';
 import DataTable from '../../../components/common/DataTable';
 import { columns, columnsProjectos, columnsTarefas, transformDataTimeSheet, transformDataTimeSheetProjectos, transformDataTimeSheetTarefas } from '../transform';
-import BoxTop from '../../../components/common/BoxTop';
-import { ROUTES_PATH } from '../../../routes/routePaths';
 import StateHandler from '../../../components/common/StateHandler';
 import { TimeSheetsService } from '../../../services/TimeSheetsService';
-import type { ITimeSheets, ITimeSheetsForm, ITipoTarefas, ITotalProjects, ITotalTasks } from '../../../schema/InterfaceTimeSheets';
+import type { ITimeSheets, ITimeSheetsForm, ITotalProjects, ITotalTasks } from '../../../schema/InterfaceTimeSheets';
 import { useUserLogged } from '../../../hooks/useUserLogged';
 import BreadcrumbsNav from '../../../components/common/BreadcrumbsNav';
-import PrimaryButton from '../../../components/common/PrimaryButton';
-import { Alert, Box, Button, Grid, Menu, MenuItem, Select, Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
-import { Add, ExpandMore, Home, Info, Settings } from '@mui/icons-material';
-import NormalModal from '../../../components/common/NormalModal';
-import VerticalTabBar from '../../../components/common/VerticalTabBar';
-import HorizontalTabBar from '../../../components/common/HorizontalTabBar';
+import { Box, Button, Grid, Menu, MenuItem, Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
+import { ExpandMore } from '@mui/icons-material';
 import type { IProcesso } from '../../../schema/InterfaceProcess';
 import type { IClient } from '../../../schema/InterfaceClient';
 import { ClientService } from '../../../services/ClientService';
@@ -31,11 +23,10 @@ import type { ITasks } from '../../../schema/InterfaceTarefa';
 import { TasksService } from '../../../services/TasksService';
 import { formatDateInput } from '../../../utils/data';
 import TimesheetEntryBox from '../../../components/Chronometer/TimesheetEntryBox';
-import TimesheetTable from '../../../components/common/TimesheetTable';
 import FiltroTimeSheets from './FiltroTimeSheets';
 import { ProcessoService } from '../../../services/ProcessoService';
 import dayjs from 'dayjs';
-import { generateTimeSheetListAVDPDF, generateTimeSheetListPDF } from '../../../utils/reports/generateListTimeSheetADVPDF';
+import { generateTimeSheetListAVDPDF } from '../../../utils/reports/generateListTimeSheetADVPDF';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -74,7 +65,6 @@ const TabPanel: React.FC<TabPanelProps> = ({ children, value, index }) => (
 
 const MineTimeSheets: React.FC = () => {
   const { user } = useUserLogged();
-  const navigate = useNavigate();
 
   const [data, setData] = useState<ITimeSheets[]>([]);
   const [dataTarefas, setDataTarefas] = useState<ITotalTasks[]>([]);
@@ -84,8 +74,6 @@ const MineTimeSheets: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const [tabIndex, setTabIndex] = useState(0);
-  const [verticalValue, setVerticalValue] = useState("home");
-  const [horizontalValue, setHorizontalValue] = useState("home");
   const [openModalTimeSheet, setOpenModalTimeSheet] = useState(false);
 
   const [openConfirm, setOpenConfirm] = useState(false);
@@ -113,8 +101,7 @@ const MineTimeSheets: React.FC = () => {
     amanha.format("YYYY-MM-DD")
   );
 
-  // Hooks
-  const { control, handleSubmit, formState: { errors }, reset, watch } = useForm<TimeSheetFormData>({
+  const { control, handleSubmit, formState: { errors }, reset } = useForm<TimeSheetFormData>({
     resolver: zodResolver(timeSheetSchema),
   });
 
@@ -237,23 +224,17 @@ const MineTimeSheets: React.FC = () => {
     }
   };
 
-  // === Editar um registro existente ===
   const handleEdit = async (timeSheet: ITimeSheets) => {
     try {
       setIsLoadingModal(true);
       setForm(timeSheet);
 
-      console.log("timeSheet >>> ", timeSheet)
-
-      // 1️⃣ Abre o modal
       setOpenModalTimeSheet(true);
 
-      // 2️⃣ Carrega clientes, processos e tarefas relacionados
       await fetchClientes();
       await fetchProcessosByClientId(timeSheet.clienteId);
       await fetchTarefas(timeSheet.processoId);
 
-      // 3️⃣ Envia os valores para o formulário do react-hook-form
       reset({
         clienteId: timeSheet.clienteId,
         processoId: timeSheet.processoId,
@@ -264,7 +245,6 @@ const MineTimeSheets: React.FC = () => {
         timeSheetId: timeSheet.id,
       });
     } catch (err) {
-      console.error("Erro ao carregar dados para edição:", err);
       toast.error("Erro ao carregar dados do TimeSheet.");
     } finally {
       setIsLoadingModal(false);
@@ -272,14 +252,11 @@ const MineTimeSheets: React.FC = () => {
   };
 
   const handleView = (timeSheet: ITimeSheets) => {
-    // setForm(task);
     console.log("handleRemove", timeSheet)
-    // setOpenDialog(true);
   };
 
   const handleRemove = (timeSheet: ITimeSheets) => {
     console.log("handleRemove", timeSheet)
-    // setForm(task);
     setOpenConfirm(true);
   };
 
@@ -304,39 +281,10 @@ const MineTimeSheets: React.FC = () => {
     }
   }
 
-  const handleChangeStatus = async (timeSheets: ITimeSheets) => {
-    try {
-
-      const response = await TimeSheetsService.submeter(timeSheets.id, 'submetido');
-      console.log("Resposta atualizada a tarefa ", response)
-      if (response) {
-        toast.success('TimeSheet submetido com sucesso!');
-        setOpenConfirm(false);
-        handleCloseModal();
-        setTimeout(() => {
-          getTimeSheetsByColaboradorId()
-        }, 1000)
-      }
-
-    } catch (error: any) {
-      toast.error(error.message || 'Erro ao alterar o estado da tarefa.');
-    }
-  }
-
   const handleCloseModal = () => {
     fnModalTimeSheet(false),
       reset()
   }
-  const handleOpenModal = () => {
-    fnModalTimeSheet(true),
-      reset()
-  }
-
-  const handleChangeCliente = (e: React.ChangeEvent<{ value: unknown }>) => {
-    const id = e.target.value as number;
-    setCliente(id);
-    fetchProcessosByClientId(id);
-  };
 
   const handleBuscar = () => {
     console.log("Buscar com filtros:", estado)
@@ -344,10 +292,9 @@ const MineTimeSheets: React.FC = () => {
   }
 
   const totalDuration = (): string => {
-    const totalSeconds = data.reduce((acc, t) => {
-      if (!t.horas) return acc; // ignora se não houver valor
+    const totalSeconds = data.reduce((acc:any, t:any) => {
+      if (!t.horas) return acc;
 
-      // Garante formato HH:MM:SS mesmo que venha só HH:MM
       const parts = t.horas.split(":").map(Number);
       const [h = 0, m = 0, s = 0] = parts;
 
@@ -369,8 +316,6 @@ const MineTimeSheets: React.FC = () => {
     return `${h}:${m}:${s}`;
   };
 
-
-
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -379,21 +324,16 @@ const MineTimeSheets: React.FC = () => {
   };
   const handleMenuClose = () => setAnchorEl(null);
 
-  const handleExport = (type: string) => {
+  const handleExport = () => {
     if(data)
       generateTimeSheetListAVDPDF(data, dataInicio, dataFim)
     handleMenuClose();
   };
 
   const handleSaveTimeSheet = async (data: any) => {
-      console.log("data >>> ", data)
-
-
 
       const dataToSave = {
         colaboradorId: Number(user?.id),
-        //clienteId: number;
-        //processoId: number;
         descricao: data.descricao,
         dataInicio: data.data,
         dataFim: data.data,
@@ -401,23 +341,11 @@ const MineTimeSheets: React.FC = () => {
         tarefaId: data.tarefaId
       }
       
-
-      console.log(" a data ", dataToSave)
-
-     // if (formData.timeSheetId) {
-     //   const response = await TimeSheetsService.update(formData.timeSheetId, dataToSave)
-     //   if (response)
-      //    toast.success('TimeSheet atualizado com sucesso!');
-     // } else {
       const response = await TimeSheetsService.save(dataToSave)
       if (response) {
         toast.success('TimeSheet cadastrado com sucesso!');
         getTimeSheetsByColaboradorId()
       }
-     // }
-
-
-
   }
 
 
@@ -535,14 +463,14 @@ const MineTimeSheets: React.FC = () => {
                         Exportar
                       </Button>
                       <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
-                        <MenuItem onClick={() => handleExport("PDF")}>PDF</MenuItem>
-                        <MenuItem onClick={() => handleExport("excel")}>Excel</MenuItem>
+                        <MenuItem onClick={() => handleExport()}>PDF</MenuItem>
+                        <MenuItem onClick={() => handleExport()}>Excel</MenuItem>
                       </Menu>
                     </Box>
                   </Box>
                   <DataTable
                     columns={columns}
-                    rows={transformDataTimeSheet(data, handleEdit, handleRemove, handleView, handleChangeStatus)}
+                    rows={transformDataTimeSheet(data, handleEdit, handleRemove, handleView)}
                   />
                 </>
               )}
@@ -570,7 +498,7 @@ const MineTimeSheets: React.FC = () => {
               */}
               <DataTable
                 columns={columnsTarefas}
-                rows={transformDataTimeSheetTarefas(dataTarefas, () => { }, () => { })}
+                rows={transformDataTimeSheetTarefas(dataTarefas)}
               />
             </>
           </TabPanel>
@@ -596,7 +524,7 @@ const MineTimeSheets: React.FC = () => {
               */}
               <DataTable
                 columns={columnsProjectos}
-                rows={transformDataTimeSheetProjectos(dataProjectos, () => { }, () => { })}
+                rows={transformDataTimeSheetProjectos(dataProjectos)}
               />
             </>
           </TabPanel>
@@ -628,14 +556,11 @@ const MineTimeSheets: React.FC = () => {
                     {...field}
                     label="Cliente"
                     options={clientes.map(c => ({ label: c.denominacao, value: c.id }))}
-                    placeholder="Selecione um cliente"
                     onChange={(e) => {
                       const idClient = Number(e.target.value);
                       field.onChange(idClient);
                       fetchProcessosByClientId(idClient);
                     }}
-                    error={!!errors.clienteId}
-                    helperText={errors.clienteId?.message}
                   />
                 )}
               />
@@ -651,9 +576,6 @@ const MineTimeSheets: React.FC = () => {
                     {...field}
                     label="Processo"
                     options={processos.map(p => ({ label: p.ref, value: p.id }))}
-                    placeholder="Selecione um processo"
-                    error={!!errors.processoId}
-                    helperText={errors.processoId?.message}
                     onChange={(e) => {
                       const idProcesso = Number(e.target.value);
                       field.onChange(idProcesso);
@@ -674,9 +596,6 @@ const MineTimeSheets: React.FC = () => {
                     {...field}
                     label="Tipo de Tarefa"
                     options={tarefas.map(t => ({ label: t.descricao, value: t.id }))}
-                    placeholder="Selecione o tipo de tarefa"
-                    error={!!errors.tarefaId}
-                    helperText={errors.tarefaId?.message}
                   />
                 )}
               />

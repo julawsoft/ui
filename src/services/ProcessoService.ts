@@ -97,10 +97,6 @@ export class ProcessoService {
     return response?.data as IProcesso
   }
 
-  // type === "colaborador") {
-  // type === "tarefa") {
-  // type === "anexo") {
-  // type === "precedente") {
   static async removerRecursosProcessos(type: String, id: number): Promise<IProcesso>{
     const response = await new RequestApi().delete<IProcesso>(`recursos_processo?type=${type}&id=${id}`);
     if (response && response.status === 400) {
@@ -113,7 +109,6 @@ export class ProcessoService {
     return response as any
   }
   
-  /** Tarefas */
   static async addEquipasTarefas(data: IAddEquipasTarefas): Promise<IProcesso>{
     const response = await new RequestApi().post<IProcesso>(`recursos_processo`, { ...data });
     if (response && response.status === 400) {
@@ -125,7 +120,6 @@ export class ProcessoService {
     }
     return response?.data as IProcesso
   }
-
 
   static async addAssociadosProcesso(data: IAddAssociadosProcesso): Promise<IProcesso>{
     const response = await new RequestApi().post<IProcesso>(`recursos_processo`, { ...data });
@@ -151,7 +145,7 @@ export class ProcessoService {
     return response?.data as IProcesso
   }
 
-  static async getAllColaboradoresWithoutAssociadoProcesso(idProcesso: number): Promise<IProcesso[]>{
+  static async getAllColaboradoresWithoutAssociadoProcesso(): Promise<IProcesso[]>{
     const response = await new RequestApi().get(`processo`);
     if (response && response.status === 400) {
       throw new Error("Erro ao obter os processos");
@@ -160,6 +154,6 @@ export class ProcessoService {
   }
 
   static async updateEstadoTarefa(idTarefa: number, estado: string) {
-    
+    console.log("", idTarefa, estado)
   }
 }

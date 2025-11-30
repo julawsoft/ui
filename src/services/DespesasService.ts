@@ -1,17 +1,16 @@
-import type { IColaborador, IColaboradorInput } from "../schema/InterfaceColaboradores";
 import type { IDespesas, IDespesasInput, ITipoDespesas } from "../schema/interfaceDespesas";
 import { RequestApi } from "../utils/http/request"
 
 type StatusType = 'pendente'|'faturado'
 
 interface filterTimeSheets {
-  colaboradorId?: number,
-  processoId?: number,
-  clienteId?: number,
-  tipoDespesaId?: number,
-  statusId?: StatusType | string,
-  dataInicio?: string,
-  dataFim?: string,
+    colaboradorId?: number,
+    processoId?: number,
+    clienteId?: number,
+    tipoDespesaId?: number,
+    statusId?: StatusType | string,
+    dataInicio?: string,
+    dataFim?: string,
 }
 
 export class DespesasService {

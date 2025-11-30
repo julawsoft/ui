@@ -15,9 +15,14 @@ export default function Router() {
     
     setUser(
         {
-            ...userLogged,
-            id: '',
-            email: ''
+            id: String(userLogged.id),
+            name: userLogged.name,
+            email: '',
+            groups: userLogged.groups[0],
+            roles: userLogged.roles,
+            isLogged: userLogged.isLogged,
+            accessToken: userLogged.accessToken,
+            refreshToken: userLogged.refreshToken
         }
     )
 
@@ -35,7 +40,7 @@ export default function Router() {
 
     const hasPermission = (itemRoles: string[]) => {
         if (itemRoles)
-            return itemRoles.map(role => role.includes(userLogged.groups));
+            return itemRoles.map(role => userLogged.groups.some(group => role.includes(group)));
         else
             return false;
     };

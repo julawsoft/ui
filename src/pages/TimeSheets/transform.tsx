@@ -1,14 +1,9 @@
 import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useState, type ReactNode } from "react";
-import type { IColaborador } from "../../schema/InterfaceColaboradores";
 import type { ITimeSheets, ITotalProjects, ITotalTasks } from "../../schema/InterfaceTimeSheets";
-import { converterHorasDecimais } from "../../utils/data";
-import type { ITarefa } from "../../schema/InterfaceProcess";
 import { CheckBox, Remove } from "@mui/icons-material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import dayjs from "dayjs";
 
 /** 🎨 Cores dos estados */
 const estadoColors: Record<string, string> = {
@@ -22,10 +17,6 @@ const estadoColors: Record<string, string> = {
 /** 🔧 Função utilitária segura para datas */
 const formatDate = (dateStr?: string | null) => {
   return dateStr?.substring(0, 10)
-  console.log("a data que chega", dateStr)
-  if (!dateStr) return "-";
-  const parsed = dayjs(dateStr, ["DD/MM/YYYY HH:mm:ss", "YYYY-MM-DDTHH:mm:ssZ"], true);
-  return parsed.isValid() ? parsed.format("DD/MM/YYYY") : "-";
 };
 
 /** TAREFAS */
@@ -48,10 +39,8 @@ export const columnsTarefas = [
 ];
 
 export const transformDataTimeSheetTarefas = (
-  data: ITotalTasks[],
-  onEdit: (timesheet: ITotalTasks) => void,
-  onView: (timesheet: ITotalTasks) => void
-): ITotalTasks[] => {
+  data: ITotalTasks[]
+): any[] => {
   return data.map((timesheet, index) => ({
     id: index + 1,
     tarefa: timesheet.Tarefa,
@@ -91,10 +80,8 @@ export const columnsProjectos = [
 ];
 
 export const transformDataTimeSheetProjectos = (
-  data: ITotalProjects[],
-  onEdit: (timesheet: ITotalProjects) => void,
-  onView: (timesheet: ITotalProjects) => void
-): ITotalProjects[] => {
+  data: ITotalProjects[]
+): any[] => {
   return data.map((timesheet, index) => ({
     id: index + 1,
     projectos: timesheet.processo_referencia,
@@ -144,10 +131,9 @@ export type ITimeSheetsRow = Pick<
 export const transformDataTimeSheet = (
   data: ITimeSheets[],
   onEdit: (timesheet: ITimeSheets) => void,
-  onView: (timesheet: ITimeSheets) => void,
   onRemove: (timesheet: ITimeSheets) => void,
   onChange: (timesheet: ITimeSheets) => void
-): ITimeSheetsRow[] => {
+): any[] => {
   return data.map((timesheet, index) => {
     const estado = timesheet.status?.toLowerCase() ?? "rascunho";
     const estadoColor = estadoColors[estado] || "#9e9e9e";

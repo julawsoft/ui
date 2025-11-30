@@ -3,7 +3,6 @@ import {
   Grid,
   TextField,
   MenuItem,
-  CircularProgress,
   Stack,
   Button,
 } from "@mui/material";
@@ -11,8 +10,6 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { taskSchema, type TaskFormData } from "../../validation/taskSchema";
-import PrimaryButton from "../../components/common/PrimaryButton";
-import SecondaryButton from "../../components/common/SecondaryButton";
 import StateHandler from "../../components/common/StateHandler";
 import { ColaboradorService } from "../../services/ColaboradorService";
 import { TimeSheetsService } from "../../services/TimeSheetsService";
@@ -44,7 +41,7 @@ const TasksAgendaForm: React.FC<TasksAgendaFormProps> = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [, setSuccess] = useState(false);
 
   const [clientes, setClientes] = useState<Partial<IClient>[]>([]);
   const [processos, setProcessos] = useState<Partial<IProcesso>[]>([]);

@@ -1,13 +1,11 @@
 import { IconButton, Menu, MenuItem, ListItemIcon, ListItemText } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import React, { useState } from "react";
 import type { ReactNode } from "react";
 import type { ITasks } from "../../schema/InterfaceTarefa";
 import { CheckBox, Remove } from "@mui/icons-material";
 
-// Colunas da tabela
 export const columnsColaborador = [
   { id: 'id', label: '#' },
   { id: 'tarefa', label: 'Tarefa' },
@@ -95,13 +93,12 @@ const estadoColors: Record<string, string> = {
   Concluída: '#4caf50',
 };
 
-// Transformação de dados para a tabela
 export const transformDataTasksColaborador = (
   data: ITasks[],
   onEdit: (task: ITasks) => void,
   onRemove: (task: ITasks) => void,
   onChange: (task: ITasks) => void
-): ITasksRow[] => {
+): any[] => {
   return data.map((task, index) => {
     // Cor do estado
     const estadoColor = estadoColors[task.estado ?? 'Criada'] || '#1976d2';

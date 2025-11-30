@@ -1,3 +1,4 @@
+/*
 import {
   Box,
   Grid,
@@ -70,7 +71,6 @@ const TimesheetForm: React.FC<TimesheetFormProps> = ({
   const clienteSelecionado = watch("clienteId");
   const processoSelecionado = watch("processoId");
 
-  /** Carregar clientes */
   useEffect(() => {
     const loadClientes = async () => {
       try {
@@ -86,7 +86,6 @@ const TimesheetForm: React.FC<TimesheetFormProps> = ({
     loadClientes();
   }, []);
 
-  /** Carregar processos quando cliente muda */
   useEffect(() => {
     const loadProcessos = async () => {
       if (!clienteSelecionado) {
@@ -107,7 +106,6 @@ const TimesheetForm: React.FC<TimesheetFormProps> = ({
     loadProcessos();
   }, [clienteSelecionado]);
 
-  /** Carregar tarefas quando processo muda */
   useEffect(() => {
     const loadTarefas = async () => {
       if (!processoSelecionado) {
@@ -145,7 +143,6 @@ const TimesheetForm: React.FC<TimesheetFormProps> = ({
         </Typography>
 
         <Grid container spacing={2}>
-          {/* Cliente */}
           <Grid item xs={12} md={6}>
             <Controller
               name="clienteId"
@@ -158,3 +155,5 @@ const TimesheetForm: React.FC<TimesheetFormProps> = ({
                   fullWidth
                   error={!!errors.clienteId}
                   helperText={
+
+*/

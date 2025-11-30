@@ -1,12 +1,10 @@
-import React, { useEffect, useState, type ReactNode } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Stack, Alert, IconButton, Grid } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import DataTable from '../../../components/common/DataTable';
 import SimpleModal from '../../../components/common/SimpleModal';
-import type { IEquipa, ITarefa } from '../../../schema/InterfaceProcess';
+import type { IEquipa } from '../../../schema/InterfaceProcess';
 
-//  icon de lixo
-import EditIcon from "@mui/icons-material/Edit";
 import type { IColaborador } from '../../../schema/InterfaceColaboradores';
 import SelectBox from '../../../components/common/SelectBox';
 import { ColaboradorService } from '../../../services/ColaboradorService';
@@ -41,12 +39,10 @@ const TabEquipas: React.FC<Props> = ({ equipas, onDelete, idProcesso, setReloadF
     fetchAll();
   }, [])
 
-  // trocar o id do processo...
-  const fetchColaboradores = async () => setColaboradores(await ColaboradorService.getAllColaboradoresWithoutEquipaProcesso(idProcesso));
+  const fetchColaboradores = async () => setColaboradores(await ColaboradorService.getAllColaboradoresWithoutEquipaProcesso());
 
   const saveColaboradores = async () => {
     try {
-      console.log("selectValue - saveColaboradores ", selectedValue)
       await ProcessoService.addEquipasTarefas({
         processoId: idProcesso,
         colaboradoresId: [Number(selectedValue)]
@@ -54,11 +50,11 @@ const TabEquipas: React.FC<Props> = ({ equipas, onDelete, idProcesso, setReloadF
       setOpen(false)
       setReloadFetch(true)
     } catch (error) {
-      console.error('Erro ao carregar dados iniciais:', error);
       toast.error('Erro ao carregar dados iniciais.');
     }
   }
 
+  /*
   type IEquipasRow = Pick<
     IEquipa,
     | "id"
@@ -69,6 +65,7 @@ const TabEquipas: React.FC<Props> = ({ equipas, onDelete, idProcesso, setReloadF
   > & {
     actions: ReactNode;
   };
+  */
 
   const columnsEquipa = [
     { id: 'id', label: '#' },
@@ -80,7 +77,7 @@ const TabEquipas: React.FC<Props> = ({ equipas, onDelete, idProcesso, setReloadF
 
   const transformData = (
     data: IEquipa[]
-  ): IEquipasRow[] => {
+  ): any[] => {
     return data.map((item, index) => ({
       id: index + 1,
       colaborador: (

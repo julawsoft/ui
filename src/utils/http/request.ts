@@ -1,5 +1,4 @@
 import { getUserLogged } from "../cookies";
-import { logOutAppSec } from "./helpers";
 
 const timeoutPromise = <T>(
     promise: Promise<T>,
@@ -8,23 +7,21 @@ const timeoutPromise = <T>(
 ): Promise<T> => {
     return new Promise((resolve, reject) => {
         const timer = setTimeout(() => {
-            controller.abort(); // Abortar a requisição após o tempo limite
+            controller.abort();
             reject(new Error(`Request timed out after ${timeout} seconds`));
-        }, timeout * 1000); // Converter segundos para milissegundos
+        }, timeout * 1000);
 
         promise
             .then((response) => {
-                clearTimeout(timer); // Limpar o timer se a requisição completar antes do timeout
+                clearTimeout(timer);
                 resolve(response);
             })
             .catch((error) => {
-                clearTimeout(timer); // Limpar o timer se ocorrer algum erro
+                clearTimeout(timer);
                 reject(error);
             });
     });
 };
-
-
 
 interface IGenericViewResponse<T> {
     data: T;
@@ -38,12 +35,12 @@ interface IGenericViewResponse<T> {
 type HttpMethods = 'PUT' | 'POST' | 'DELETE' | 'GET' | 'PATCH';
 
 const getToken = async (): Promise<string> => {
-    const {accessToken} = getUserLogged()
+    const { accessToken } = getUserLogged()
     return accessToken;
 };
 
 const getRefreshToken = async (): Promise<string> => {
-    const {refreshToken} = getUserLogged()
+    const { refreshToken } = getUserLogged()
     return refreshToken;
 };
 
@@ -59,38 +56,26 @@ export class RequestApi {
         signal?: AbortSignal,
         headers?: Record<string, string>,
     ): Promise<IGenericViewResponse<T> | null> {
-    
-            const token = !withRefreshToken ? await getToken() : await getRefreshToken();
 
-            const response = await fetch(url, {
-                method,
-                mode: 'cors',
-                cache: 'no-cache',
-                credentials: 'same-origin',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: token,
-                    ...headers,
-                },
-                redirect: 'follow',
-                referrerPolicy: 'no-referrer',
-                body: body ? JSON.stringify(body) : undefined,
-                signal,
-            });
+        const token = !withRefreshToken ? await getToken() : await getRefreshToken();
 
-            const responseData: IGenericViewResponse<T> = await response.json();
+        const response = await fetch(url, {
+            method,
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: token,
+                ...headers,
+            },
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+            body: body ? JSON.stringify(body) : undefined,
+            signal,
+        });
 
-            /*
-            if (!response.ok) {
-                if(responseData..message.toString().includes("Token expirado")){
-                    console.log("Token expirado")
-                    await logOutAppSec(responseData.response.message)
-                    console.log("Token expirado depois ... ")
-                    return null
-                }
-                throw new Error(responseData.response.message)
-            }
-            */
+        const responseData: IGenericViewResponse<T> = await response.json();
         return responseData;
     }
 

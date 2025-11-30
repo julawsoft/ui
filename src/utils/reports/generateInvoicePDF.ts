@@ -1,8 +1,6 @@
-import type { IClient } from "../../schema/InterfaceClient";
 import html2pdf from "html2pdf.js";
 import type { IFatura } from "../../schema/InterfaceHonorarios";
 
-// Função para preencher placeholders do template
 const fillTemplate = (template: string, fatura: IFatura) => {
   return template
     .replace("{{empresa_nome}}", String("Nome da Empresa"))
@@ -10,7 +8,6 @@ const fillTemplate = (template: string, fatura: IFatura) => {
     .replace("{{empresa_nif}}", String("NIF da Empresa"))
     .replace("{{empresa_telefone}}", String("Telefone da Empresa"))
     .replace("{{empresa_email}}", String("E-mail da Empresa"))
-    // Dados do cliente
     .replace("{{cliente}}", fatura.cliente ?? "-")
     .replace("{{cliente_nif}}", fatura.clienteNIF ?? "-")
     .replace("{{cliente_contacto}}", fatura.clienteContato ?? "-")
@@ -18,7 +15,6 @@ const fillTemplate = (template: string, fatura: IFatura) => {
     .replace("{{banco_nome}}",  "-")
     .replace("{{conta_numero}}",  "-")
     .replace("{{iban}}",  "-")
-    // Tabela de itens
     .replace(
       "{{rows}}",
       fatura.items && fatura.items.length > 0
@@ -38,21 +34,17 @@ const fillTemplate = (template: string, fatura: IFatura) => {
     )
     .replace("{{total}}", Number(fatura.processo_custo).toFixed(2) ?? "0.00")
 
-    // Observações e geração
     .replace("{{observacoes}}", fatura.processo_custo ?? "-")
     .replace("{{generated_at}}", new Date().toLocaleString());
 };
 
 
 export const generateInvoice = async (fatura: IFatura) => {
-  // carregar template do public
   const response = await fetch("/templates/invoice_template.html");
   const templateHtml = await response.text();
 
-  // preencher placeholders
   const filledHtml = fillTemplate(templateHtml, fatura);
 
-  // criar container temporário no DOM
   const container = document.createElement("div");
   container.innerHTML = filledHtml;
   document.body.appendChild(container);

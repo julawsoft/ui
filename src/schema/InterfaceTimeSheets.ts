@@ -28,7 +28,7 @@ export interface ITimeSheets {
   colaborador_submissao?: string
   colaborador_rejeicao?: string
   colaborador_facturacao?: string
-  colaboradorTaxa?: string | ''
+  colaboradorTaxa?: string
 }
 
 export interface ITimeSheetsForm {

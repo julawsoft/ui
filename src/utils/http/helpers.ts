@@ -18,12 +18,12 @@ export function makeResponseHTTPRequest(error: string) {
 }
 
 export async function logOutAppSec(message: string | undefined) {
-    console.log('logOutAppSec saasa')
     try {
         const response = await LoginService.logout()
 
         if (response && response.response.statusCode === 200) {
             setUserLogged({
+                id: 0,
                 name: '',
                 groups: [''],
                 roles: [''],

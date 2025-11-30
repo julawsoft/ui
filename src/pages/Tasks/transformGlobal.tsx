@@ -1,11 +1,6 @@
-import { IconButton, Menu, MenuItem, ListItemIcon, ListItemText } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import React, { useState } from "react";
+import React from "react";
 import type { ReactNode } from "react";
 import type { ITasks } from "../../schema/InterfaceTarefa";
-import { CheckBox, Remove } from "@mui/icons-material";
 
 // Colunas da tabela
 export const columnsGlobal = [
@@ -42,6 +37,7 @@ export type ITasksRow = Pick<
 };
 
 // Menu de ações
+/*
 const ActionsMenu: React.FC<{
   task: ITasks;
   onEdit: (task: ITasks) => void;
@@ -87,6 +83,7 @@ const ActionsMenu: React.FC<{
     </>
   );
 };
+*/
 
 // Cores dos estados (igual ao calendário)
 const estadoColors: Record<string, string> = {
@@ -98,10 +95,7 @@ const estadoColors: Record<string, string> = {
 // Transformação de dados para a tabela
 export const transformDataTasks = (
   data: ITasks[],
-  onEdit: (task: ITasks) => void,
-  onRemove: (task: ITasks) => void,
-  onChange: (task: ITasks) => void
-): ITasksRow[] => {
+): any[] => {
   return data.map((task, index) => {
     // Cor do estado
     const estadoColor = estadoColors[task.estado ?? 'Criada'] || '#1976d2';

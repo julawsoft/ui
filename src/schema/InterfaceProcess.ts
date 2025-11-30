@@ -1,13 +1,12 @@
 
 
-/* ##########     Equipas  ######################### */
 export interface ITarefaInput {
-  id: number;
   descricao: string;
   processo_id: number;
   data_para_realizacao: string;
-  status: string;
   colaborador_id: number;
+  id?: number;
+  status?: string;
   gestor_id?: number | null;
 }
 
@@ -70,8 +69,6 @@ export interface IProcessoAddAnexo {
     ]
 }
 
-/* ##########     /Equipas  ######################### */
-
 
 export interface IEquipa {
   id: number;
@@ -109,8 +106,6 @@ export interface IProcessoInstituicoes{
   id: number,
   descricao: string
 }
-
-// src/schema/InterfaceProcesso.ts
 
 export interface IProcesso {
   id: number;

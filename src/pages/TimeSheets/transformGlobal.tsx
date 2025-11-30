@@ -1,16 +1,10 @@
 import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useState, type ReactNode } from "react";
-import type { IColaborador } from "../../schema/InterfaceColaboradores";
 import type { ITimeSheets, ITotalProjects, ITotalTasks } from "../../schema/InterfaceTimeSheets";
-import { converterHorasDecimais } from "../../utils/data";
-import type { ITarefa } from "../../schema/InterfaceProcess";
-import { CheckBox, Remove } from "@mui/icons-material";
+import { CheckBox } from "@mui/icons-material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import dayjs from "dayjs";
 
-/** 🎨 Cores dos estados */
 const estadoColors: Record<string, string> = {
   rascunho: "#9e9e9e",    // cinza
   submetido: "#2196f3",   // azul
@@ -46,10 +40,8 @@ export const columnsTarefas = [
 ];
 
 export const transformDataTimeSheetTarefas = (
-  data: ITotalTasks[],
-  onEdit: (timesheet: ITotalTasks) => void,
-  onView: (timesheet: ITotalTasks) => void
-): ITotalTasks[] => {
+  data: ITotalTasks[]
+): any[] => {
   return data.map((timesheet, index) => ({
     id: index + 1,
     tarefa: timesheet.Tarefa,
@@ -89,10 +81,8 @@ export const columnsProjectos = [
 ];
 
 export const transformDataTimeSheetProjectos = (
-  data: ITotalProjects[],
-  onEdit: (timesheet: ITotalProjects) => void,
-  onView: (timesheet: ITotalProjects) => void
-): ITotalProjects[] => {
+  data: ITotalProjects[]
+): any[] => {
   return data.map((timesheet, index) => ({
     id: index + 1,
     projectos: timesheet.processo_referencia,
@@ -112,7 +102,6 @@ export const transformDataTimeSheetProjectos = (
   }));
 };
 
-/** TIMESHEETS */
 export const columns = [
   { id: "id", label: "#" },
   { id: "data_inicio", label: "Data" },
@@ -143,11 +132,8 @@ export type ITimeSheetsRow = Pick<
 
 export const transformDataTimeSheet = (
   data: ITimeSheets[],
-  onEdit: (timesheet: ITimeSheets) => void,
-  onView: (timesheet: ITimeSheets) => void,
-  onRemove: (timesheet: ITimeSheets) => void,
   onChange: (timesheet: ITimeSheets) => void
-): ITimeSheetsRow[] => {
+): any[] => {
   return data.map((timesheet, index) => {
     const estado = timesheet.status?.toLowerCase() ?? "rascunho";
     const estadoColor = estadoColors[estado] || "#9e9e9e";
@@ -158,7 +144,7 @@ export const transformDataTimeSheet = (
       assunto_processo: timesheet.assunto_processo ?? "-",
       tarefa: timesheet.tarefa ?? "-",
       colaborador: timesheet.colaborador ?? "-",
-      cliente: timesheet.cliente ?? "-",
+      cliente: typeof timesheet.cliente === "number" ? timesheet.cliente : undefined,
       status: (
         <span
           style={{
@@ -175,8 +161,6 @@ export const transformDataTimeSheet = (
       actions: (
         <ActionsMenu
           timesheet={timesheet}
-          onEdit={onEdit}
-          onView={onRemove}
           onChange={onChange}
           status={timesheet.status}
         />
@@ -188,11 +172,9 @@ export const transformDataTimeSheet = (
 /** MENU DE AÇÕES */
 const ActionsMenu: React.FC<{
   timesheet: ITimeSheets;
-  onEdit: (timesheet: ITimeSheets) => void;
-  onView: (timesheet: ITimeSheets) => void;
   onChange: (timesheet: ITimeSheets) => void;
   status: string;
-}> = ({ timesheet, onEdit, onView, onChange, status }) => {
+}> = ({ timesheet, onChange, status }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 

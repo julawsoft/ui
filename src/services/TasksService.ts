@@ -1,5 +1,3 @@
-import type { IHonorarios } from "../schema/InterfaceHonorarios";
-import type { IProcesso, IProcessoInput } from "../schema/InterfaceProcess";
 import type { ITasks, ITasksInput } from "../schema/InterfaceTarefa";
 import { RequestApi } from "../utils/http/request";
 
@@ -12,7 +10,6 @@ interface filterTasks {
   statusId?: string
   tipoTarefa?: string
 }
-
 
 export class TasksService {
 

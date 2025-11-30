@@ -1,6 +1,6 @@
 import type { IAnexo } from "./InterfaceAnexo";
 import type { IEquipa } from "./InterfaceEquipa";
-import type { ITarefa } from "./InterfaceTarefa";
+import type { ITarefa } from "./InterfaceProcess";
 
 export type IProcessStatus = {
   Rascunho: "Rascunho";

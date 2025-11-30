@@ -1,17 +1,14 @@
 import { ITimeSheets } from '../../schema/InterfaceTimeSheets';
-import { ITasks } from '../../schema/InterfaceTarefa';
 import html2pdf from "html2pdf.js";
-import type { IProcesso } from "../../schema/InterfaceProcess";
 
 const totalDuration = (data:any): string => {
-  const totalSeconds = data.reduce((acc, t) => {
-    if (!t.horas) return acc; // ignora se não houver valor
+  const totalSeconds = data.reduce((acc:any, t:any) => {
+    if (!t.horas) return acc;
 
-    // Garante formato HH:MM:SS mesmo que venha só HH:MM
     const parts = t.horas.split(":").map(Number);
     const [h = 0, m = 0, s = 0] = parts;
 
-    if (isNaN(h) || isNaN(m) || isNaN(s)) return acc; // ignora valores inválidos
+    if (isNaN(h) || isNaN(m) || isNaN(s)) return acc;
 
     return acc + h * 3600 + m * 60 + s;
   }, 0);
@@ -33,7 +30,6 @@ export const generateTimeSheetListGlobalAVDPDF = async (timesheet: ITimeSheets[]
   const response = await fetch("/templates/timeSheetListGlobalAdvogado.html");
   let templateHtml = await response.text();
 
-  // gerar as linhas da tabela
   const rows = timesheet.map(timesheet => `
     <tr>
       <td>${timesheet.data_registo.substring(0,10)}</td>
@@ -55,7 +51,6 @@ export const generateTimeSheetListGlobalAVDPDF = async (timesheet: ITimeSheets[]
     .replace("{{rows}}", rows)
     .replace("{{generated_at}}", new Date().toLocaleString());
 
-  // usar html2pdf.js
   const opt:any = {
     margin: 0.5,
     filename: `Lista_global_timeSheets.pdf`,

@@ -1,4 +1,3 @@
-// src/routes/routesPermissions.tsx
 import { ReactNode } from 'react';
 import { ROUTES_PATH } from './routePaths';
 

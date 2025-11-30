@@ -2,11 +2,6 @@ import type { IClient } from "../schema/InterfaceClient"
 import type { IProcesso } from "../schema/InterfaceProcess";
 import { RequestApi } from "../utils/http/request"
 
-interface ILogin {
-  username: string
-  password: string
-}
-
 export class ClientService {
 
     static async getAll(tipoCliente = 'undefined'): Promise<any[]> {
@@ -47,5 +42,4 @@ export class ClientService {
         }
         return response?.data as IClient
     }
-    
 }
