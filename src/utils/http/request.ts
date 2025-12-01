@@ -90,7 +90,7 @@ export class RequestApi {
         const controller = new AbortController();
         const { signal } = controller;
 
-        let url = import.meta.env.VITE_BASE_URI
+        const url = import.meta.env.VITE_BASE_URI
 
         return timeoutPromise(
             RequestApi.genericFetch<T>(

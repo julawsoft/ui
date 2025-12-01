@@ -4,9 +4,9 @@ export interface IClient {
   id: number;
   denominacao: string
   tipo_id: number
-  nif: String,
-  endereco: String
-  pessoa_contacto: String
+  nif: string,
+  endereco: string
+  pessoa_contacto: string
   contacto_cobranca: number
   e_mail: string
   uuid: string
@@ -28,9 +28,9 @@ export interface IClientInput {
   id: number;
   denominacao: string
   tipo_id: number
-  nif: String,
-  endereco: String
-  pessoa_contacto: String
+  nif: string,
+  endereco: string
+  pessoa_contacto: string
   contacto_cobranca: number
   e_mail: string
   uuid: string

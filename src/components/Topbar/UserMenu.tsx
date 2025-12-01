@@ -11,7 +11,6 @@ import {
 import { Logout, Settings, Person } from "@mui/icons-material";
 import useAuthStore from "../../context/authStore";
 import { setUserLogged } from "../../utils/cookies";
-import { LoginService } from "../../services/Login";
 import { toast } from "react-toastify";
 
 const UserMenu: React.FC = () => {
@@ -35,7 +34,7 @@ const UserMenu: React.FC = () => {
         setUserLogged({
           id: 0,
           name: '',
-          groups: '',
+          groups: [],
           roles: [''],
           accessToken: '',
           refreshToken: '',

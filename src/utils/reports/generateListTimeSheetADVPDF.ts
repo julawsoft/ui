@@ -29,7 +29,7 @@ const totalDuration = (data:any): string => {
 
 export const generateTimeSheetListAVDPDF = async (timesheet: ITimeSheets[], dataInicio: string,dataFim: string) => {
   const response = await fetch("/templates/timeSheetListAdvogado.html");
-  let templateHtml = await response.text();
+  const templateHtml = await response.text();
 
   // gerar as linhas da tabela
   const rows = timesheet.map(timesheet => `

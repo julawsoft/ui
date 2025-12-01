@@ -157,7 +157,7 @@ const NewProcesso: React.FC = () => {
   }
 
   const handleChangeModoFacturacao = (value: any, field: any) => {
-    let index = Number(value.target.value)
+    const index = Number(value.target.value)
     field.onChange(index)
     index === 1 ? setIsDisabledValor(false) : setIsDisabledValor(true)
   }

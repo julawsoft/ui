@@ -21,16 +21,14 @@ import BoxTop from "../../components/common/BoxTop";
 import { ClientService } from "../../services/ClientService";
 import type { IProcesso } from "../../schema/InterfaceProcess";
 import type { IClient } from "../../schema/InterfaceClient";
-import { TimeSheetsService } from "../../services/TimeSheetsService";
 import { DespesasService } from "../../services/DespesasService";
-import type { ITimeSheets } from "../../schema/InterfaceTimeSheets";
 import type { IDespesas } from "../../schema/interfaceDespesas";
 import { parseValorBR } from "../../utils/data";
 import { toast } from "react-toastify";
 import { HonorariosService } from "../../services/HonorariosService";
 import type { HonorarioInput } from "../../schema/InterfaceHonorarios";
 import { useUserLogged } from "../../hooks/useUserLogged";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ROUTES_PATH } from "../../routes/routePaths";
 
 interface IRegistro {
@@ -50,9 +48,8 @@ interface ItemSelecionado extends IRegistro {
 
 export default function GerarCobranca() {
 
-  const { user, saveUser, clearUser, hasAnyPermission, hasPermission } = useUserLogged();
+  const { user } = useUserLogged();
   const navigate = useNavigate();
-
 
   const [cliente, setCliente] = useState<number>();
   const [processo, setProcesso] = useState<number>();

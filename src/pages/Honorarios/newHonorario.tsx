@@ -220,7 +220,7 @@ export default function CriarHonorario() {
 
   const fetchAvalibleHonorarios = async () => {
 
-    let processoSelect = await ProcessoService.getById(Number(processo))
+    const processoSelect = await ProcessoService.getById(Number(processo))
 
     setIsAvenca(processoSelect.modo_facturacao.toString() === MODO_FACTURAMENTO.AVENCA)
     setProcessoSelected(processoSelect)
@@ -253,8 +253,8 @@ export default function CriarHonorario() {
 
   const handleExportarPDF = () => {
 
-    let clienteFilter = clientes.filter((item => item.id === cliente))[0]
-    let processoFilter = processos.filter((item => item.id === processo))[0]
+    const clienteFilter = clientes.filter((item => item.id === cliente))[0]
+    const processoFilter = processos.filter((item => item.id === processo))[0]
 
     const itensSelecionados: ItemSelecionado[] = registros
       .filter((r) => selecionados.includes(r.id))
@@ -273,8 +273,8 @@ export default function CriarHonorario() {
 
   const handleExportarFixoPDF = () => {
 
-    let clienteFilter = clientes.filter((item => item.id === cliente))[0]
-    let processoFilter = processos.filter((item => item.id === processo))[0]
+    const clienteFilter = clientes.filter((item => item.id === cliente))[0]
+    const processoFilter = processos.filter((item => item.id === processo))[0]
 
     if(processoSelected){
 
@@ -286,8 +286,8 @@ export default function CriarHonorario() {
   }
 
   const handleExportarSuccessFeePDF = () => {
-    let clienteFilter = clientes.filter((item => item.id === cliente))[0]
-    let processoFilter = processos.filter((item => item.id === processo))[0]
+    const clienteFilter = clientes.filter((item => item.id === cliente))[0]
+    const processoFilter = processos.filter((item => item.id === processo))[0]
 
     if(processoSelected)
       generateInvoiceSuccessFeePDF(processoSelected, clienteFilter, Number(processoFilter.valor_total))

@@ -5,7 +5,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams, useNavigate } from 'react-router-dom';
 import BoxCard from '../../components/common/BoxCard';
 import BoxTop from '../../components/common/BoxTop';
-import Loader from '../Loader';
 import Input from '../../components/common/Input';
 import SelectBox from '../../components/common/SelectBox';
 import Textarea from '../../components/common/Textarea';
@@ -26,18 +25,12 @@ const tiposCliente = [
   { label: 'Outro', value: '6' },
 ];
 
-const statusOptions = [
-  { label: 'Pending', value: 'pending' },
-  { label: 'Active', value: 'active' },
-  { label: 'Inactive', value: 'inactive' },
-];
-
 const NewClient: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
+  const [, setSuccess] = useState(false);
 
   const { handleSubmit, control, formState: { errors }, reset, setValue } = useForm<ClienteFormData>({
     resolver: zodResolver(clienteSchema),

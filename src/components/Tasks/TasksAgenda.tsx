@@ -1,10 +1,8 @@
-// TasksAgenda.tsx
 import React, { useState, useMemo } from 'react';
 
 import {
   Calendar,
   dateFnsLocalizer,
-  Views,
   SlotInfo,
   Event as RBCEvent,
 } from 'react-big-calendar';
@@ -52,7 +50,7 @@ const parseApiDateToJS = (dateStr?: string | null) => {
   return new Date(`${yyyy}-${mm}-${dd}T${time}`);
 };
 
-const TasksAgenda: React.FC<TasksAgendaProps> = ({ tasks = [], onTasksChange }) => {
+const TasksAgenda: React.FC<TasksAgendaProps> = ({ tasks = [] }) => {
   const [view, setView] = useState<any>('month');
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -70,7 +68,6 @@ const TasksAgenda: React.FC<TasksAgendaProps> = ({ tasks = [], onTasksChange }) 
     [tasks]
   );
 
-  // Navegação
   const handlePrev = () => {
     const unit =
       view === 'month' ? 'month' : view === 'day' ? 'day' : 'week';
@@ -91,22 +88,6 @@ const TasksAgenda: React.FC<TasksAgendaProps> = ({ tasks = [], onTasksChange }) 
     console.log("teste ", slotInfo)
   };
 
-  const handleSelectEvent = (event: RBCEvent) => {
-
-    console.log("o teste ", event)
-
-    /*
-    const raw = event.resource as ITasks;
-    setEditingTask(raw);
-    setForm(raw);
-    setOpenDialog(true);
-    */
-  };
-
-  const handleSaveTask = () => {
-    // setOpenDialog(false);
-  };
-
   const eventStyleGetter = (event: any) => ({
     style: {
       backgroundColor: event.bgColor,
@@ -116,6 +97,8 @@ const TasksAgenda: React.FC<TasksAgendaProps> = ({ tasks = [], onTasksChange }) 
       display: 'block',
     },
   });
+
+  const handleSelectEvent = (e:any) => console.log("handleSelectEvent ", e)
 
   return (
 

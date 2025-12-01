@@ -32,7 +32,7 @@ const NewDespesas: React.FC = () => {
   const [clientes, setClientes] = useState<IClient[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [data, setData] = useState<IDespesas | null>(null);
+  const [, setData] = useState<IDespesas | null>(null);
 
   const isEdit = Boolean(id);
 
@@ -46,7 +46,6 @@ const NewDespesas: React.FC = () => {
     },
   });
 
-  // Carregar listas iniciais
   useEffect(() => {
     const loadInitialData = async () => {
       try {
@@ -58,9 +57,6 @@ const NewDespesas: React.FC = () => {
         setTiposDespesas(tipos);
         setClientes(clients);
 
-        console.log("Os clientes ", clientes)
-
-        // Se for edição, busca a despesa e preenche o form
         if (isEdit && id) {
 
           const despesa = await DespesasService.getById(Number(id));
@@ -78,7 +74,6 @@ const NewDespesas: React.FC = () => {
         }
       } catch (error: any) {
         toast.error('Erro ao carregar dados iniciais.');
-        console.error(error);
       } finally {
         setIsLoading(false);
       }

@@ -14,24 +14,14 @@ import {
   CircularProgress,
 } from "@mui/material";
 import "jspdf-autotable";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import BreadcrumbsNav from "../../components/common/BreadcrumbsNav";
 import { HonorariosService } from "../../services/HonorariosService";
 import { generateInvoice } from "../../utils/reports/generateInvoicePDF";
 import type { IFatura } from "../../schema/InterfaceHonorarios";
 
-interface IItem {
-  id: number;
-  tipo: "timesheet" | "despesa";
-  descricao: string;
-  colaborador: string;
-  horas?: number;
-  valor: number;
-}
-
 export default function InvoiceCobranca() {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const [honorario, setHonorario] = useState<IFatura>();
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -51,7 +41,8 @@ export default function InvoiceCobranca() {
   }, [id]);
 
   const handleExportarPDF = () => {
-    generateInvoice(honorario)
+    if (honorario)
+      generateInvoice(honorario)
   };
 
   if (loading) {

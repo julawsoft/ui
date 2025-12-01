@@ -3,7 +3,7 @@ import type { IDespesas } from "../../schema/interfaceDespesas";
 
 export const generateDespesasListPDF = async (despesas: IDespesas[]) => {
   const response = await fetch("/templates/despesasList.html");
-  let templateHtml = await response.text();
+  const templateHtml = await response.text();
 
   const rows = despesas.map(item => `
     <tr>

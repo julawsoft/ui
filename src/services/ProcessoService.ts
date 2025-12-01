@@ -97,7 +97,7 @@ export class ProcessoService {
     return response?.data as IProcesso
   }
 
-  static async removerRecursosProcessos(type: String, id: number): Promise<IProcesso>{
+  static async removerRecursosProcessos(type: string, id: number): Promise<IProcesso>{
     const response = await new RequestApi().delete<IProcesso>(`recursos_processo?type=${type}&id=${id}`);
     if (response && response.status === 400) {
       if(response.errors){

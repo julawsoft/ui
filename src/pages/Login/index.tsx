@@ -52,8 +52,8 @@ const Login: React.FC = () => {
 
         const userResponse = response.data
 
-        let groupsMap =  userResponse.funcao
-        let rolesMap = userResponse.auth.roles ?? []
+        const groupsMap =  userResponse.funcao
+        const rolesMap = userResponse.auth.roles ?? []
 
         setUserLogged({
           id: userResponse.id,

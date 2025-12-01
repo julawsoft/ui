@@ -32,7 +32,7 @@ const VerticalTabBar: React.FC<VerticalTabBarProps> = ({ tabs, value, onChange }
           <Tab
             key={tab.value}
             label={tab.label}
-            icon={tab.icon}
+            // icon={tab.icon}
             iconPosition={tab.icon ? "start" : undefined}
             value={tab.value}
           />

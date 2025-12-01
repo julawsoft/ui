@@ -4,7 +4,7 @@ import type { IColaborador } from "../../schema/InterfaceColaboradores";
 
 export const generateColaboradoresListPDF = async (colaboradores: IColaborador[]) => {
   const response = await fetch("/templates/colaboradoresList.html");
-  let templateHtml = await response.text();
+  const templateHtml = await response.text();
 
   let rowIndex = 1
   const rows = colaboradores.map(emp => `

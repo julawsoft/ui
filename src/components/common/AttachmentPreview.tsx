@@ -10,7 +10,6 @@ import {
   IconButton,
   Stack,
 } from "@mui/material";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import DownloadIcon from "@mui/icons-material/Download";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";

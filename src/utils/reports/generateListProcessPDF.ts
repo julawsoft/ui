@@ -3,7 +3,7 @@ import type { IProcesso } from "../../schema/InterfaceProcess";
 
 export const generateProcessosListPDF = async (processos: IProcesso[]) => {
   const response = await fetch("/templates/processosList.html");
-  let templateHtml = await response.text();
+  const templateHtml = await response.text();
 
   const rows = processos.map(proc => `
     <tr>

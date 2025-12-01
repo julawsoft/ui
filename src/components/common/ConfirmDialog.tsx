@@ -13,7 +13,7 @@ interface ConfirmDialogProps {
   title?: string;
   message?: string;
   textBtn?: string
-  btnColor?: string
+  btnColor?: any
   onConfirm: () => void;
   onCancel: () => void;
 }

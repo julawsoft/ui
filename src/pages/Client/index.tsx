@@ -13,21 +13,19 @@ import BreadcrumbsNav from '../../components/common/BreadcrumbsNav';
 import PrimaryButton from '../../components/common/PrimaryButton';
 import { generateClientsListPDF } from '../../utils/reports/generateListClientPDF';
 import { Box, Button, MenuItem, Select, Typography } from '@mui/material';
-import { setDate } from 'date-fns';
 
 const Client: React.FC = () => {
   const navigate = useNavigate();
   const { data: clients, isLoading, error, setData } = useFetchData<IClient>(ClientService.getAll);
   const [tipoCliente, setTipoCliente] = useState()
-  const [tipoClientes, setTipoClientes] = useState([
+  const tipoClientes = [
     { label: 'Empresa', value: 1 },
     { label: 'Particular', value: 2 },
     { label: 'Ministério', value: 3 },
     { label: 'Instituto Público', value: 4 },
     { label: 'Associação', value: 5 },
     { label: 'Outro', value: 6 },
-  ])
-
+  ]
 
   const handleNovoCliente = () => {
     navigate(ROUTES_PATH.NewClient);

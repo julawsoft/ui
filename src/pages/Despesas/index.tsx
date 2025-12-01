@@ -1,7 +1,7 @@
 // src/pages/Colaborador.tsx
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import BoxCard from '../../components/common/BoxCard';
 import DataTable from '../../components/common/DataTable';
 import { columns, transformDataDespesas } from './transform';
@@ -22,7 +22,6 @@ import type { IClient } from '../../schema/InterfaceClient';
 import { ClientService } from '../../services/ClientService';
 import dayjs from 'dayjs';
 import SecondaryButton from '../../components/common/SecondaryButton';
-import type { IFatura } from '../../schema/InterfaceHonorarios';
 
 const estados = [
   {
@@ -108,21 +107,11 @@ const Despesas: React.FC = () => {
     navigate(`${ROUTES_PATH.NewDespesas}/${despesas.id}`);
   };
 
-  const onVerCobranca = (despesa: IDespesas) => {
-    //
-    toast.warn("")
-  };
-
-  const handleExportPDF = () => {
-    if (data.length > 0) {
-      generateDespesasListPDF(data);
-    }
-  };
 
   const totalDespesas = (): string => {
     const totalCusto = data.reduce((acc, t) => {
       if (!t.valor) return acc; // ignora se não houver valor
-      let c = acc + parseValorBR(String(t.valor))
+      const c = acc + parseValorBR(String(t.valor))
 
       return c
     }, 0);
@@ -142,7 +131,7 @@ const Despesas: React.FC = () => {
   };
   const handleMenuClose = () => setAnchorEl(null);
 
-  const handleExport = (type: string) => {
+  const handleExport = () => {
     if (data.length > 0) {
       generateDespesasListPDF(data);
     }
@@ -223,14 +212,14 @@ const Despesas: React.FC = () => {
                   Exportar
                 </Button>
                 <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
-                  <MenuItem onClick={() => handleExport("PDF")}>PDF</MenuItem>
-                  <MenuItem onClick={() => handleExport("excel")}>Excel</MenuItem>
+                  <MenuItem onClick={() => handleExport()}>PDF</MenuItem>
+                  <MenuItem onClick={() => handleExport()}>Excel</MenuItem>
                 </Menu>
               </Box>
             </Box>
             <DataTable
               columns={columns}
-              rows={transformDataDespesas(data, handleEdit, onVerCobranca)}
+              rows={transformDataDespesas(data, handleEdit)}
             />
           </>
         )}

@@ -37,7 +37,7 @@ const ViewClientTabs: React.FC = () => {
   const [error, setError] = useState('');
 
   const [tabIndex, setTabIndex] = useState(0);
-  const [processos, setProcessos] = useState<IProcesso[]>([]);
+  const [processos] = useState<IProcesso[]>([]);
   const [tabLoading, setTabLoading] = useState(false);
   const [tabError, setTabError] = useState('');
 

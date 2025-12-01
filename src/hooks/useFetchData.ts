@@ -8,7 +8,7 @@ interface UseFetchDataReturn<T> {
   setIsLoading: (loading: boolean) => void;
   setError: (erro: string| null) => void
   fetchData: () => Promise<void>;
-  setData: (clientes: T[]) => Promise<void>;
+  setData: (clientes: T[]) => void;
 }
 
 export function useFetchData<T>(fetchFn: () => Promise<T[]>): UseFetchDataReturn<T> {

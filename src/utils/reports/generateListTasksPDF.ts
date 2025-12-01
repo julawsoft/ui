@@ -3,7 +3,7 @@ import html2pdf from "html2pdf.js";
 
 export const generateTasksListPDF = async (tasks: ITasks[], dataInicio: string,dataFim: string) => {
   const response = await fetch("/templates/tasksList.html");
-  let templateHtml = await response.text();
+  const templateHtml = await response.text();
 
   // gerar as linhas da tabela
   const rows = tasks.map(task => `
