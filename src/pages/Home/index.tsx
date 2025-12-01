@@ -3,7 +3,7 @@ import React from 'react';
 import { Grid, Typography, Card, CardContent, CardActionArea, useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import {
-  Home as HomeIcon,
+  //Home as HomeIcon,
   Assignment,
   Schedule,
   MonetizationOn,
@@ -36,10 +36,10 @@ const Home: React.FC = () => {
 
     { title: "Processos", description: "Gerencie todos os processos", icon: <Assignment fontSize="large" />, path: ROUTES_PATH.Process, roles: [UserRoles.ADMINISTRATIVO] },
     { title: "Clientes", description: "Lista e cadastro de clientes", icon: <PeopleAlt fontSize="large" />, path: ROUTES_PATH.Client, roles: [UserRoles.ADMINISTRATIVO] },
-    { title: "Colaboradores", description: "Gerencie sua equipe", icon: <Group fontSize="large" />, path: ROUTES_PATH.Employee, roles: [UserRoles.ADMINISTRATIVO] },
+    { title: "Colaboradores", description: "Gerencie sua equipe", icon: <Group fontSize="large" />, path: ROUTES_PATH.Colaborador, roles: [UserRoles.ADMINISTRATIVO] },
     { title: "TimeSheets", description: "Relatórios de horas", icon: <Schedule fontSize="large" />, path: ROUTES_PATH.TimeSheet, roles: [UserRoles.ADMINISTRATIVO] },
     { title: "Honorários", description: "Controle financeiro", icon: <MonetizationOn fontSize="large" />, path: ROUTES_PATH.Honorario, roles: [UserRoles.ADMINISTRATIVO] },
-    { title: "Despesas", description: "Gerencie despesas e contas", icon: <AccountBalance fontSize="large" />, path: ROUTES_PATH.Account, roles: [UserRoles.ADMINISTRATIVO] },
+    { title: "Despesas", description: "Gerencie despesas e contas", icon: <AccountBalance fontSize="large" />, path: ROUTES_PATH.Despesas, roles: [UserRoles.ADMINISTRATIVO] },
   ];
 
   // Função para checar permissão (caso tenha roles definidas no card)

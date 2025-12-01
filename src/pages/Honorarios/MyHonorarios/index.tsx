@@ -1,4 +1,3 @@
-// src/pages/Colaborador.tsx
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
@@ -9,19 +8,17 @@ import BoxTop from '../../../components/common/BoxTop';
 import { ROUTES_PATH } from '../../../routes/routePaths';
 import StateHandler from '../../../components/common/StateHandler';
 import { TimeSheetsService } from '../../../services/TimeSheetsService';
-import type { ITimeSheets, ITipoTarefas } from '../../../schema/InterfaceTimeSheets';
+import type { ITipoTarefas } from '../../../schema/InterfaceTimeSheets';
 import { useUserLogged } from '../../../hooks/useUserLogged';
 import BreadcrumbsNav from '../../../components/common/BreadcrumbsNav';
 import PrimaryButton from '../../../components/common/PrimaryButton';
-import { Alert, Box, Button, Grid, Input, Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
-import { Add, Home, Info, Settings } from '@mui/icons-material';
-import SimpleModal from '../../../components/common/SimpleModal';
+import { Alert, Box, Grid, Input, Stack, Tab, Tabs, Typography } from '@mui/material';
+import { Home, Info, Settings } from '@mui/icons-material';
 import VerticalTabBar from '../../../components/common/VerticalTabBar';
 import HorizontalTabBar from '../../../components/common/HorizontalTabBar';
 import type { IProcesso } from '../../../schema/InterfaceProcess';
 import type { IClient } from '../../../schema/InterfaceClient';
 import { ClientService } from '../../../services/ClientService';
-import type { DespesasFormData } from '../../../validation/despesasSchema';
 import { timeSheetSchema, type TimeSheetFormData } from '../../../validation/timeSheetSchema';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -42,10 +39,8 @@ const TabPanel: React.FC<TabPanelProps> = ({ children, value, index }) => (
   </div>
 );
 
-
-
 const TimeSheetsGlobal: React.FC = () => {
-  const { user, saveUser, clearUser, hasAnyPermission, hasPermission } = useUserLogged();
+  const { user } = useUserLogged();
 
   const navigate = useNavigate();
 
@@ -76,23 +71,14 @@ const TimeSheetsGlobal: React.FC = () => {
     }
   };
 
-  const handleNovoHonorario = () => {
-    navigate(ROUTES_PATH.NewHonorarios);
-  };
-
   const handleEdit = (honorario: IHonorarios) => {
-    navigate(`${ROUTES_PATH.NewHonorarios}/${honorario.processo_factura_item_id}`);
+    navigate(`${ROUTES_PATH.NewHonorarios}/${honorario.processo_factura_id}`);
   };
 
   const handleView = (honorario: IHonorarios) => {
-    navigate(`${ROUTES_PATH.NewHonorarios}/view/${honorario.processo_factura_item_id}`);
+    navigate(`${ROUTES_PATH.NewHonorarios}/view/${honorario.processo_factura_id}`);
   };
 
-  const handleExportPDF = () => {
-    if (data.length > 0) {
-      // timeheets(data);
-    }
-  };
 
   const [tabIndex, setTabIndex] = useState(0);
 
@@ -147,26 +133,10 @@ const TimeSheetsGlobal: React.FC = () => {
   });
 
 
-  const onSubmit = async (data: TimeSheetFormData) => {
+  const onSubmit = async () => {
     try {
-
-      console.log("dados a salvar ... ", data)
-
-      /*
-      const dataDTO: any = {
-     tipoEventoId: z.number().int().positive("O despesa deve ser um número positivo"),
-       processoId: z.number(),
-       clienteId: z.number(),
-       descricao: z.string(),
-       dadosImportantes: z.string(),
-       dataInicio: z.string(),
-       dataFim: z.string(),
-       horas: z.string(),
-      }
-      await TimeSheetsService.save(dataDTO);
-      */
       toast.success('TimeSheet cadastrado com sucesso!');
-      setOpenModalTimeSheet(false); // Redireciona após salvar
+      setOpenModalTimeSheet(false);
       setTimeout(() => {
         getAllHonorarios();
       }, 1000)
@@ -326,7 +296,7 @@ const TimeSheetsGlobal: React.FC = () => {
                 {/* Tipo de Despesa */}
                 <Grid item xs={12} md={6}>
                   <Controller
-                    name="tipoEventoId"
+                    name="tarefaId"
                     control={control}
                     render={({ field }) => (
                       <>
@@ -335,7 +305,7 @@ const TimeSheetsGlobal: React.FC = () => {
                           {...field}
                           options={tipoTarefas.map(d => ({ label: d.descricao, value: d.id }))}
                         />
-                        {errors.tipoEventoId && <Alert severity="error">{errors.tipoEventoId.message}</Alert>}
+                        {errors.tarefaId && <Alert severity="error">{errors.tarefaId.message}</Alert>}
                       </>
                     )}
                   />
@@ -346,7 +316,7 @@ const TimeSheetsGlobal: React.FC = () => {
                   <Controller
                     name="dataInicio"
                     control={control}
-                    render={({ field }) => <Input label="Data" type="date" {...field} />}
+                    render={({ field }) => <Input placeholder="Data" type="date" {...field} />}
                   />
                   {errors.dataInicio && <Alert severity="error">{errors.dataInicio.message}</Alert>}
                 </Grid>
@@ -356,7 +326,7 @@ const TimeSheetsGlobal: React.FC = () => {
                   <Controller
                     name="horas"
                     control={control}
-                    render={({ field }) => <Input label="Horas/Min" type="time" {...field} />}
+                    render={({ field }) => <Input placeholder="Horas/Min" type="time" {...field} />}
                   />
                   {errors.horas && <Alert severity="error">{errors.horas.message}</Alert>}
                 </Grid>

@@ -1,9 +1,8 @@
 import { IconButton } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import type { ReactNode } from "react";
 import type { IHonorarios } from "../../schema/InterfaceHonorarios";
-import { converterHorasDecimais, convertMoeda } from "../../utils/data";
+import { convertMoeda } from "../../utils/data";
 
 export const columns = [
   { id: 'id', label: '#' },
@@ -19,7 +18,7 @@ export const columns = [
 
 export type IHonorarioRow = Pick<
 IHonorarios,
-  | "processo_factura_item_id"
+  | "processo_factura_id"
   | "tarefa"
   | "processo_factura_horas"
   | "processo_factura_custo"
@@ -37,7 +36,7 @@ IHonorarios,
 export const transformDataHonorarios = (
   data: IHonorarios[],
   onView: (honorario: IHonorarios) => void
-): IHonorarioRow[] => {
+): any[] => {
 
   return data.map((honorario, index) => ({
     id: index + 1,

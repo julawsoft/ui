@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type ReactNode } from 'react';
+import React, { useState, type ReactNode } from 'react';
 import {
   Button,
   Stack,
@@ -9,7 +9,7 @@ import {
   Modal,
   Box
 } from '@mui/material';
-import { Add, AttachFile, Edit, Close, Delete } from '@mui/icons-material';
+import { AttachFile, Close, Delete } from '@mui/icons-material';
 import DataTable from '../../../components/common/DataTable';
 import SimpleModal from '../../../components/common/SimpleModal';
 import type { IProcessoAnexos } from '../../../schema/InterfaceProcess';

@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, Alert, Stack, Button } from '@mui/material';
+import { Box, Grid, Stack, Button } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate, useParams } from 'react-router-dom';
 import BoxCard from '../../components/common/BoxCard';
 import BoxTop from '../../components/common/BoxTop';
 import Input from '../../components/common/Input';
 import SelectBox from '../../components/common/SelectBox2';
 import PrimaryButton from '../../components/common/PrimaryButton';
-import SecondaryButton from '../../components/common/SecondaryButton';
 import Loader from '../Loader';
 import { toast } from 'react-toastify';
-import type { IProcesso, IProcessoInput, IProcessoInstituicoes, IProcessoModoFacturacao, IProcessoStatus } from '../../schema/InterfaceProcess';
+import type { IProcessoInput, IProcessoInstituicoes, IProcessoModoFacturacao, IProcessoStatus } from '../../schema/InterfaceProcess';
 import { ProcessoService } from '../../services/ProcessoService';
 import { ColaboradorService } from '../../services/ColaboradorService';
 import { ClientService } from '../../services/ClientService';
 import type { IClient } from '../../schema/InterfaceClient';
 import type { IColaborador } from '../../schema/InterfaceColaboradores';
-import type { IProcessStatus } from '../../schema/InterfacePrecedentes';
 import type { ProcessoFormData } from '../../validation/processoSchema';
 import BreadcrumbsNav from '../../components/common/BreadcrumbsNav';
 import { ROUTES_PATH } from '../../routes/routePaths';
@@ -63,8 +60,6 @@ const NewProcesso: React.FC = () => {
   const {
     handleSubmit,
     control,
-    formState: { errors },
-    reset,
     setValue,
   } = useForm<IProcessoInput>({
     defaultValues: {

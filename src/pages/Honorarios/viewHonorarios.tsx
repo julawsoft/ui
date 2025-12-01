@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -13,49 +13,17 @@ import {
   Button,
   Chip,
 } from "@mui/material";
-import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import { useNavigate, useParams } from "react-router-dom";
 import BreadcrumbsNav from "../../components/common/BreadcrumbsNav";
 import { HonorariosService } from "../../services/HonorariosService";
 import type { IHonorarioInvoice } from "../../schema/InterfaceHonorarios";
-import { boolean } from "zod";
 import { generateInvoiceAvencaPDF } from "../../utils/reports/generateInvoiceAvencaPDF";
 import { formatMoedaAOA } from "../../utils/moeda";
 import ConfirmDialog from "../../components/common/ConfirmDialog";
 import { useUserLogged } from "../../hooks/useUserLogged";
 import { toast } from "react-toastify";
 import { ROUTES_PATH } from "../../routes/routePaths";
-
-interface IItem {
-  id: number;
-  tipo: "timesheet" | "despesa";
-  descricao: string;
-  colaborador: string;
-  horas?: number;
-  valor: number;
-}
-
-interface IHonorario {
-  id: number;
-  numero: string;
-  cliente: string;
-  data_emissao: string;
-  itens: IItem[];
-  total: number;
-}
-
-const exemploHonorario: IHonorario = {
-  id: 1,
-  numero: "HON-2025-001",
-  cliente: "CETIM - Centro de Tecnologia e Inovação",
-  data_emissao: "2025-10-29",
-  itens: [
-    { id: 1, tipo: "timesheet", descricao: "Consultoria jurídica", colaborador: "Maria Silva", horas: 8, valor: 25000 },
-    { id: 2, tipo: "despesa", descricao: "Deslocação Luanda-Sumbe", colaborador: "Carlos Alberto", valor: 15000 },
-  ],
-  total: 40000,
-};
 
 export default function ViewHonorario() {
 
@@ -75,11 +43,9 @@ export default function ViewHonorario() {
     }, 500)
   }, [])
 
-  const honorario = exemploHonorario;
-
   const handleExportarPDF = () => {
 
-    const registos: any = data?.items.map((item, index) => ({
+    const registos: any = data?.items.map((item) => ({
       id: item.processo_factura_id,
       tipo: String(item?.tipo),
       descricao: item.descricao,

@@ -7,14 +7,13 @@ import {
   Tab,
   Typography,
   Button,
-  Stack,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   TextField,
 } from "@mui/material";
-import { Add, Edit } from "@mui/icons-material";
+import {  Edit } from "@mui/icons-material";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -22,7 +21,6 @@ import BoxCard from "../../components/common/BoxCard";
 import SimpleModal from "../../components/common/SimpleModal";
 import BoxTop from "../../components/common/BoxTop";
 import Loader from "../../components/common/Loader";
-import DataTable from "../../components/common/DataTable";
 import SimpleAccordion from "../../components/common/SimpleAccordion";
 import BreadcrumbsNav from "../../components/common/BreadcrumbsNav";
 import PrimaryButton from "../../components/common/PrimaryButton";
@@ -48,9 +46,7 @@ import {
 } from "../../schema/InterfaceProcess";
 import type { IHonorarios } from "../../schema/InterfaceHonorarios";
 import ConfirmDialog from "../../components/common/ConfirmDialog";
-import TabTarefas from "./tabs/TabTarefas";
 
-// ===== Componente auxiliar de abas =====
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -74,9 +70,9 @@ const ViewProcessoTabs: React.FC = () => {
   const [error, setError] = useState("");
 
   // Subdados
-  const [tarefas, setTarefas] = useState<ITarefa[]>([]);
+  const [, setTarefas] = useState<ITarefa[]>([]);
   const [equipas, setEquipas] = useState<IEquipa[]>([]);
-  const [honorarios, setHonorarios] = useState<IHonorarios[]>([]);
+  const [, setHonorarios] = useState<IHonorarios[]>([]);
   const [anexos, setAnexos] = useState<IProcessoAnexos[]>([]);
   const [associados, setAssociados] = useState<IProcessoPrecedentes[]>([]);
   const [openConfirm, setOpenConfirm] = useState(false);

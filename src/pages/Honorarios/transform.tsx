@@ -21,15 +21,15 @@ export const columns = [
 
 export type IHonorarioRow = Pick<
 IHonorarios,
-  | "processo_factura_item_id"
+  | "processo_factura_id"
   | "tarefa"
-  | "processo_factura_item_horas"
-  | "processo_factura_item_custo"
+  | "processo_factura_horas"
+  | "processo_factura_custo"
   | "cliente"
   | "colaborador"
   | "data_registo_timesheet"
   | "processo_estado"
-  | "processo_factura_item_data_registo"
+  | "processo_factura_data_registo"
 > & {
   actions: ReactNode; 
 };
@@ -38,19 +38,19 @@ export const transformDataHonorarios = (
   data: IHonorarios[],
   onEdit: (honorario: IHonorarios) => void,
   onView: (honorario: IHonorarios) => void
-): IHonorarioRow[] => {
+): any[] => {
 
   return data.map((honorario, index) => ({
     id: index + 1,
     tarefa: honorario.tarefa,
-    horas: converterHorasDecimais(honorario.processo_factura_item_horas),
-    custo: convertMoeda(honorario.processo_factura_item_custo),
+    horas: converterHorasDecimais(honorario.processo_factura_horas),
+    custo: convertMoeda(honorario.processo_factura_custo),
     cliente: honorario.cliente,
    //  data: honorario.data_registo_timesheet,
     ref: honorario.processo_referencia,
     colaborador: honorario.colaborador ?? null,
     // status: honorario.processo_estado,
-    data_registo: honorario.processo_factura_item_data_registo,
+    data_registo: honorario.processo_factura_data_registo,
     actions: (
       <>
         <IconButton

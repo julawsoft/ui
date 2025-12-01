@@ -1,10 +1,7 @@
 import { IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import type { ReactNode } from "react";
-import type { IColaborador } from "../../schema/InterfaceColaboradores";
 import type { IDespesas } from "../../schema/interfaceDespesas";
-import { PictureAsPdf } from "@mui/icons-material";
 
 
 export const columns = [
@@ -40,8 +37,7 @@ export type IDespesasRow = Pick<
 export const transformDataDespesas = (
   data: IDespesas[],
   onEdit: (despesas: IDespesas) => void,
-  onVerCobranca: (despesas: IDespesas) => void
-): IDespesasRow[] => {
+): any[] => {
   return data.map((despesas, index) => ({
     id: index + 1,
     num_precesso: despesas.numeroProcesso,

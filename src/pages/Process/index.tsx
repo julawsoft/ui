@@ -16,7 +16,6 @@ import FiltroProcessos from './FiltroProcessos';
 import type { IClient } from '../../schema/InterfaceClient';
 import dayjs from 'dayjs';
 import { ClientService } from '../../services/ClientService';
-import type { IProcessModoFacturacao, IProcessStatus } from '../../schema/InterfacePrecedentes';
 import type { IColaborador } from '../../schema/InterfaceColaboradores';
 
 const Processo: React.FC = () => {
@@ -27,7 +26,7 @@ const Processo: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | null>(null);
 
-  const [fases, setFases] = useState<any[]>([
+  const fases = [
     {
       id: 'Judicial',
       value: 'Judicial'
@@ -36,7 +35,8 @@ const Processo: React.FC = () => {
       id: 'Extrajudicial',
       value: 'Extrajudicial'
     }
-  ]);
+  ];
+
   const [fase, setFase] = useState<string>();
 
   const [mFactoracoes, setMFacturacoes] = useState<IProcessoModoFacturacao[]>([]);

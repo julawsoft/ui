@@ -20,7 +20,7 @@ import type { DespesasFormData } from '../../validation/despesasSchema';
 import type { IDespesas, ITipoDespesas } from '../../schema/interfaceDespesas';
 import type { IProcesso } from '../../schema/InterfaceProcess';
 import type { IClient } from '../../schema/InterfaceClient';
-import { convertMoeda, parseValorBR } from '../../utils/data';
+import { parseValorBR } from '../../utils/data';
 
 const NewDespesas: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -107,8 +107,7 @@ const NewDespesas: React.FC = () => {
       colaboradorId: Number(user?.id),
       clienteId: formData.cliente_id,
       tipoDespesaId: formData.tipo_despesa,
-    };
-
+    } as any
 
     try {
       if (isEdit && id) {

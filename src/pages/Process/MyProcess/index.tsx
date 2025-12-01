@@ -1,4 +1,3 @@
-// src/pages/Colaborador.tsx
 import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
@@ -12,12 +11,11 @@ import BoxCard from '../../../components/common/BoxCard';
 import StateHandler from '../../../components/common/StateHandler';
 import DataTable from '../../../components/common/DataTable';
 import { processoColumns, transformDataProcesso } from '../transformProcesso';
-import { UserPermissions } from '../../../types/UserPermissions';
 import PrimaryButton from '../../../components/common/PrimaryButton';
 import { generateProcessosListPDF } from '../../../utils/reports/generateListProcessPDF';
 
 const MyProcess: React.FC = () => {
-  const { user, saveUser, clearUser, hasAnyPermission, hasPermission } = useUserLogged();
+  const { user } = useUserLogged();
 
   const navigate = useNavigate();
 
@@ -56,10 +54,6 @@ const MyProcess: React.FC = () => {
     navigate(`${ROUTES_PATH.ViewProcess}/${processo.id}`);
   };
 
-  const handleNovoProcesso = () => {
-      navigate(ROUTES_PATH.NewProcesso);
-  };
-  
   const handleExportPDF = () => {
     if (data.length > 0) {
       generateProcessosListPDF(data);

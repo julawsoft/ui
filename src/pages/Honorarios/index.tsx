@@ -1,4 +1,3 @@
-// src/pages/Colaborador.tsx
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
@@ -8,25 +7,15 @@ import { columns, transformDataHonorarios } from './transformGlobal';
 import BoxTop from '../../components/common/BoxTop';
 import { ROUTES_PATH } from '../../routes/routePaths';
 import StateHandler from '../../components/common/StateHandler';
-import { TimeSheetsService } from '../../services/TimeSheetsService';
-import type { ITimeSheets, ITipoTarefas } from '../../schema/InterfaceTimeSheets';
-import { useUserLogged } from '../../hooks/useUserLogged';
 import BreadcrumbsNav from '../../components/common/BreadcrumbsNav';
 import PrimaryButton from '../../components/common/PrimaryButton';
-import { Alert, Box, Button, Grid, Input, Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
+import { Box, Button, Grid, Stack, Tab, Tabs, Typography } from '@mui/material';
 import { Add, Home, Info, Settings } from '@mui/icons-material';
-import SimpleModal from '../../components/common/SimpleModal';
 import VerticalTabBar from '../../components/common/VerticalTabBar';
 import HorizontalTabBar from '../../components/common/HorizontalTabBar';
 import type { IProcesso } from '../../schema/InterfaceProcess';
 import type { IClient } from '../../schema/InterfaceClient';
 import { ClientService } from '../../services/ClientService';
-import type { DespesasFormData } from '../../validation/despesasSchema';
-import { timeSheetSchema, type TimeSheetFormData } from '../../validation/timeSheetSchema';
-import { Controller, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import SelectBox from '../../components/common/SelectBox';
-import NormalModal from '../../components/common/NormalModal';
 import type { IHonorarios } from '../../schema/InterfaceHonorarios';
 import { HonorariosService } from '../../services/HonorariosService';
 import FiltroHonorariosGlobal from './FiltroHonorariosGlobal';
@@ -54,7 +43,6 @@ const TimeSheetsGlobal: React.FC = () => {
 
   const [data, setData] = React.useState<IHonorarios[]>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [isLoadingModal, setIsLoadingModal] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | null>(null);
 
   const hoje = dayjs();
@@ -115,10 +103,6 @@ const TimeSheetsGlobal: React.FC = () => {
     navigate(ROUTES_PATH.NewHonorarios);
   };
 
-  const handleEdit = (honorario: IHonorarios) => {
-    navigate(`${ROUTES_PATH.NewHonorarios}/${honorario.processo_factura_id}`);
-  };
-
   const handleView = (honorario: IHonorarios) => {
     console.log("honorarios ", honorario)
     navigate(`${ROUTES_PATH.NewHonorarios}/view/${honorario.processo_factura_id}`);
@@ -134,7 +118,6 @@ const TimeSheetsGlobal: React.FC = () => {
 
   const [verticalValue, setVerticalValue] = useState("home");
   const [horizontalValue, setHorizontalValue] = useState("home");
-  const [openModalTimeSheet, setOpenModalTimeSheet] = useState(false);
 
   const tabs = [
     { label: "Home", value: "home", icon: <Home /> },
@@ -147,42 +130,13 @@ const TimeSheetsGlobal: React.FC = () => {
     setTabIndex(newValue);
   };
 
-  /** novo registo modal  */
-  const [tipoTarefas, setTipoTarefas] = useState<ITipoTarefas[]>([]);
   const [processos, setProcessos] = useState<IProcesso[]>([]);
-  
-  const fnModalHonorario = async (isOpen: boolean) => {
-    if (isOpen) {
-      try {
-        setIsLoadingModal(true);
-        await Promise.all([fetchClientes()]);
-        setIsLoadingModal(false);
-      } catch (error) {
-        console.error('Erro ao carregar dados iniciais:', error);
-        toast.error('Erro ao carregar dados iniciais.');
-        setIsLoadingModal(false)
-      } finally {
-        setIsLoadingModal(false);
-      }
-      console.log("Carregar os dados...")
-    } else {
-      reset()
-    }
-    setOpenModalTimeSheet(isOpen)
-  }
 
-  // const fetchClientes = async () => setTipoTarefas(await TimeSheetsService.getTipoTarefas());
   const fetchClientes = async () => setClientes(await ClientService.getAll());
   const fetchProcessosByClientId = async (idClient: number) => setProcessos(await ClientService.getProcessos(idClient));
 
-  // React Hook Form
-  const { control, handleSubmit, formState: { errors }, reset } = useForm<TimeSheetFormData>({
-    resolver: zodResolver(timeSheetSchema),
-  });
-
    const handleChangeCliente = (e: React.ChangeEvent<{ value: unknown }>) => {
       const id = e.target.value as number;
-      console.log("id do cliente", id)
       setCliente(id);
       fetchProcessosByClientId(id);
     };

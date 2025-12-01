@@ -59,7 +59,7 @@ interface ItemSelecionado extends IRegistro {
 
 export default function CriarHonorario() {
 
-  const { user, saveUser, clearUser, hasAnyPermission, hasPermission } = useUserLogged();
+  const { user } = useUserLogged();
   const navigate = useNavigate();
 
 
@@ -71,7 +71,7 @@ export default function CriarHonorario() {
   const [processos, setProcessos] = useState<IProcesso[]>([]);
   const [clientes, setClientes] = useState<IClient[]>([]);
 
-  const [isAvenca, setIsAvenca] = useState<boolean>(false)
+  const [, setIsAvenca] = useState<boolean>(false)
   const [openConfirm, setOpenConfirm] = useState(false);
   const [canGerarHonorario, setCanGerarHonorario] = useState(false);
 
@@ -107,7 +107,7 @@ export default function CriarHonorario() {
     setOpenConfirm(true)
   };
 
-  const fetchParcelas = async () => setParcelas(await HonorariosService.getParcelas(processoSelected.id))
+  const fetchParcelas = async () => setParcelas(await HonorariosService.getParcelas(Number(processoSelected?.id)))
 
   const handleConfirmRegisto = async () => {
 
@@ -207,13 +207,8 @@ export default function CriarHonorario() {
       toast.success("Honorário criado com sucesso!");
       fetchParcelas()
       setOpenConfirm(false)
-      handleExportarSuccessFeePDF(response)
+      handleExportarSuccessFeePDF()
       setValorParcela(0)
-      /*
-      setTimeout(() => {
-        navigate(`/invoice-honorarios/${response.id}`);
-      })
-      */
     }
   }
 
@@ -281,19 +276,21 @@ export default function CriarHonorario() {
     let clienteFilter = clientes.filter((item => item.id === cliente))[0]
     let processoFilter = processos.filter((item => item.id === processo))[0]
 
-    generateInvoiceFixoPDF(processoSelected, clienteFilter, processoFilter, processoSelected?.valor_total)
-    setTimeout(() => {
-      setCanGerarHonorario(true)
-    }, 3000)
+    if(processoSelected){
+
+      generateInvoiceFixoPDF(processoSelected, clienteFilter, processoFilter, Number(processoSelected.valor_total))
+      setTimeout(() => {
+        setCanGerarHonorario(true)
+      }, 3000)
+    }
   }
 
-  const handleExportarSuccessFeePDF = (honorario: any) => {
+  const handleExportarSuccessFeePDF = () => {
     let clienteFilter = clientes.filter((item => item.id === cliente))[0]
     let processoFilter = processos.filter((item => item.id === processo))[0]
 
-    console.log("cliente Filter ", clienteFilter)
-    console.log("processo Filter ", processoFilter)
-    generateInvoiceSuccessFeePDF(processoSelected, clienteFilter, processoFilter, honorario.custo)
+    if(processoSelected)
+      generateInvoiceSuccessFeePDF(processoSelected, clienteFilter, Number(processoFilter.valor_total))
   }
 
   const somaValores = (lista: any[]) =>
@@ -559,7 +556,7 @@ export default function CriarHonorario() {
                                   variant="outlined"
                                   color="error"
                                   size="small"
-                                  onClick={() => handleExportarSuccessFeePDF(parcela)}
+                                  onClick={() => handleExportarSuccessFeePDF()}
                                 >
                                   PDF
                                 </Button>}</TableCell>

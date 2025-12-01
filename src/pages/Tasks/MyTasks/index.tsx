@@ -84,7 +84,6 @@ const MyTasks: React.FC = () => {
   const [tipoTarefas, setTipoTarefas] = useState<ITipoTarefas[]>([]);
   const [, setOpenDialog] = useState(false);
   const [form, setForm] = useState<Partial<ITasks>>({});
-  const [, setIsClose] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
 
   const [clientes, setClientes] = useState<IClient[]>([]);

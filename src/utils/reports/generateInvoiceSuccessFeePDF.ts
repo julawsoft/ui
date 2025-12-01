@@ -33,7 +33,7 @@ const fillTemplate = (template: string, cliente: IClient, processo: IProcesso, t
 };
 
 
-export const generateInvoiceSuccessFeePDF = async (cliente: IClient, processo: IProcesso, total: number) => {
+export const generateInvoiceSuccessFeePDF = async ( processo: IProcesso, cliente: IClient,total: number) => {
   const response = await fetch("/templates/invoice_template_hororarios_success_fee.html");
   const templateHtml = await response.text();
 

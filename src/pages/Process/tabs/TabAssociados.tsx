@@ -1,9 +1,9 @@
-import React, { useEffect, useState, type ReactNode } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Stack, Alert, IconButton, Grid } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import DataTable from '../../../components/common/DataTable';
 import SimpleModal from '../../../components/common/SimpleModal';
-import type { IProcesso, IProcessoPrecedentes, ITarefa } from '../../../schema/InterfaceProcess';
+import type { IProcesso, IProcessoPrecedentes } from '../../../schema/InterfaceProcess';
 
 import SelectBox from '../../../components/common/SelectBox';
 import { toast } from 'react-toastify';

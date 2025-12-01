@@ -47,19 +47,17 @@ export default function TimesheetRegistro({
   const [modo, setModo] = useState<"cronometro" | "manual">("cronometro");
   const [descricao, setDescricao] = useState("");
   const [isRunning, setIsRunning] = useState(false);
-  const [inicio, setInicio] = useState<number | null>(null);
-  const [duracao, setDuracao] = useState("00:00:00");
+  const [, setInicio] = useState<number | null>(null);
 
   const [time, setTime] = useState<number>(0)
   const [loops, setLoops] = useState<Loop[]>([])
 
-  // Modo manual
   const tarefaIdLocal = Number(localStorage.getItem("chrono:tarefaId")) ?? ""
   const [tarefaId, setTarefaId] = useState<number | "">(tarefaIdLocal);
   const [data, setData] = useState(dayjs().format("YYYY-MM-DD"));
   const [horas, setHoras] = useState<number>(0);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const [, setAnchorEl] = useState<null | HTMLElement>(null);
+  const timerRef = useRef<any>(null);
   const [startTime, setStartTime] = useState<number | null>(null);
 
   // Cronômetro
@@ -184,22 +182,12 @@ export default function TimesheetRegistro({
     localStorage.removeItem("chrono:tarefaId");
 
     handleClearHistory()
-    // setTarefaId('')
-    // localStorage.removeItem("chrono:tarefaId")
   }
 
   const handleClearHistory = () => {
     setLoops([]);
     localStorage.removeItem("chrono:loops");
   };
-
-    const handleMenuOpen = (e: React.MouseEvent<HTMLElement>) => {
-      setAnchorEl(e.currentTarget);
-    };
-
-    const handleMenuClose = () => {
-      setAnchorEl(null);
-    };
 
   const handleAddManual = () => {
 
@@ -211,7 +199,6 @@ export default function TimesheetRegistro({
       data,
       horasTrabalhadas: `${horas > 9 ? horas : '0' + horas } : 00:00`,
     };
-    console.log("✅ Timesheet (manual):", novoRegistro);
     handleSaveTimeSheet(novoRegistro)
     setTimeout(()=> {
       setDescricao("");

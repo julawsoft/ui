@@ -1,8 +1,8 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from "@mui/material"
-import type { IProcess } from "../../schema/InterfaceProcess"
+import type { IProcesso } from "../../schema/InterfaceProcess"
 
 export interface IDataTableProcesso {
-  data: IProcess[]
+  data: IProcesso[]
   page: number
   rowsPerPage: number
   handleChangePage: () => void

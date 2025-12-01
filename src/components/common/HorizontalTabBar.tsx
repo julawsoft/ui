@@ -33,7 +33,7 @@ const HorizontalTabBar: React.FC<HorizontalTabBarProps> = ({ tabs, value, onChan
           <Tab
             key={tab.value}
             label={tab.label}
-            icon={tab.icon}
+            //icon={tab.icon}
             iconPosition={tab.icon ? "start" : undefined}
             value={tab.value}
           />
