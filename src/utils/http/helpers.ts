@@ -25,7 +25,7 @@ export async function logOutAppSec(message: string | undefined) {
             setUserLogged({
                 id: 0,
                 name: '',
-                groups: [''],
+                groups: '',
                 roles: [''],
                 accessToken: '',
                 refreshToken: '',

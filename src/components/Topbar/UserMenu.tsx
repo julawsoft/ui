@@ -34,7 +34,7 @@ const UserMenu: React.FC = () => {
         setUserLogged({
           id: 0,
           name: '',
-          groups: [],
+          groups: '',
           roles: [''],
           accessToken: '',
           refreshToken: '',

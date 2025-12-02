@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Typography, Card, CardContent, CardActionArea, useTheme, Box } from '@mui/material';
+import { Grid, Typography, Card, CardContent, CardActionArea, useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import {
   Assignment,
@@ -41,7 +41,7 @@ const Home: React.FC = () => {
 
   // Função para checar permissão (caso tenha roles definidas no card)
   const hasPermission = (roles?: UserRoles[]) =>
-    !roles || roles.some(role => user?.groups.includes(role));
+    !roles || roles.some(role => user?.groups.toString().toLocaleLowerCase().includes(role));
 
   return (
     <div style={{ padding: theme.spacing(3) }}>
@@ -53,9 +53,23 @@ const Home: React.FC = () => {
       </Typography>
 
       <Grid container spacing={3} sx={{ mt: 2 }}>
-        <Box display={'flex'} justifyContent={'center'} alignContent={'center'}>
-        </Box>
-        <Typography>Página em construção.</Typography>
+        {cards.filter(card => hasPermission(card.roles)).map((card, idx) => (
+          <Grid item xs={12} sm={6} md={4} key={idx}>
+            <Card sx={{ borderRadius: 3, boxShadow: 3, height: "100%" }}>
+              <CardActionArea sx={{ height: "100%" }} onClick={() => navigate(card.path)}>
+                <CardContent sx={{ textAlign: "center", p: 4 }}>
+                  <div style={{ color: theme.palette.primary.main, marginBottom: 10 }}>
+                    {card.icon}
+                  </div>
+                  <Typography variant="h6">{card.title}</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {card.description}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
+        ))}
       </Grid>
     </div>
   );
