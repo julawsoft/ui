@@ -2,7 +2,7 @@ export type IUserLogged = {
     id: number
     name: string
     roles: string[]
-    groups: string[]
+    groups: string
     isLogged: boolean
     accessToken: string
     refreshToken: string

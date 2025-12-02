@@ -3,8 +3,6 @@ import {
   Box,
   Button,
   Typography,
-  MenuItem,
-  Select,
   Card,
   CardContent,
   Collapse,
@@ -26,7 +24,7 @@ const Chronometer: React.FC = () => {
   const [loops, setLoops] = useState<Loop[]>([]);
   const [showHistory, setShowHistory] = useState<boolean>(false);
   const [startTime, setStartTime] = useState<number | null>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<any>(null);
 
   // Carregar dados do localStorage ao iniciar
   useEffect(() => {

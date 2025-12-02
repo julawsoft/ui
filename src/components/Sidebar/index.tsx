@@ -18,7 +18,6 @@ import {
   Assignment,
   Schedule,
   MonetizationOn,
-  AssignmentTurnedIn,
   PeopleAlt,
   Group,
   AccountBalance,
@@ -63,10 +62,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, handleClick }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const user = useAuthStore((state) => state.user);
-  const location = useLocation(); // 👈 pega rota atual
+  const location = useLocation();
 
-  const hasPermission = (itemRoles?: UserRoles[]) =>
-    !itemRoles || itemRoles.some(role => user?.groups.includes(role));
+  const hasPermission = (itemRoles?: UserRoles[]) => 
+   !itemRoles || itemRoles.some(role => user?.groups.toString().toLocaleLowerCase().includes(role.toLocaleLowerCase()));
 
   const userMenus = menuItems.filter(item => item.section === "user");
   const adminMenus = menuItems.filter(item => item.section === "admin" && hasPermission(item.profiles));

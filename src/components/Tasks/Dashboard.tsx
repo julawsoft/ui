@@ -1,3 +1,5 @@
+
+/*
 import React, { useMemo } from "react";
 import { Box, Grid, Typography, Card, CardContent } from "@mui/material";
 import Chart from "react-apexcharts";
@@ -83,7 +85,6 @@ const DashboardTasks: React.FC<DashboardTasksProps> = ({ tasks }) => {
         Painel de Tarefas
       </Typography>
 
-      {/* Cards de resumo */}
       <Grid container spacing={2} mb={3}>
         {[
           { label: "Não Iniciadas", value: taskStats.notStarted, color: colors.notStarted },
@@ -115,7 +116,6 @@ const DashboardTasks: React.FC<DashboardTasksProps> = ({ tasks }) => {
         ))}
       </Grid>
 
-      {/* Gráficos */}
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
           <Card sx={{ bgcolor: "#fff", boxShadow: 3, borderRadius: 2 }}>
@@ -174,3 +174,5 @@ const DashboardTasks: React.FC<DashboardTasksProps> = ({ tasks }) => {
 };
 
 export default DashboardTasks;
+
+*/

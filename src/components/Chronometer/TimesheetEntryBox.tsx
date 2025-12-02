@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Box,
   Button,
@@ -56,7 +56,6 @@ export default function TimesheetRegistro({
   const [tarefaId, setTarefaId] = useState<number | "">(tarefaIdLocal);
   const [data, setData] = useState(dayjs().format("YYYY-MM-DD"));
   const [horas, setHoras] = useState<number>(0);
-  const [, setAnchorEl] = useState<null | HTMLElement>(null);
   const timerRef = useRef<any>(null);
   const [startTime, setStartTime] = useState<number | null>(null);
 

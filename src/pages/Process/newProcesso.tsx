@@ -15,7 +15,6 @@ import { ColaboradorService } from '../../services/ColaboradorService';
 import { ClientService } from '../../services/ClientService';
 import type { IClient } from '../../schema/InterfaceClient';
 import type { IColaborador } from '../../schema/InterfaceColaboradores';
-import type { ProcessoFormData } from '../../validation/processoSchema';
 import BreadcrumbsNav from '../../components/common/BreadcrumbsNav';
 import { ROUTES_PATH } from '../../routes/routePaths';
 
@@ -88,24 +87,25 @@ const NewProcesso: React.FC = () => {
         if (id) {
           const processo = await ProcessoService.getById(Number(id));
 
-          const processoAdapter = {
+          const processoAdapter: IProcessoInput = {
               assunto: processo.assunto,
               area: processo.area,
               fase: processo.fase,
-              instituicaoId: processo.instituicao_id,
-              modoFacturacaoId: processo.modo_facturacao_id,
-              gestorId: processo.gestor_id,
-              clienteId: processo.cliente_id,
-              contraParte: processo.contra_parte,
+              instituicaoId: Number(processo.instituicao_id),
+              modoFacturacaoId: Number(processo.modo_facturacao_id),
+              gestorId: Number(processo.gestor_id),
+              clienteId: Number(processo.cliente_id),
+              contraParte: String(processo.contra_parte),
               dataRegisto: processo.data_registo.substring(0,10),
-              estadoId: processo.status_id, 
+              statusId: Number(processo.status_id), 
               horasMes: processo.horas_mes,
-              nProcessoJudicial: processo.n_processo_judicial,
+              nProcessoJudicial: String(processo.n_processo_judicial),
               valorTotal: processo.valor_total ?? 0
           }
+
           Object.keys(processoAdapter).forEach((key) => {
             const value = processoAdapter[key as keyof typeof processoAdapter];
-            setValue(key as keyof ProcessoFormData, value != null ? String(value) : '');
+            setValue(key as keyof IProcessoInput, value != null ? String(value) : '');
           });
         }
       } catch (e: any) {

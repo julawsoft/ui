@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Login from '../pages/Login'
 import { ROUTES_PATH } from './routePaths'
@@ -13,18 +13,22 @@ export default function Router() {
     const setUser = useAuthStore((state) => state.setUser)
     const userLogged: IUserLogged = getUserLogged()
     
-    setUser(
-        {
-            id: String(userLogged.id),
-            name: userLogged.name,
-            email: '',
-            groups: userLogged.groups[0],
-            roles: userLogged.roles,
-            isLogged: userLogged.isLogged,
-            accessToken: userLogged.accessToken,
-            refreshToken: userLogged.refreshToken
+    useEffect(() => {
+        if (userLogged) {
+            setUser(
+                {
+                    id: String(userLogged.id),
+                    name: userLogged.name,
+                    email: '',
+                    groups: userLogged.groups,
+                    roles: userLogged.roles,
+                    isLogged: userLogged.isLogged,
+                    accessToken: userLogged.accessToken,
+                    refreshToken: userLogged.refreshToken
+                }
+            )
         }
-    )
+    }, [userLogged])
 
     const ProtectedRoute = ({ isLogged, children }: any) => {
         if (!isLogged) {
@@ -39,10 +43,10 @@ export default function Router() {
     };
 
     const hasPermission = (itemRoles: string[]) => {
-        if (itemRoles)
-            return itemRoles.map(role => userLogged.groups.some(group => role.includes(group)));
-        else
-            return false;
+        if (itemRoles && userLogged && userLogged.groups)
+            return itemRoles.map(role => userLogged.groups.toString().toLocaleLowerCase().includes(role.toLocaleLowerCase()));
+
+        return false;
     };
 
     return (

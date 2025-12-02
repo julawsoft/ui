@@ -1,9 +1,7 @@
-// src/pages/Home.tsx
 import React from 'react';
-import { Grid, Typography, Card, CardContent, CardActionArea, useTheme } from '@mui/material';
+import { Grid, Typography, Card, CardContent, CardActionArea, useTheme, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import {
-  //Home as HomeIcon,
   Assignment,
   Schedule,
   MonetizationOn,
@@ -20,7 +18,7 @@ interface ICard {
   description: string;
   icon: JSX.Element;
   path: string;
-  roles?: UserRoles[]; // permissões opcionais
+  roles?: UserRoles[];
 }
 
 const Home: React.FC = () => {
@@ -28,7 +26,6 @@ const Home: React.FC = () => {
   const theme = useTheme();
   const user = useAuthStore((state) => state.user);
 
-  // Definição dos cards
   const cards: ICard[] = [
     { title: "Meus Processos", description: "Acompanhe seus processos ativos", icon: <Assignment fontSize="large" />, path: ROUTES_PATH.ProcessMine },
     { title: "Meus TimeSheets", description: "Controle suas horas trabalhadas", icon: <Schedule fontSize="large" />, path: ROUTES_PATH.MyTimeSheets },
@@ -56,23 +53,9 @@ const Home: React.FC = () => {
       </Typography>
 
       <Grid container spacing={3} sx={{ mt: 2 }}>
-        {cards.filter(card => hasPermission(card.roles)).map((card, idx) => (
-          <Grid item xs={12} sm={6} md={4} key={idx}>
-            <Card sx={{ borderRadius: 3, boxShadow: 3, height: "100%" }}>
-              <CardActionArea sx={{ height: "100%" }} onClick={() => navigate(card.path)}>
-                <CardContent sx={{ textAlign: "center", p: 4 }}>
-                  <div style={{ color: theme.palette.primary.main, marginBottom: 10 }}>
-                    {card.icon}
-                  </div>
-                  <Typography variant="h6">{card.title}</Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {card.description}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        ))}
+        <Box display={'flex'} justifyContent={'center'} alignContent={'center'}>
+        </Box>
+        <Typography>Página em construção.</Typography>
       </Grid>
     </div>
   );

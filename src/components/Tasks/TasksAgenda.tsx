@@ -18,7 +18,7 @@ import {
   Typography,
   IconButton,
 } from '@mui/material';
-import { ChevronLeft, ChevronRight, Today, Add } from '@mui/icons-material';
+import { ChevronLeft, ChevronRight, Today } from '@mui/icons-material';
 import type { ITasks } from '../../schema/InterfaceTarefa';
 
 const locales = { 'pt-BR': ptBR };

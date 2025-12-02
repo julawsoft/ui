@@ -1,3 +1,4 @@
+/*
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 
@@ -47,3 +48,4 @@ export default function TableComponent() {
       />
   );
 }
+  */

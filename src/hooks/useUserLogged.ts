@@ -25,12 +25,13 @@ const getUserLogged = (): IUserLogged | null => {
   return userLogged ? JSON.parse(userLogged) : null;
 };
 
-// Hook React
 export const useUserLogged = () => {
   const [user, setUser] = useState<IUserLogged | null>(null);
 
   useEffect(() => {
     const storedUser = getUserLogged();
+
+    console.log("storedUser ", storedUser)
     if (storedUser) {
       setUser(storedUser);
     }

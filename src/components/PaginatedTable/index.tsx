@@ -1,3 +1,4 @@
+/*
 import React, { useState } from 'react';
 import {
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
@@ -99,3 +100,5 @@ const PaginatedTable = ({ data, handleEdit, handleDelete, handleView  }: IPagina
 };
 
 export default PaginatedTable;
+
+*/

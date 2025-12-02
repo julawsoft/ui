@@ -24,7 +24,7 @@ const ChronometerCompact: React.FC = () => {
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [loops, setLoops] = useState<Loop[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<any | null>(null);
   const [startTime, setStartTime] = useState<number | null>(null);
 
   // ⏳ Formatador de tempo

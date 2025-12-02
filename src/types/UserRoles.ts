@@ -1,7 +1,7 @@
 // src/types/UserRoles.ts
 export enum UserRoles {
-  ADMINISTRATIVO = "Administrativo",
+  ADMINISTRATIVO = "administrativo",
   ADVOGADO = "advogado",
   CONSULTOR = "consultor",
-  ESTAGIARIO = "Estagiario",
+  ESTAGIARIO = "estagiario",
 }
