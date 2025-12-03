@@ -39,19 +39,22 @@ const Login: React.FC = () => {
 
       const response = await LoginService.login({ username: email, password })
 
-      console.log('response', response)
-
-      if(response && response.status === 401) 
-          return toast.error(response.errors || 'Usuário ou senha inválidos')
+      if(response && response.status === 401) {
+        setIsLoading(false)
+        return toast.error(response.errors || 'Usuário ou senha inválidos')
+      }
       
-      if(response && response.status === 400) 
+      if(response && response.status === 400) {
+        setIsLoading(false)
         return toast.error(response.errors || 'Usuário desabilitado')
+      }
 
-      if(response && response.status === 500) 
+      if(response && response.status === 500) {
+        setIsLoading(false)
         return toast.error(response.errors || 'Servidor de autenticação não disponível')
+      }
 
         const userResponse = response.data
-
         const groupsMap =  userResponse.funcao
         const rolesMap = userResponse.auth.roles ?? []
 
@@ -81,8 +84,9 @@ const Login: React.FC = () => {
         }, 1000)
 
     } catch (err: any) {
+      console.log("O erro é: ", err)
+      setIsLoading(false)
       toast.error(err.message)
-      setIsLoading(true)
     }
 
   };
