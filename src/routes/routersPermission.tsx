@@ -65,6 +65,7 @@ export const routesPermissions: IRoute[] = [
       UserRoles.ADVOGADO,
       UserRoles.ESTAGIARIO,
       UserRoles.CONSULTOR,
+      UserRoles.ADMINISTRATIVO,
     ],
   },
   {
@@ -242,6 +243,7 @@ export const routesPermissions: IRoute[] = [
       UserRoles.ADVOGADO,
       UserRoles.ESTAGIARIO,
       UserRoles.CONSULTOR,
+      UserRoles.ADMINISTRATIVO,
     ],
   },
 
@@ -260,6 +262,7 @@ export const routesPermissions: IRoute[] = [
       UserRoles.ADVOGADO,
       UserRoles.ESTAGIARIO,
       UserRoles.CONSULTOR,
+      UserRoles.ADMINISTRATIVO,
     ],
   },
 
@@ -299,6 +302,7 @@ export const routesPermissions: IRoute[] = [
       UserRoles.ADVOGADO,
       UserRoles.ESTAGIARIO,
       UserRoles.CONSULTOR,
+      UserRoles.ADMINISTRATIVO,
     ],
   },
 

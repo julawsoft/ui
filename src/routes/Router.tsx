@@ -7,76 +7,99 @@ import { routesPermissions } from './routersPermission'
 import { getUserLogged, IUserLogged } from '../utils/cookies'
 import useAuthStore from '../context/authStore'
 import NotFound from '../pages/NotFound'
+import Loader from '../pages/Loader'
 
 export default function Router() {
 
     const setUser = useAuthStore((state) => state.setUser)
-    const userLogged: IUserLogged = getUserLogged()
-    
-    useEffect(() => {
-        if (userLogged) {
-            setUser(
-                {
-                    id: String(userLogged.id),
-                    name: userLogged.name,
-                    email: '',
-                    groups: userLogged.groups,
-                    roles: userLogged.roles,
-                    isLogged: userLogged.isLogged,
-                    accessToken: userLogged.accessToken,
-                    refreshToken: userLogged.refreshToken
-                }
-            )
-        }
-    }, [userLogged])
 
-    const ProtectedRoute = ({ isLogged, children }: any) => {
-        if (!isLogged) {
-            return <Navigate to={ROUTES_PATH.Login} replace />
-        }
-        return children
-    }
+    const [loading, setLoading] = useState(true)
+    const userLogged: IUserLogged = getUserLogged()
 
     const [isDrawerOpen, setDrawerOpen] = useState(true);
     const handleDrawerToggle = () => {
         setDrawerOpen(prev => !prev);
     };
 
-    const hasPermission = (itemRoles: string[]) => {
-        if (itemRoles && userLogged && userLogged.groups)
-            return itemRoles.map(role => userLogged.groups.toString().toLocaleLowerCase().includes(role.toLocaleLowerCase()));
+    useEffect(() => {
+        if (userLogged.isLogged) {
+            setUser({
+                id: String(userLogged.id),
+                name: userLogged.name,
+                email: '',
+                groups: userLogged.groups,
+                roles: userLogged.roles,
+                isLogged: userLogged.isLogged,
+                accessToken: userLogged.accessToken,
+                refreshToken: userLogged.refreshToken
+            })
+        }
+        setLoading(false)   
+    }, [])
 
-        return false;
-    };
+    const ProtectedRoute = ({ children }: any) => {
+        console.log("  userLogged  >>> ", userLogged)
+        if (!userLogged?.isLogged) {
+            return <Navigate to={ROUTES_PATH.Login} replace />
+        }
+        return children
+    }
+
+    const PublicRoute = ({ children }: any) => {
+        if (loading) return <>Loading...</> // espera o estado do usuário carregar
+        if (userLogged?.isLogged) return <Navigate to="/" replace /> // já logado, redireciona
+        return children
+    }
+    // Verificação de permissões
+    const hasPermission = (itemRoles: string[]) => {
+        if (!userLogged || !userLogged.groups) return false
+        return itemRoles.some(role =>
+            userLogged.groups.toString().toLowerCase().includes(role.toLowerCase())
+        )
+    }
+
+    console.log('User Logged:', userLogged?.isLogged)
+
+    if(loading
+    ) return (
+        <><Loader/></>
+    )
 
     return (
         <Routes>
             <Route
                 path="/"
                 element={
-                    <ProtectedRoute isLogged={userLogged !== undefined}>
+                    <ProtectedRoute>
                         <AppLayout isDrawerOpen={isDrawerOpen} onDrawerToggle={handleDrawerToggle} />
                     </ProtectedRoute>
-                }>
-
+                }
+            >
                 {routesPermissions.map((route) => {
-                    if (
-                        hasPermission(route.roles)
-                    )
-                        return (
-                            <Route key={route.path} path={route.path} element={route.element}>
-                                {route.subRoute}
-                            </Route>
-                        )
+                    console.log("Teste", route)
+                    const canAccess = hasPermission(route.roles)
+
+                    console.log("have access", canAccess)
+
                     return (
-                        <Route key={route.path} path={route.path} element={<>User Without Permission </>}>
+                        <Route
+                            key={route.path}
+                            path={route.path}
+                            element={canAccess ? route.element : <>User Without Permission</>}
+                        >
                             {route.subRoute}
                         </Route>
                     )
                 })}
-
             </Route>
-            <Route path={ROUTES_PATH.Login} element={<Login />} />
+
+            <Route 
+            path={ROUTES_PATH.Login}
+             element={
+                <PublicRoute>
+                    <Login />
+                </PublicRoute>
+            }/>
             <Route path="/*" element={<NotFound />} />
         </Routes>
     )

@@ -80,11 +80,11 @@ const Login: React.FC = () => {
         })
 
         setTimeout(() => {
-          navigate(ROUTES_PATH.Home)
+          window.location.reload();
+          //navigate(ROUTES_PATH.Home)
         }, 1000)
 
     } catch (err: any) {
-      console.log("O erro é: ", err)
       setIsLoading(false)
       toast.error(err.message)
     }
