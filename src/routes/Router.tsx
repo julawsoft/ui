@@ -58,8 +58,6 @@ export default function Router() {
         )
     }
 
-    console.log('User Logged:', userLogged?.isLogged)
-
     if(loading
     ) return (
         <><Loader/></>
@@ -76,10 +74,7 @@ export default function Router() {
                 }
             >
                 {routesPermissions.map((route) => {
-                    console.log("Teste", route)
                     const canAccess = hasPermission(route.roles)
-
-                    console.log("have access", canAccess)
 
                     return (
                         <Route

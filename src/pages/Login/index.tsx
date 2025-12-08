@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button, TextField, Typography, Container, CssBaseline, CardMedia } from '@mui/material';
 import { LoginService } from '../../services/Login';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import { ROUTES_PATH } from '../../routes/routePaths';
 import { setUserLogged } from '../../utils/cookies';
 import useAuthStore from '../../context/authStore';
 
@@ -16,8 +14,6 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false)
-
-  const navigate = useNavigate()
 
   useEffect(() => {
     /*setUserLogged({
@@ -81,7 +77,6 @@ const Login: React.FC = () => {
 
         setTimeout(() => {
           window.location.reload();
-          //navigate(ROUTES_PATH.Home)
         }, 1000)
 
     } catch (err: any) {
