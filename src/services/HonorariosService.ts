@@ -84,7 +84,7 @@ export class HonorariosService {
   }
 
   static async getHonorarioInvoice(idHonorario: number): Promise<IHonorarioInvoice> {
-    const response = await new RequestApi().get(`/honorario_invoice/${idHonorario}`)
+    const response = await new RequestApi().get(`honorario_invoice/${idHonorario}`)
     if(response && response.status === 400) {
       throw new Error(response.message ?? "Erro ao buscar os dados da fatura")
     }

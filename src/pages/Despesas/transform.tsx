@@ -1,5 +1,6 @@
 import { IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import FileDownload from "@mui/icons-material/FileDownload";
 import type { ReactNode } from "react";
 import type { IDespesas } from "../../schema/interfaceDespesas";
 
@@ -37,6 +38,7 @@ export type IDespesasRow = Pick<
 export const transformDataDespesas = (
   data: IDespesas[],
   onEdit: (despesas: IDespesas) => void,
+  onPrint: (despesas: IDespesas) => void,
 ): any[] => {
   return data.map((despesas, index) => ({
     id: index + 1,
@@ -64,7 +66,14 @@ export const transformDataDespesas = (
             <EditIcon fontSize="inherit" />
           </IconButton>
           ) : (
-              null
+            <IconButton
+            color="primary"
+            title="Reimprimir Cobrança"
+            onClick={() => onPrint(despesas)}
+            size="small"
+          >
+            <FileDownload fontSize="inherit" />
+          </IconButton>
           )
         }
       

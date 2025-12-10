@@ -30,7 +30,7 @@ export class ClientService {
     static async save(data: any): Promise<IClient> {
         const response = await new RequestApi().post(`cliente`, { ...data });
         if(response && response.status === 400) {
-            throw new Error(response.message ?? 'Erro ao salvar o cliente')
+            throw new Error(response.errors.length ? response.errors.toString() : response.message)
         }
         return response?.data as IClient
     }

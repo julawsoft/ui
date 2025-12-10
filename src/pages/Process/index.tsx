@@ -50,7 +50,7 @@ const Processo: React.FC = () => {
   const [estados, setEstados] = useState<IProcessoStatus[]>([]);
   const [estado, setEstado] = useState<string>("");
   const hoje = dayjs();
-  const duasSemanasAtras = hoje.subtract(14, "day");
+  const duasSemanasAtras = hoje.subtract(3, "months");
 
   const [dataInicio, setDataInicio] = useState(
     duasSemanasAtras.format("YYYY-MM-DD")

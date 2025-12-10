@@ -83,6 +83,9 @@ const TimeSheetsGlobal: React.FC = () => {
     try {
       const dataResponse = await HonorariosService.getAll(
         {
+          clienteId: cliente,
+          processoId: processo,
+          colaboradorId: Number(colaborador),
           statusId: estado,
           dataInicio,
           dataFim
@@ -104,12 +107,12 @@ const TimeSheetsGlobal: React.FC = () => {
   };
 
   const handleView = (honorario: IHonorarios) => {
-    console.log("honorarios ", honorario)
     navigate(`${ROUTES_PATH.NewHonorarios}/view/${honorario.processo_factura_id}`);
   };
 
   const handleExportPDF = () => {
     if (data.length > 0) {
+      toast.warn("Funcionalidade em desenvolvimento.");
       // timeheets(data);
     }
   };
@@ -124,7 +127,6 @@ const TimeSheetsGlobal: React.FC = () => {
     { label: "Configurações", value: "settings", icon: <Settings /> },
     { label: "Sobre", value: "about", icon: <Info /> },
   ];
-
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
@@ -141,11 +143,9 @@ const TimeSheetsGlobal: React.FC = () => {
       fetchProcessosByClientId(id);
     };
 
-
   const handleBuscar = () => {
       getAllHonorarios()
   }
-
 
   return (
     <div>

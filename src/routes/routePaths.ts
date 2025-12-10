@@ -26,7 +26,7 @@ export const ROUTES_PATH = {
   NewDespesas: '/despesa',
   EditDespesas: "/despesa/:id", 
   GerarCobranca: "/despesa/cobranca", 
-  ViewCobranca: "/invoice-cobranca/:id", 
+  ViewCobranca: "/invoice-cobranca/", 
 
   // TIMESHEETS
   TimeSheet: '/timesheets',
@@ -36,7 +36,7 @@ export const ROUTES_PATH = {
   Honorario: '/honorarios',
   MyHonorarios: '/meus-honorarios',
   NewHonorarios: '/honorario',
-  InvoiceHonorarios: '/invoice-honorarios/:id',
+  InvoiceHonorarios: '/invoice-honorarios/:',
   EditHonorarios: '/honorario/:id',
   ViewHonorarios: '/honorario/view',
 

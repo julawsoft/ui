@@ -187,29 +187,34 @@ const ActionsMenu: React.FC<{
 
   return (
     <>
-      <IconButton onClick={handleClick} size="small">
-        <MoreVertIcon fontSize="inherit" />
-      </IconButton>
-      <Menu
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-      >     
-        <MenuItem
-          onClick={() => {
-            handleClose();
-            onChange(timesheet);
-          }}
-          disabled={!canAprovar}
-        >
-          <ListItemIcon>
-            <CheckBox fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Aprovar TimeSheet" />
-        </MenuItem>
-      </Menu>
+
+      {
+        timesheet.status.toString().toLocaleLowerCase() === 'submetido' ? (
+          <>
+            <IconButton onClick={handleClick} size="small">
+              <MoreVertIcon fontSize="inherit" />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              transformOrigin={{ vertical: "top", horizontal: "right" }}
+            >
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  onChange(timesheet);
+                }}
+                disabled={!canAprovar}
+              >
+                <ListItemIcon>
+                  <CheckBox fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Aprovar TimeSheet" />
+              </MenuItem>
+            </Menu>
+          </>) : (null)}
     </>
   );
 };

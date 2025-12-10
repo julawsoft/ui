@@ -186,7 +186,7 @@ export const routesPermissions: IRoute[] = [
     ],
   },
   {
-    path: `${ROUTES_PATH.ViewCobranca}`,
+    path: `${ROUTES_PATH.ViewCobranca}:id`,
     element: <InvoiceCobranca />,
     roles: [
       UserRoles.ADMINISTRATIVO,

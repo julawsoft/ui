@@ -46,7 +46,6 @@ const Client: React.FC = () => {
   };
 
   const handleChangeCliente = async (e: any) => {
-    console.log("Teste", e.target.value)
     setTipoCliente(e.target.value)
   }
   const handleBuscar = async () => {

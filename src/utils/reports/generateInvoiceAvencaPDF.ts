@@ -44,9 +44,9 @@ const fillTemplate = (template: string, registos: IRegistro[], cliente: IClient,
                 <tr>
                   <td>${i + 1}</td>
                   <td>${item.dataRegisto.substring(0,10)}</td>
-                  <td>${item.descricao}</td>
-                  <td>${item.tarefa}</td>
-                  <td>${item.horas}</td>
+                  <td>${item.descricao ?? '-'}</td>
+                  <td>${item.tarefa ?? '-'}</td>
+                  <td>${item.horas ?? '-'}</td>
                   <td>${formatMoedaAOA(item.valor)}</td>
                 </tr>
               `

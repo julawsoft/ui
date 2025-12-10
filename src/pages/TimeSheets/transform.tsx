@@ -1,5 +1,4 @@
 import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
 import { useState, type ReactNode } from "react";
 import type { ITimeSheets, ITotalProjects, ITotalTasks } from "../../schema/InterfaceTimeSheets";
 import { CheckBox, Remove } from "@mui/icons-material";
@@ -130,7 +129,6 @@ export type ITimeSheetsRow = Pick<
 
 export const transformDataTimeSheet = (
   data: ITimeSheets[],
-  onEdit: (timesheet: ITimeSheets) => void,
   onRemove: (timesheet: ITimeSheets) => void,
   onChange: (timesheet: ITimeSheets) => void
 ): any[] => {
@@ -160,7 +158,6 @@ export const transformDataTimeSheet = (
       actions: (
         <ActionsMenu
           timesheet={timesheet}
-          onEdit={onEdit}
           onView={onRemove}
           onChange={onChange}
         />
@@ -172,10 +169,9 @@ export const transformDataTimeSheet = (
 /** MENU DE AÇÕES */
 const ActionsMenu: React.FC<{
   timesheet: ITimeSheets;
-  onEdit: (timesheet: ITimeSheets) => void;
   onView: (timesheet: ITimeSheets) => void;
   onChange: (timesheet: ITimeSheets) => void;
-}> = ({ timesheet, onEdit, onView, onChange }) => {
+}> = ({ timesheet, onView, onChange }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -184,55 +180,52 @@ const ActionsMenu: React.FC<{
   };
 
   const handleClose = () => setAnchorEl(null);
-
+  
   return (
     <>
-      <IconButton onClick={handleClick} size="small">
-        <MoreVertIcon fontSize="inherit" />
-      </IconButton>
-      <Menu
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <MenuItem
-          onClick={() => {
-            handleClose();
-            onEdit(timesheet);
-          }}
-        >
-          <ListItemIcon>
-            <EditIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Editar" />
-        </MenuItem>
 
-        <MenuItem
-          onClick={() => {
-            handleClose();
-            onView(timesheet);
-          }}
-        >
-          <ListItemIcon>
-            <Remove fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Eliminar" />
-        </MenuItem>
+      {
+        timesheet.status.toString().toLocaleLowerCase() === 'rascunho' ? (
+          <>
+            <IconButton onClick={handleClick} size="small">
+              <MoreVertIcon fontSize="inherit" />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              transformOrigin={{ vertical: "top", horizontal: "right" }}
+            >
 
-        <MenuItem
-          onClick={() => {
-            handleClose();
-            onChange(timesheet);
-          }}
-        >
-          <ListItemIcon>
-            <CheckBox fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Submeter" />
-        </MenuItem>
-      </Menu>
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  onView(timesheet);
+                }}
+              >
+                <ListItemIcon>
+                  <Remove fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Eliminar" />
+              </MenuItem>
+
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  onChange(timesheet);
+                }}
+              >
+                <ListItemIcon>
+                  <CheckBox fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Submeter" />
+              </MenuItem>
+            </Menu>
+          </>
+        ) : (null)
+      }
     </>
+
   );
 };

@@ -106,6 +106,12 @@ const Despesas: React.FC = () => {
   const handleEdit = (despesas: IDespesas) => {
     navigate(`${ROUTES_PATH.NewDespesas}/${despesas.id}`);
   };
+  const onPrint = (despesas: IDespesas) => {
+    console.log("despesas", despesas)
+    toast.warn("Funcionalidade em contrução!")
+
+    // navigate(`${ROUTES_PATH.ViewCobranca}${despesas.id}`);
+  };
 
 
   const totalDespesas = (): string => {
@@ -219,7 +225,7 @@ const Despesas: React.FC = () => {
             </Box>
             <DataTable
               columns={columns}
-              rows={transformDataDespesas(data, handleEdit)}
+              rows={transformDataDespesas(data, handleEdit, onPrint)}
             />
           </>
         )}

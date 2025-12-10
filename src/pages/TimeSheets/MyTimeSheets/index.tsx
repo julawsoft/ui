@@ -21,7 +21,6 @@ import ConfirmDialog from '../../../components/common/ConfirmDialog';
 import SimpleModal from '../../../components/common/SimpleModal';
 import type { ITasks } from '../../../schema/InterfaceTarefa';
 import { TasksService } from '../../../services/TasksService';
-import { formatDateInput } from '../../../utils/data';
 import TimesheetEntryBox from '../../../components/Chronometer/TimesheetEntryBox';
 import FiltroTimeSheets from './FiltroTimeSheets';
 import { ProcessoService } from '../../../services/ProcessoService';
@@ -81,7 +80,7 @@ const MineTimeSheets: React.FC = () => {
   const [tarefas, setTarefas] = useState<ITasks[]>([]);
   const [processos, setProcessos] = useState<IProcesso[]>([]);
   const [clientes, setClientes] = useState<IClient[]>([]);
-  const [form, setForm] = useState<Partial<ITimeSheetsForm>>({});
+  const [form,] = useState<Partial<ITimeSheetsForm>>({});
 
   const [cliente, setCliente] = useState<number>();
   const [processo, setProcesso] = useState<number>();
@@ -224,7 +223,9 @@ const MineTimeSheets: React.FC = () => {
     }
   };
 
+  /*
   const handleEdit = async (timeSheet: ITimeSheets) => {
+
     try {
       setIsLoadingModal(true);
       setForm(timeSheet);
@@ -250,18 +251,36 @@ const MineTimeSheets: React.FC = () => {
       setIsLoadingModal(false);
     }
   };
+  */
 
-  const handleView = (timeSheet: ITimeSheets) => {
-    console.log("handleRemove", timeSheet)
+  const handleSubmeter = async (timeSheet: ITimeSheets) => {
+    try {
+
+     const responseChangeStatus = await TimeSheetsService.submeter(
+      timeSheet.id,
+      'submetido')
+
+      if(!responseChangeStatus)
+          throw new Error('Housv')
+
+      toast.success("Submetido com sucesso!")
+
+    }catch(e){
+      toast.error(String(e))
+    }finally{
+      getTimeSheetsByColaboradorId()
+    }
+
   };
 
   const handleRemove = (timeSheet: ITimeSheets) => {
-    console.log("handleRemove", timeSheet)
+    console.log("timesheet remove", timeSheet)
     setOpenConfirm(true);
   };
 
 
   const handleConfirmDelete = async () => {
+    toast.warn('Funcionalidade em construção...')
     try {
       /* 
       const response = await TasksService.deleteTask(form.id!);
@@ -470,7 +489,7 @@ const MineTimeSheets: React.FC = () => {
                   </Box>
                   <DataTable
                     columns={columns}
-                    rows={transformDataTimeSheet(data, handleEdit, handleRemove, handleView)}
+                    rows={transformDataTimeSheet(data, handleRemove, handleSubmeter)}
                   />
                 </>
               )}

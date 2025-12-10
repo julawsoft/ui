@@ -18,7 +18,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import ConfirmDialog from '../../components/common/ConfirmDialog';
 import type { ITasks } from '../../schema/InterfaceTarefa';
 import { TasksService } from '../../services/TasksService';
-import { formatDateInput } from '../../utils/data';
 import FiltroTimeSheetsGlobal from './FiltroTimeSheetsGlobal';
 import { ProcessoService } from '../../services/ProcessoService';
 import dayjs from 'dayjs';
@@ -68,18 +67,18 @@ const MineTimeSheets: React.FC = () => {
   const [dataTarefas, setDataTarefas] = useState<ITotalTasks[]>([]);
   const [dataProjectos, setDataProjectos] = useState<ITotalProjects[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [,setIsLoadingModal] = useState(false);
+ // const [,setIsLoadingModal] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const [tabIndex, setTabIndex] = useState(0);
-  const [,setOpenModalTimeSheet] = useState(false);
+  // const [,setOpenModalTimeSheet] = useState(false);
 
   const [openConfirm, setOpenConfirm] = useState(false);
 
   const [tarefas, setTarefas] = useState<ITasks[]>([]);
   const [processos, setProcessos] = useState<IProcesso[]>([]);
   const [clientes, setClientes] = useState<IClient[]>([]);
-  const [form, setForm] = useState<Partial<ITimeSheetsForm>>({});
+  const [form,] = useState<Partial<ITimeSheetsForm>>({});
 
   const [cliente, setCliente] = useState<number>();
   const [processo, setProcesso] = useState<number>();
@@ -178,10 +177,14 @@ const MineTimeSheets: React.FC = () => {
   };
   */
 
+  /*
+
   const fetchClientes = async () => setClientes(await ClientService.getAll());
   const fetchTarefas = async (idProcesso: number) => setTarefas(await TasksService.getTasksByProcesso(idProcesso));
   const fetchProcessosByClientId = async (idClient: number) =>
     setProcessos(await ClientService.getProcessos(idClient));
+
+  */
 
   /*
   const onSubmit = async (formData: TimeSheetFormData) => {
@@ -229,9 +232,31 @@ const MineTimeSheets: React.FC = () => {
 
   */
 
+    const handleAprovar = async (timeSheet: ITimeSheets) => {
+      try {
+  
+       const responseChangeStatus = await TimeSheetsService.submeter(
+        timeSheet.id,
+        'aprovado')
+  
+        if(!responseChangeStatus)
+            throw new Error('Housv')
+  
+        toast.success("Aprovado com sucesso!")
+  
+      }catch(e){
+        toast.error(String(e))
+      }finally{
+        getAllTimeSheets()
+      }
+  
+    };
+
   // === Editar um registro existente ===
+  /*
   const handleEdit = async (timeSheet: ITimeSheets) => {
     try {
+      
       setIsLoadingModal(true);
       setForm(timeSheet);
 
@@ -262,6 +287,7 @@ const MineTimeSheets: React.FC = () => {
       setIsLoadingModal(false);
     }
   };
+  */
 
   const handleBuscar = () => {
     console.log("Buscar com filtros:", estado)
@@ -404,7 +430,7 @@ const MineTimeSheets: React.FC = () => {
                   </Box>
                   <DataTable
                     columns={columns}
-                    rows={transformDataTimeSheet(data, handleEdit)}
+                    rows={transformDataTimeSheet(data, handleAprovar)}
                   />
                 </>
               )}

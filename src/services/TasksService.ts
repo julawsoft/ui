@@ -96,13 +96,9 @@ export class TasksService {
     dataAprovada?: string
   ) {
     const response = await new RequestApi().patch<ITasksInput>(`tasks/${id}`, { status, dataAprovada, dataRealizada });
-    if (response && response.status === 400) {
-      if(response.errors){
-        throw new Error(String(response.errors.toString()))
-      }else{
-
-      }
-    }
+    if (response && response.status === 400)
+        throw new Error(String(response.errors ? response.errors.toString(): response.message))
+     
     return response?.data as ITasksInput
 
   }
