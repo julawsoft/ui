@@ -275,25 +275,27 @@ const TasksAgendaForm: React.FC<TasksAgendaFormProps> = ({
           </Grid>
 
           {/* Cliente */}
+
           <Grid item xs={12} md={6}>
             <Controller
               name="clienteId"
               control={control}
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <TextField
                   select
-                  {...field}
                   label="Cliente"
                   fullWidth
+                  value={field.value || ""}
                   onChange={(e) => field.onChange(Number(e.target.value))}
-                  error={!!errors.clienteId}
-                  helperText={errors.clienteId?.message}
+                  error={!!fieldState.error}
+                  helperText={fieldState.error?.message}
                 >
-                  {clientes.map((c) => (
-                    <MenuItem key={c.id} value={c.id}>
-                      {c.denominacao}
-                    </MenuItem>
-                  ))}
+                  {Array.isArray(clientes) &&
+                    clientes.map((cliente) => (
+                      <MenuItem key={cliente.id} value={cliente.id}>
+                        {cliente.denominacao}
+                      </MenuItem>
+                    ))}
                 </TextField>
               )}
             />
@@ -401,8 +403,8 @@ const TasksAgendaForm: React.FC<TasksAgendaFormProps> = ({
           </Grid>
 
           {/* Botões */}
-           {/* === BOTÕES === */}
-           <Stack width={'100%'} direction="row" justifyContent="flex-end" gap={2} mt={3}>
+          {/* === BOTÕES === */}
+          <Stack width={'100%'} direction="row" justifyContent="flex-end" gap={2} mt={3}>
             <Button onClick={handleClose} color="inherit">
               Cancelar
             </Button>
@@ -410,7 +412,7 @@ const TasksAgendaForm: React.FC<TasksAgendaFormProps> = ({
               {loading ? 'A guardar...' : 'Guardar'}
             </Button>
           </Stack>
-       
+
         </Grid>
       </Box>
     </>

@@ -140,6 +140,7 @@ const MyTasks: React.FC = () => {
   const saveUpdateTasks = async (data: TaskFormData) => {
 
     try {
+
       const dataToSave: ITasksInput = {
         "processoId": data.processoId,
         "descricao": data.descricao,
@@ -166,6 +167,7 @@ const MyTasks: React.FC = () => {
           toast.success('Tarefa salva com sucesso!');
           setIsClose(true);
           handleCloseModal();
+          getMyTasks()
         }
       }
     } catch (error: any) {

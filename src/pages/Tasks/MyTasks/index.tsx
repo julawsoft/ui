@@ -14,7 +14,7 @@ import { Add, ExpandMore } from '@mui/icons-material';
 import type { IProcesso } from '../../../schema/InterfaceProcess';
 import type { IClient } from '../../../schema/InterfaceClient';
 import { ClientService } from '../../../services/ClientService';
-import type { ITasks } from '../../../schema/InterfaceTarefa';
+import type { ITasks, ITasksInput } from '../../../schema/InterfaceTarefa';
 import TasksAgenda from '../../../components/Tasks/TasksAgenda';
 import { TasksService } from '../../../services/TasksService';
 import ConfirmDialog from '../../../components/common/ConfirmDialog';
@@ -22,6 +22,9 @@ import FiltroMyTask from './filtroMyTask';
 import dayjs from 'dayjs';
 import { estadoOptions } from '../utils';
 import { generateTasksListPDF } from '../../../utils/reports/generateListTasksPDF';
+import TasksMyAgendaForm from '../form.my.modal';
+import SimpleModal from '../../../components/common/SimpleModal';
+import type { TaskMyFormData } from '../../../validation/taskMySchema';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -82,9 +85,10 @@ const MyTasks: React.FC = () => {
 
   /** novo registo modal  */
   const [tipoTarefas, setTipoTarefas] = useState<ITipoTarefas[]>([]);
-  const [, setOpenDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const [form, setForm] = useState<Partial<ITasks>>({});
   const [openConfirm, setOpenConfirm] = useState(false);
+  const [isClose, setIsClose] = useState(false);
 
   const [clientes, setClientes] = useState<IClient[]>([]);
   const [cliente, setCliente] = useState<number>();
@@ -186,6 +190,45 @@ const MyTasks: React.FC = () => {
     handleMenuClose();
   };
 
+    const saveUpdateTasks = async (data: TaskMyFormData) => {
+  
+      try {
+        const dataToSave: ITasksInput = {
+          "processoId": data.processoId,
+          "descricao": data.descricao,
+          "clienteId": data.clienteId,
+          "status": data.estado,
+          "dataParaRealizacao": `${data.dataParaRealizacao}T${data.horaParaRealizacao}:00`,
+          "colaboradorId": Number(user?.id),
+          "gestorId": Number(user?.id),
+          "tipoTarefaId": data.tipoTarefaId
+        }
+  
+        if (data.tarefaId) {
+          const response = await TasksService.updateTask(data.tarefaId, dataToSave);
+          if (response) {
+            toast.success('Tarefa actualizada com sucesso!');
+            setIsClose(true);
+            handleCloseModal();
+            getMyTasks()
+          }
+  
+        } else {
+          const response = await TasksService.saveTask(dataToSave);
+          if (response) {
+            toast.success('Tarefa salva com sucesso!');
+            setIsClose(true);
+            handleCloseModal();
+          }
+        }
+      } catch (error: any) {
+        toast.error(error.message || 'Erro ao salvar tarefa.');
+      }finally {
+        getMyTasks()
+      }
+    }
+  
+
   return (
     <div>
       <BreadcrumbsNav
@@ -226,7 +269,6 @@ const MyTasks: React.FC = () => {
         handleChangeDataFim={(e: React.ChangeEvent<HTMLSelectElement>) => setDataFim(e.target.value)}
         handleBuscar={handleBuscar}
       />
-
 
 
       <Grid item xs={12} md={12}>
@@ -314,6 +356,20 @@ const MyTasks: React.FC = () => {
         </BoxCard>
       </Grid>
 
+      <SimpleModal
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        title="Formulário tarefas"
+        width={800}
+      >
+        <TasksMyAgendaForm
+          handleSaveOrUpdate={saveUpdateTasks}
+          handleClose={handleCloseModal}
+          isClose={isClose}
+          tasks={form}
+          userId={Number(user?.id)}
+        />
+      </SimpleModal>
 
       <ConfirmDialog
         open={openConfirm}

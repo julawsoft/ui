@@ -20,6 +20,7 @@ export default function FiltroTask({
   dataFim,
   handleChangeCliente,
   handleChangeProcesso,
+  handleChangeTipoTarefas,
   handleChangeEstado,
   handleChangeDataInicio,
   handleChangeDataFim,
@@ -86,7 +87,7 @@ export default function FiltroTask({
         <Select
           size="small"
           value={tipoTarefa ?? ""}
-          onChange={handleChangeProcesso}
+          onChange={handleChangeTipoTarefas}
           sx={{ minWidth: 180 }}
         >
           <MenuItem value="">

@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { taskMySchema, type TaskMyFormData } from "../../validation/taskMySchema";
-import StateHandler from "../../components/common/StateHandler";
 import { ColaboradorService } from "../../services/ColaboradorService";
 import { TimeSheetsService } from "../../services/TimeSheetsService";
 import { ClientService } from "../../services/ClientService";
@@ -66,7 +65,6 @@ const TasksMyAgendaForm: React.FC<TasksAgendaFormProps> = ({
       );
     }
 
-    // Se vier no formato ISO ou timestamp
     const parsed = new Date(dateStr);
     return isNaN(parsed.getTime()) ? null : parsed;
   }
@@ -94,7 +92,6 @@ const TasksMyAgendaForm: React.FC<TasksAgendaFormProps> = ({
 
   const clienteSelecionado = watch("clienteId");
 
-  // === Carregar dados iniciais ===
   useEffect(() => {
     const fetchInitialData = async () => {
       setLoading(true);
@@ -121,8 +118,8 @@ const TasksMyAgendaForm: React.FC<TasksAgendaFormProps> = ({
     fetchInitialData();
   }, [isClose]);
 
-  // === Recarregar processos do cliente ===
   useEffect(() => {
+
     const fetchProcessosByCliente = async () => {
       if (!clienteSelecionado) {
         setProcessos([]);
@@ -141,9 +138,9 @@ const TasksMyAgendaForm: React.FC<TasksAgendaFormProps> = ({
     };
 
     fetchProcessosByCliente();
+
   }, [clienteSelecionado]);
 
-  // === Preencher dados ao editar ===
   useEffect(() => {
     if (tasks) {
       const dataHora = parseDateString(tasks.data_para_realizacao);
@@ -184,143 +181,146 @@ const TasksMyAgendaForm: React.FC<TasksAgendaFormProps> = ({
 
   return (
     <>
-      <StateHandler isLoading={loading} error={error} hasData={true} />
       <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2, p: 2 }}>
-        <Grid container spacing={2}>
-          {/* Descrição */}
-          <Grid item xs={12}>
-            <Controller
-              name="descricao"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Descrição"
-                  fullWidth
-                  error={!!errors.descricao}
-                  helperText={errors.descricao?.message}
+        {
+          error ? (<TextField>{error}</TextField>) : (
+            <Grid container spacing={2}>
+              {/* Descrição */}
+              <Grid item xs={12}>
+                <Controller
+                  name="descricao"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Descrição"
+                      fullWidth
+                      error={!!errors.descricao}
+                      helperText={errors.descricao?.message}
+                    />
+                  )}
                 />
-              )}
-            />
-          </Grid>
+              </Grid>
 
-          {/* Estado */}
-          <Grid item xs={12} md={6}>
-            <Controller
-              name="estado"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  select
-                  {...field}
-                  label="Estado"
-                  fullWidth
-                  error={!!errors.estado}
-                  helperText={errors.estado?.message}
-                >
-                  {estadoOptions.map((opt) => (
-                    <MenuItem key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              )}
-            />
-          </Grid>
-
-          {/* Data e Hora */}
-          <Grid item xs={12} md={3}>
-            <Controller
-              name="dataParaRealizacao"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="date"
-                  label="Data para Realização"
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                  error={!!errors.dataParaRealizacao}
-                  helperText={errors.dataParaRealizacao?.message}
+              {/* Estado */}
+              <Grid item xs={12} md={6}>
+                <Controller
+                  name="estado"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      select
+                      {...field}
+                      label="Estado"
+                      fullWidth
+                      error={!!errors.estado}
+                      helperText={errors.estado?.message}
+                    >
+                      {estadoOptions.map((opt) => (
+                        <MenuItem key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  )}
                 />
-              )}
-            />
-          </Grid>
+              </Grid>
 
-          <Grid item xs={12} md={3}>
-            <Controller
-              name="horaParaRealizacao"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="time"
-                  label="Hora"
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                  inputProps={{ step: 60 }}
-                  error={!!errors.horaParaRealizacao}
-                  helperText={errors.horaParaRealizacao?.message}
+              {/* Data e Hora */}
+              <Grid item xs={12} md={3}>
+                <Controller
+                  name="dataParaRealizacao"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      type="date"
+                      label="Data para Realização"
+                      fullWidth
+                      InputLabelProps={{ shrink: true }}
+                      error={!!errors.dataParaRealizacao}
+                      helperText={errors.dataParaRealizacao?.message}
+                    />
+                  )}
                 />
-              )}
-            />
-          </Grid>
+              </Grid>
 
-          {/* Cliente */}
-          <Grid item xs={12} md={6}>
-            <Controller
-              name="clienteId"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  select
-                  {...field}
-                  label="Cliente"
-                  fullWidth
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                  error={!!errors.clienteId}
-                  helperText={errors.clienteId?.message}
-                >
-                  {clientes.map((c) => (
-                    <MenuItem key={c.id} value={c.id}>
-                      {c.denominacao}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              )}
-            />
-          </Grid>
+              <Grid item xs={12} md={3}>
+                <Controller
+                  name="horaParaRealizacao"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      type="time"
+                      label="Hora"
+                      fullWidth
+                      InputLabelProps={{ shrink: true }}
+                      inputProps={{ step: 60 }}
+                      error={!!errors.horaParaRealizacao}
+                      helperText={errors.horaParaRealizacao?.message}
+                    />
+                  )}
+                />
+              </Grid>
 
-          {/* Processo */}
-          <Grid item xs={12} md={6}>
-            <Controller
-              name="processoId"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  select
-                  {...field}
-                  label="Processo"
-                  fullWidth
-                  disabled={!clienteSelecionado}
-                  error={!!errors.processoId}
-                  helperText={
-                    clienteSelecionado
-                      ? errors.processoId?.message
-                      : "Selecione um cliente primeiro"
-                  }
-                >
-                  {processos.map((p) => (
-                    <MenuItem key={p.id} value={p.id}>
-                      {p.ref}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              )}
-            />
-          </Grid>
+              {/* Cliente */}
+              <Grid item xs={12} md={6}>
+                <Controller
+                  name="clienteId"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      select
+                      label="Cliente"
+                      fullWidth
+                      value={field.value || ""}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                      error={!!fieldState.error}
+                      helperText={fieldState.error?.message}
+                    >
+                      {Array.isArray(clientes) &&
+                        clientes.map((cliente) => (
+                          <MenuItem key={cliente.id} value={cliente.id}>
+                            {cliente.denominacao}
+                          </MenuItem>
+                        ))}
+                    </TextField>
+                  )}
+                />
 
-          {/* Gestor 
+              </Grid>
+
+              {/* Processo */}
+              <Grid item xs={12} md={6}>
+                <Controller
+                  name="processoId"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      select
+                      {...field}
+                      label="Processo"
+                      fullWidth
+                      disabled={!clienteSelecionado}
+                      error={!!errors.processoId}
+                      helperText={
+                        clienteSelecionado
+                          ? errors.processoId?.message
+                          : "Selecione um cliente primeiro"
+                      }
+                    >
+                      {processos.map((p) => (
+                        <MenuItem key={p.id} value={p.id}>
+                          {p.ref}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  )}
+                />
+              </Grid>
+
+              {/* Gestor 
           <Grid item xs={12} md={6}>
             <Controller
               name="gestorId"
@@ -345,7 +345,7 @@ const TasksMyAgendaForm: React.FC<TasksAgendaFormProps> = ({
           </Grid>
           */}
 
-          {/* Colaborador 
+              {/* Colaborador 
           <Grid item xs={12} md={6}>
             <Controller
               name="colaboradorId"
@@ -370,43 +370,46 @@ const TasksMyAgendaForm: React.FC<TasksAgendaFormProps> = ({
           </Grid>
           */}
 
-          {/* Tipo de Tarefa */}
-          <Grid item xs={12} md={12}>
-            <Controller
-              name="tipoTarefaId"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  select
-                  {...field}
-                  label="Tipo de Tarefa"
-                  fullWidth
-                  error={!!errors.tipoTarefaId}
-                  helperText={errors.tipoTarefaId?.message}
-                >
-                  {tipoTarefas.map((t) => (
-                    <MenuItem key={t.id} value={t.id}>
-                      {t.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              )}
-            />
-          </Grid>
+              {/* Tipo de Tarefa */}
+              <Grid item xs={12} md={12}>
+                <Controller
+                  name="tipoTarefaId"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      select
+                      {...field}
+                      label="Tipo de Tarefa"
+                      fullWidth
+                      error={!!errors.tipoTarefaId}
+                      helperText={errors.tipoTarefaId?.message}
+                    >
+                      {tipoTarefas.map((t) => (
+                        <MenuItem key={t.id} value={t.id}>
+                          {t.label}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  )}
+                />
+              </Grid>
 
-          {/* Botões */}
-           {/* === BOTÕES === */}
-           <Stack width={'100%'} direction="row" justifyContent="flex-end" gap={2} mt={3}>
-            <Button onClick={handleClose} color="inherit">
-              Cancelar
-            </Button>
-            <Button type="submit" variant="contained" disabled={loading}>
-              {loading ? 'A guardar...' : 'Guardar'}
-            </Button>
-          </Stack>
-       
-        </Grid>
+              {/* Botões */}
+              {/* === BOTÕES === */}
+              <Stack width={'100%'} direction="row" justifyContent="flex-end" gap={2} mt={3}>
+                <Button onClick={handleClose} color="inherit">
+                  Cancelar
+                </Button>
+                <Button type="submit" variant="contained" disabled={loading}>
+                  {loading ? 'A guardar...' : 'Guardar'}
+                </Button>
+              </Stack>
+
+            </Grid>
+          )
+        }
       </Box>
+
     </>
   );
 };

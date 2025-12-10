@@ -20,11 +20,16 @@ export default function FiltroMyTask({
   dataFim,
   handleChangeCliente,
   handleChangeProcesso,
+  handleChangeTipoTarefas,
   handleChangeEstado,
   handleChangeDataInicio,
   handleChangeDataFim,
   handleBuscar,
 }: any) {
+
+  console.log("O tipo tarefa ", tipoTarefas)
+  console.log("O tipo tarefa ", tipoTarefa)
+
   return (
     <Box
       sx={{
@@ -86,7 +91,7 @@ export default function FiltroMyTask({
         <Select
           size="small"
           value={tipoTarefa ?? ""}
-          onChange={handleChangeProcesso}
+          onChange={handleChangeTipoTarefas}
           sx={{ minWidth: 180 }}
         >
           <MenuItem value="">
