@@ -69,10 +69,6 @@ export default function ViewHonorario() {
       ref: data?.processo_referencia,
       n_processo_judicial: data?.processo_n_processo_judicial
     }
-
-    console.log(cliente)
-    console.log(processo)
-
     generateInvoiceAvencaPDF(registos, cliente, processo, Number(data?.processo_factura_custo))
 
   };
@@ -202,7 +198,31 @@ export default function ViewHonorario() {
                 </TableBody>
               </Table>
             </TableContainer>
-          ) : ('b ')
+          ) : (
+            <>
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead sx={{ background: "#f5f5f5" }}>
+                    <TableRow>
+                      <TableCell>#</TableCell>
+                      <TableCell>Descrição</TableCell>
+                      <TableCell>Estado</TableCell>
+                      <TableCell>Valor (AOA)</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow key={data?.processo_factura_id}>
+                      <TableCell>{'-'}</TableCell>
+                      <TableCell>{data?.processo_referencia}</TableCell>
+                      <TableCell>{data?.status}</TableCell>
+                      <TableCell>{formatMoedaAOA(data?.processo_factura_custo) ?? "-"}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </>
+
+          )
         }
 
 

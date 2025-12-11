@@ -146,7 +146,7 @@ const NewProcesso: React.FC = () => {
       }
       navigate('/processos');
     } catch (e: any) {
-      toast.error('Erro ao salvar processo: ' + e.message);
+      toast.error(e.message);
     } finally {
       setIsLoading(false);
     }

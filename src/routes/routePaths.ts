@@ -36,7 +36,7 @@ export const ROUTES_PATH = {
   Honorario: '/honorarios',
   MyHonorarios: '/meus-honorarios',
   NewHonorarios: '/honorario',
-  InvoiceHonorarios: '/invoice-honorarios/:',
+  InvoiceHonorarios: '/invoice-honorarios/:id',
   EditHonorarios: '/honorario/:id',
   ViewHonorarios: '/honorario/view',
 

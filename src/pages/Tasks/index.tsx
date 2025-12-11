@@ -57,7 +57,6 @@ const MyTasks: React.FC = () => {
   const getMyTasks = async () => {
     try {
       const dataResponse = await TasksService.getAll({
-        colaboradorId: String(user?.id),
         dataInicio,
         dataFim,
         clienteId: String(cliente),
@@ -147,8 +146,8 @@ const MyTasks: React.FC = () => {
         "clienteId": data.clienteId,
         "status": data.estado,
         "dataParaRealizacao": `${data.dataParaRealizacao}T${data.horaParaRealizacao}:00`,
-        "colaboradorId": Number(user?.id),
-        "gestorId": Number(user?.id),
+        "colaboradorId": Number(data.colaboradorId),
+        "gestorId": Number(data.gestorId),
         "tipoTarefaId": data.tipoTarefaId
       }
 

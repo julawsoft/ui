@@ -1,5 +1,6 @@
 import type { IAddAssociadosProcesso, IAddEquipasTarefas, IProcesso, IProcessoAddAnexo, IProcessoInput, IProcessoInstituicoes, IProcessoModoFacturacao, IProcessoStatus } from "../schema/InterfaceProcess";
 import { RequestApi } from "../utils/http/request";
+import { handleApiErrorResponse } from "../utils/responseUtils";
 
   interface filterProcessos {
     clientId?: number, 
@@ -87,13 +88,8 @@ export class ProcessoService {
 
   static async save(data: IProcessoInput): Promise<IProcesso>{
     const response = await new RequestApi().post<IProcesso>(`processo`, { ...data });
-    if (response && response.status === 400) {
-      if(response.errors){
-        throw new Error(String(response.errors.toString()))
-      }else{
-
-      }
-    }
+    if (response && response.status === 400) 
+        throw new Error(response.errors ? String(handleApiErrorResponse(response.errors)): response.message ?? "Erro ao salvar o processo");
     return response?.data as IProcesso
   }
 

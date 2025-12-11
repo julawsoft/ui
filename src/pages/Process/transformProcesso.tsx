@@ -12,7 +12,7 @@ export const processoColumns = [
   { id: "cliente", label: "Cliente", flex: 1 },
   { id: "estado", label: "Estado", flex: 1 },
   { id: "gestor", label: "Gestor", flex: 1 },
-  { id: "horas_mes", label: "Horas/Mês", flex: 1 },
+  { id: "m_faturacao", label: "M. Facturação", flex: 1 },
   { id: "data_registo", label: "Data Registo", flex: 1 },
   { id: "actions", label: "Ações", flex: 1 },
 ];
@@ -32,7 +32,7 @@ export const transformDataProcesso = (
     cliente: processo.cliente,
     estado: processo.estado,
     gestor: processo.gestor,
-    horas_mes: processo.horas_mes ?? "-",
+    m_faturacao: processo.modo_facturacao ?? "-",
     data_registo: new Date(processo.data_registo).toLocaleDateString(),
 
     // ações
