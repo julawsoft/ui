@@ -26,7 +26,7 @@ export const ROUTES_PATH = {
   NewDespesas: '/despesa',
   EditDespesas: "/despesa/:id", 
   GerarCobranca: "/despesa/cobranca", 
-  ViewCobranca: "/invoice-cobranca/", 
+  ViewCobranca: "/invoice-cobranca", 
 
   // TIMESHEETS
   TimeSheet: '/timesheets',
